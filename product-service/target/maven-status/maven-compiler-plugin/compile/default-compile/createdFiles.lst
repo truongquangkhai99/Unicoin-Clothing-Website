@@ -1,7 +1,0 @@
-com\unicoin\product\entity\ProductDemo$ProductDemoBuilder.class
-com\unicoin\product\service\ProductDemoService.class
-com\unicoin\product\config\ProductConfig.class
-com\unicoin\product\entity\ProductDemo.class
-com\unicoin\product\ProductManageApplication.class
-com\unicoin\product\controller\ProductManageController.class
-com\unicoin\product\service\impl\ProductDemoServiceImpl.class
