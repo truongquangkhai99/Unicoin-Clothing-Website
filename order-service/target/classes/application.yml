@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: order-service
+  zipkin:
+    base-url: http://localhost:9411
+  rabbitmq:
+    addresses: localhost:5672
+
+server:
+  port: 3000
+  servlet:
+    context-path: /order-service
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
+
+rabbitmq:
+  exchanges:
+    internal: internal.exchange
+  queue:
+    order-service: order-service.queue
+  routing-keys:
+    internal-order-service: internal.order-service.routing-key

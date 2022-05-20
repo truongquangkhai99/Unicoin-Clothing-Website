@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="clients" />
+        <module name="customer-service" />
+        <module name="amqp" />
+        <module name="orderamqp" />
+        <module name="api-gateway" />
+        <module name="product-service" />
+        <module name="order-service" />
+        <module name="eureka-server" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="notification" target="11" />
+      <module name="orderamqp" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

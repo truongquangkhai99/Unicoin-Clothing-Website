@@ -1,0 +1,17 @@
+com\unicoin\clients\ex\ResourceException.class
+com\unicoin\clients\orders\OrderFeign.class
+com\unicoin\clients\form\orderform\OrderRequest$OrderRequestBuilder.class
+com\unicoin\clients\resstresponse\SuccessResponse.class
+com\unicoin\clients\form\orderform\OrderdetailRequest.class
+com\unicoin\clients\resstresponse\ApiResponse$Payload.class
+com\unicoin\clients\form\orderform\OrderRequest.class
+com\unicoin\clients\form\customerform\CustomerDemoForm$CustomerDemoFormBuilder.class
+com\unicoin\clients\form\productform\ProductDemoForm.class
+com\unicoin\clients\form\productform\ProductDemoForm$ProductDemoFormBuilder.class
+com\unicoin\clients\ex\ExceptionCode.class
+com\unicoin\clients\form\customerform\CustomerDemoForm.class
+com\unicoin\clients\resstresponse\ApiResponse.class
+com\unicoin\clients\resstresponse\ResponseCheckCustomer.class
+com\unicoin\clients\ex\Demo.class
+com\unicoin\clients\ex\ExceptionHandler.class
+com\unicoin\clients\customer\CustomerFeign.class

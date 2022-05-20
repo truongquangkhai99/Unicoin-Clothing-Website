@@ -1,0 +1,7 @@
+com\unicoin\customer\entity\CustomerDemo$CustomerDemoBuilder.class
+com\unicoin\customer\service\CustomerDemoService.class
+com\unicoin\customer\CustomerApplication.class
+com\unicoin\customer\service\impl\CustomerDemoServiceImpl.class
+com\unicoin\customer\entity\CustomerDemo.class
+com\unicoin\customer\config\CustomerConfig.class
+com\unicoin\customer\controller\CustomerDemoController.class
