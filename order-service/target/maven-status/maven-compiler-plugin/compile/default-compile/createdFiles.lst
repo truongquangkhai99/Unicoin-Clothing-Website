@@ -1,8 +1,0 @@
-com\unicoin\order\config\OrderConfig.class
-com\unicoin\order\rabbitmq\OrderConsumer.class
-com\unicoin\order\OrderApplication.class
-com\unicoin\order\service\OrderService.class
-com\unicoin\order\entity\Order.class
-com\unicoin\order\service\impl\OrderServiceImpl.class
-com\unicoin\order\entity\Order$OrderBuilder.class
-com\unicoin\order\controller\OrderController.class
