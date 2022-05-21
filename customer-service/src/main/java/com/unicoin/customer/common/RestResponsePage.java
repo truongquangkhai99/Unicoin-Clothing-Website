@@ -9,23 +9,23 @@ public class RestResponsePage<T> {
     private Pagination pagination;
     private List<T> content;
 
-    public RestResponsePage(List<T> content, int page, int size, int numberOfElements, int totalPages) {
+    public RestResponsePage(List<T> content, int page, int size, int totalOfElements, int totalPages) {
         this.content = content;
         Pagination pagination = new Pagination();
         pagination.currentPage = page;
         pagination.size = size;
         pagination.totalPages = totalPages;
-        pagination.numberOfElements = numberOfElements;
+        pagination.totalOfElements = totalOfElements;
         this.pagination = pagination;
     }
 
-    public RestResponsePage(List<T> content, int page, int size, long numberOfElements, int totalPages) {
+    public RestResponsePage(List<T> content, int page, int size, long totalOfElements, int totalPages) {
         this.content = content;
         Pagination pagination = new Pagination();
         pagination.currentPage = page;
         pagination.size = size;
         pagination.totalPages = totalPages;
-        pagination.numberOfElements = numberOfElements;
+        pagination.totalOfElements = totalOfElements;
         this.pagination = pagination;
     }
 
@@ -35,6 +35,6 @@ public class RestResponsePage<T> {
         private int currentPage;
         private int size;
         private int totalPages;
-        private long numberOfElements;
+        private long totalOfElements;
     }
 }
