@@ -1,5 +1,5 @@
 CREATE TABLE `users` (
-                         `user_name` varchar(255) NOT NULL,
+                         `user_id` int NOT NULL AUTO_INCREMENT,
                          `fullname` varchar(45) NOT NULL,
                          `phone_number` varchar(15) NOT NULL,
                          `email` varchar(255) NOT NULL,
@@ -8,5 +8,5 @@ CREATE TABLE `users` (
                          `regist_stamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                          `update_stamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                          `status` bit(1) NOT NULL,
-                         PRIMARY KEY (`user_name`,`phone_number`)
+                         PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
