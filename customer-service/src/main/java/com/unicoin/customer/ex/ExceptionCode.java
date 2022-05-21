@@ -4,7 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum ExceptionCode {
-    INVALID_VALUE(1000, "error1000");
+    INVALID_VALUE(1000, "error1000"),
+    NOTFOUND_CUSTOMER(1001, "error1001");
 
     private int status;
     private String error;
