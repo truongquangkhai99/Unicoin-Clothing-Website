@@ -25,3 +25,5 @@ rabbitmq:
     order-service: order-service.queue
   routing-keys:
     internal-order-service: internal.order-service.routing-key
+
+
