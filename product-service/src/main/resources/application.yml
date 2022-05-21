@@ -18,7 +18,7 @@ spring:
       username: root
       password: 1234
       data-source-class-name: com.mysql.jdbc.Driver
-      jdbc-url: jdbc:mysql://localhost:3306/uniocoin_product_service
+      jdbc-url: jdbc:mysql://localhost:3306/unicoin_product_service
   jpa:
     show-sql: true
     hibernate:
