@@ -1,9 +1,14 @@
 package com.unicoin.customer.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "user_role")
+@Getter
+@Setter
 public class UserRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,8 +16,8 @@ public class UserRole {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_name", nullable = false)
-    private User userName;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User userId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "role_id", nullable = false)
@@ -21,35 +26,4 @@ public class UserRole {
     @Column(name = "status", nullable = false)
     private Boolean status = false;
 
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public User getUserName() {
-        return userName;
-    }
-
-    public void setUserName(User userName) {
-        this.userName = userName;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 }

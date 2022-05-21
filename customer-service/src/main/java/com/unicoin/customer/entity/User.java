@@ -11,8 +11,8 @@ import java.time.Instant;
 @Data
 public class User {
     @Id
-    @Column(name = "user_name")
-    private String userName;
+    @Column(name = "user_id")
+    private String id;
 
     @Column(name = "phone_number", nullable = false, length = 15)
     private String phoneNumer;
