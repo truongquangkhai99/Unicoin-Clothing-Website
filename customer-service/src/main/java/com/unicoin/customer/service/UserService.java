@@ -5,7 +5,7 @@ import com.unicoin.customer.common.RestResponsePage;
 import com.unicoin.customer.entity.User;
 
 public interface UserService {
-    RestResponsePage<User> viewCustomer();
+    RestResponsePage<User> viewCustomer(Integer page, Integer size, String phoneNumber, String fullName, String email);
 
     void addCustomer();
 
@@ -13,5 +13,5 @@ public interface UserService {
 
     void updateCustomer(String username);
 
-    void deleteCustomer(String phoneNumer);
+    void uDeleteCustomer(String phoneNumer);
 }
