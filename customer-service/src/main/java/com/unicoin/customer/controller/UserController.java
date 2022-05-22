@@ -1,11 +1,14 @@
 package com.unicoin.customer.controller;
 
+import com.unicoin.customer.form.AddCustomerForm;
 import com.unicoin.customer.resstresponse.ApiResponse;
 import com.unicoin.customer.resstresponse.SuccessResponse;
 import com.unicoin.customer.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/admin/customer",
@@ -26,8 +29,8 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public ApiResponse addCustomer() {
-        userService.addCustomer();
+    public ApiResponse addCustomer(@Valid @RequestBody AddCustomerForm addCustomerForm){
+        userService.addCustomer(addCustomerForm);
         return new SuccessResponse();
     }
 

@@ -20,5 +20,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
                                  @Param("email") String email,
                                  Pageable pageable);
 
-    Optional<User> findByPhoneNumber(String phoneNumber);
+     Optional<User> findByPhoneNumber(String phoneNumber);
+
+    Optional<User> findByEmail(String email);
 }
