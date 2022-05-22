@@ -21,7 +21,7 @@ public class User {
     private Integer id;
 
     @Column(name = "phone_number", nullable = false, length = 15)
-    private String phoneNumer;
+    private String phoneNumber;
 
     @Column(name = "fullname", nullable = false, length = 45)
     private String fullName;
