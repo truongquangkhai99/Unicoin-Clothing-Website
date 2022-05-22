@@ -14,7 +14,7 @@ spring:
 #datasource config
   datasource:
     username: root
-    password: 1234
+    password: Unicoin123
     data-source-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/unicoin_customer_service
   jpa:
