@@ -52,15 +52,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void uDeleteCustomer(String phoneNumer) {
-        log.info("Start deleteCustomer: phoneNumber {}", phoneNumer);
-        Optional<User> optional = userRepository.findByPhoneNumer(phoneNumer);
+    public void uDeleteCustomer(String phoneNumber) {
+        log.info("Start deleteCustomer: phoneNumber {}", phoneNumber);
+        Optional<User> optional = userRepository.findByPhoneNumer(phoneNumber);
         if (optional.isEmpty()) throw  new AppException(ExceptionCode.NOTFOUND_CUSTOMER);
         User user = new User();
         BeanUtils.copyProperties(optional.get(), user);
         user.setStatus(!user.getStatus());
         user.setUpdateStamp(new Timestamp(new Date().getTime()));
         userRepository.save(user);
-        log.info("End deleteCustomer: phoneNumber {}", phoneNumer);
+        log.info("End deleteCustomer: phoneNumber {}", phoneNumber);
     }
 }
