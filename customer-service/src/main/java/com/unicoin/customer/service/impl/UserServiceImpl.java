@@ -32,6 +32,7 @@ public class UserServiceImpl implements UserService {
         log.info("Start viewCustomer");
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "fullName").and(Sort.by(Sort.Direction.ASC, "registStamp")));
         Page<User> userPage = userRepository.searchAllCustomer(phoneNumber, fullName, email, pageable);
+        if (userPage.isEmpty()) throw new AppException(ExceptionCode.NOTFOUND_CUSTOMERS);
         log.info("End viewCustomer");
         return new RestResponsePage<>(userPage.toList(), page, size, userPage.getTotalElements(), userPage.getTotalPages());
     }
@@ -54,8 +55,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void uDeleteCustomer(String phoneNumber) {
         log.info("Start deleteCustomer: phoneNumber {}", phoneNumber);
-        Optional<User> optional = userRepository.findByPhoneNumer(phoneNumber);
-        if (optional.isEmpty()) throw  new AppException(ExceptionCode.NOTFOUND_CUSTOMER);
+        Optional<User> optional = userRepository.findByPhoneNumber(phoneNumber);
+        if (optional.isEmpty()) throw  new AppException(ExceptionCode.PHONENUMBER_IS_NOT_REGISTER);
         User user = new User();
         BeanUtils.copyProperties(optional.get(), user);
         user.setStatus(!user.getStatus());
