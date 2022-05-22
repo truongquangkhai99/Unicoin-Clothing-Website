@@ -20,8 +20,12 @@ public class UserController {
     UserService userService;
 
     @GetMapping("")
-    public ApiResponse viewCustomer(){
-        return new SuccessResponse(userService.viewCustomer());
+    public ApiResponse viewCustomer(@RequestParam(value = "size", defaultValue = "10") Integer size,
+                                    @RequestParam(value = "page", defaultValue = "1") Integer page,
+                                    @RequestParam(value = "phoneNymber", required = false) String phoneNumber,
+                                    @RequestParam(value = "fullName", required = false) String fullName,
+                                    @RequestParam(value = "email", required = false) String email) {
+        return new SuccessResponse(userService.viewCustomer(page, size, phoneNumber, fullName, email));
     }
 
     @PostMapping("/add")
@@ -31,19 +35,19 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ApiResponse login(){
+    public ApiResponse login() {
         return new SuccessResponse(userService.login());
     }
 
     @PutMapping("/update/{username}")
-    public ApiResponse updateCustomer(@PathVariable("username") String username){
+    public ApiResponse updateCustomer(@PathVariable("username") String username) {
         userService.updateCustomer(username);
         return new SuccessResponse();
     }
 
     @DeleteMapping("/{phoneNumber}")
-    public ApiResponse deleteCustomer(@PathVariable("phoneNumber")String phoneNumber){
-        userService.deleteCustomer(phoneNumber);
+    public ApiResponse deleteCustomer(@PathVariable("phoneNumber") String phoneNumber) {
+        userService.uDeleteCustomer(phoneNumber);
         return new SuccessResponse();
     }
 }

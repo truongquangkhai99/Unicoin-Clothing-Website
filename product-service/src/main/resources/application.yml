@@ -14,15 +14,16 @@ spring:
     addresses: localhost:5672
   #datasource config
   datasource:
-    hikari:
-      username: root
-      password: 1234
-      data-source-class-name: com.mysql.jdbc.Driver
-      jdbc-url: jdbc:mysql://localhost:3306/unicoin_product_service
+    username: root
+    password: Unicoin123
+    data-source-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/unicoin_product_service
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
 #eureka config
 eureka:

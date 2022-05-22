@@ -1,10 +1,19 @@
 package com.unicoin.customer.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.time.Instant;
 
 @Entity
 @Table(name = "roles")
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,60 +37,4 @@ public class Role {
 
     @Column(name = "update_user", nullable = false)
     private Integer updateUser;
-
-    public Integer getUpdateUser() {
-        return updateUser;
-    }
-
-    public void setUpdateUser(Integer updateUser) {
-        this.updateUser = updateUser;
-    }
-
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
-    public Instant getUpdateStamp() {
-        return updateStamp;
-    }
-
-    public void setUpdateStamp(Instant updateStamp) {
-        this.updateStamp = updateStamp;
-    }
-
-    public Instant getRegistStamp() {
-        return registStamp;
-    }
-
-    public void setRegistStamp(Instant registStamp) {
-        this.registStamp = registStamp;
-    }
-
-    public String getMemo() {
-        return memo;
-    }
-
-    public void setMemo(String memo) {
-        this.memo = memo;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 }

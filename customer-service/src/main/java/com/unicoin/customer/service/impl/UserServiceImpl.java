@@ -11,6 +11,10 @@ import com.unicoin.customer.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -22,21 +26,26 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    UserRepository userrepository;
+    UserRepository userRepository;
 
     @Override
-    public RestResponsePage<User> viewCustomer() {
-        return null;
+    public RestResponsePage<User> viewCustomer(Integer page, Integer size, String phoneNumber, String fullName, String email) {
+        log.info("Start viewCustomer");
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "fullName").and(Sort.by(Sort.Direction.ASC, "registStamp")));
+        Page<User> userPage = userRepository.searchAllCustomer(phoneNumber, fullName, email, pageable);
+        if (userPage.isEmpty()) throw new AppException(ExceptionCode.NOTFOUND_CUSTOMERS);
+        log.info("End viewCustomer");
+        return new RestResponsePage<>(userPage.toList(), page, size, userPage.getTotalElements(), userPage.getTotalPages());
     }
 
     @Override
     public void addCustomer(AddCustomerForm addCustomerForm) {
         log.info("start addCustomer");
-        Optional<User> checkPhone = userrepository.findByPhoneNumber(addCustomerForm.getPhoneNumber());
+        Optional<User> checkPhone = userRepository.findByPhoneNumber(addCustomerForm.getPhoneNumber());
         if(checkPhone.isPresent()){
             throw  new AppException(ExceptionCode.NOT_EXIT);
         }
-        Optional<User> checkEmail = userrepository.findByEmail(addCustomerForm.getEmail());
+        Optional<User> checkEmail = userRepository.findByEmail(addCustomerForm.getEmail());
         if(checkEmail.isPresent()){
             throw  new AppException(ExceptionCode.NOT_EXIT);
         }
@@ -45,7 +54,7 @@ public class UserServiceImpl implements UserService {
         user.setRegistStamp(new Timestamp(new Date().getTime()));
         user.setUpdateStamp(new Timestamp(new Date().getTime()));
         user.setStatus(true);
-        userrepository.save(user);
+        userRepository.save(user);
         log.info("add Customer end");
     }
 
@@ -60,7 +69,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteCustomer(String phoneNumer) {
-
+    public void uDeleteCustomer(String phoneNumber) {
+        log.info("Start deleteCustomer: phoneNumber {}", phoneNumber);
+        Optional<User> optional = userRepository.findByPhoneNumber(phoneNumber);
+        if (optional.isEmpty()) throw  new AppException(ExceptionCode.PHONENUMBER_IS_NOT_REGISTER);
+        User user = new User();
+        BeanUtils.copyProperties(optional.get(), user);
+        user.setStatus(!user.getStatus());
+        user.setUpdateStamp(new Timestamp(new Date().getTime()));
+        userRepository.save(user);
+        log.info("End deleteCustomer: phoneNumber {}", phoneNumber);
     }
 }
