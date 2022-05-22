@@ -1,21 +1,24 @@
 package com.unicoin.customer.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.*;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Date;
 
 @Entity
 @Table(name = "users")
 @Data
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private String id;
+    private Integer id;
 
     @Column(name = "phone_number", nullable = false, length = 15)
-    private String phoneNumer;
+    private String phoneNumber;
 
     @Column(name = "fullname", nullable = false, length = 45)
     private String fullname;
@@ -30,12 +33,12 @@ public class User {
     private String address;
 
     @Column(name = "regist_stamp", nullable = false)
-    private Instant registStamp;
+    private Timestamp registStamp;
 
     @Column(name = "update_stamp", nullable = false)
-    private Instant updateStamp;
+    private Timestamp updateStamp;
 
     @Column(name = "status", nullable = false)
-    private Boolean status = false;
+    private Boolean status ;
 
 }
