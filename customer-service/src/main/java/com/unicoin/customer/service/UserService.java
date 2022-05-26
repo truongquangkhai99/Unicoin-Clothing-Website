@@ -5,11 +5,12 @@ import com.unicoin.customer.common.JwtResponse;
 import com.unicoin.customer.common.RestResponsePage;
 import com.unicoin.customer.dto.UserDTO;
 import com.unicoin.customer.entity.User;
+import com.unicoin.customer.form.AddCustomerForm;
 
 public interface UserService {
     RestResponsePage<UserDTO> viewCustomer(Integer page, Integer size, String phoneNumber, String fullName, String email);
 
-    void addCustomer();
+    void addCustomer(AddCustomerForm addCustomerForm);
 
     JwtResponse login();
 

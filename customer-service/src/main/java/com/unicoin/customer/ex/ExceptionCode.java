@@ -2,12 +2,14 @@ package com.unicoin.customer.ex;
 
 import lombok.Getter;
 
+
 @Getter
 public enum ExceptionCode {
     INVALID_VALUE(1000, "error1000"),
     NOTFOUND_CUSTOMER(1001, "error1001"),
     NOTFOUND_CUSTOMERS(1002, "error1002"),
-    PHONENUMBER_IS_NOT_REGISTER(1003, "error1003");
+    PHONENUMBER_IS_NOT_REGISTER(1003, "error1003"),
+    NOT_EXIT(1500, "error1500");
 
     private int status;
     private String error;
