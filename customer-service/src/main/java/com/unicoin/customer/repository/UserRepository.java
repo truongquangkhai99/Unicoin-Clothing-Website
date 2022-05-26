@@ -12,11 +12,11 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-    @Query("select u from User u where (u.phoneNumber is null or u.phoneNumber = :phonenumber)" +
-            " and (u.fullName is null or u.fullName = :fullname)" +
-            "and (u.email is null  or u.email = :email)")
-    Page<User> searchAllCustomer(@Param("phonenumber") String phoneNumber,
-                                 @Param("fullname") String fullName,
+    @Query("select u from User u where (:phoneNumber is null or u.phoneNumber like concat('%', :phoneNumber, '%') )" +
+            " and (:fullName is null or u.fullName like concat('%',  :fullName, '%'))" +
+            "and (:email is null  or u.email like concat('%',  :email, '%'))")
+    Page<User> searchAllCustomer(@Param("phoneNumber") String phoneNumber,
+                                 @Param("fullName") String fullName,
                                  @Param("email") String email,
                                  Pageable pageable);
 
