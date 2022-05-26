@@ -5,6 +5,10 @@ import lombok.Setter;
 
 import java.util.List;
 
+
+//can co getter va setter de tranh loi no bean serializer
+@Getter
+@Setter
 public class RestResponsePage<T> {
     private Pagination pagination;
     private List<T> content;
