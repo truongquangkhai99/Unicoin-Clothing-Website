@@ -8,45 +8,24 @@ import java.time.Instant;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id", nullable = false)
+    @Column(name = "PRODUCT_ID", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "color_id", nullable = false)
-    private Color color;
+    @Column(name = "PRODUCT_NAME", nullable = false)
+    private String productName;
+
+    @Column(name = "PRODUCT_CODE", nullable = false, length = 20)
+    private String productCode;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "size_id", nullable = false)
-    private SizeId size;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "supplier_id", nullable = false)
+    @JoinColumn(name = "SUPPLIER_ID", nullable = false)
     private Supplier supplier;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "commodity_id", nullable = false)
-    private Commodity commodity;
-
-    @Column(name = "cost", nullable = false)
-    private Double cost;
-
-    @Column(name = "price", nullable = false)
-    private Double price;
-
-    @Column(name = "quantity", nullable = false)
-    private Integer quantity;
-
-    @Column(name = "code_product", nullable = false, length = 45)
-    private String codeProduct;
-
-    @Column(name = "regist_stamp", nullable = false)
+    @Column(name = "REGIST_STAMP", nullable = false)
     private Instant registStamp;
 
-    @Column(name = "update_user", nullable = false, length = 45)
-    private String updateUser;
-
-    @Column(name = "del_flg", nullable = false, length = 45)
-    private String delFlg;
+    @Column(name = "UPDATE_USER", nullable = false)
+    private Integer updateUser;
 
     @Column(name = "status", nullable = false)
     private Integer status;
@@ -59,19 +38,11 @@ public class Product {
         this.status = status;
     }
 
-    public String getDelFlg() {
-        return delFlg;
-    }
-
-    public void setDelFlg(String delFlg) {
-        this.delFlg = delFlg;
-    }
-
-    public String getUpdateUser() {
+    public Integer getUpdateUser() {
         return updateUser;
     }
 
-    public void setUpdateUser(String updateUser) {
+    public void setUpdateUser(Integer updateUser) {
         this.updateUser = updateUser;
     }
 
@@ -83,46 +54,6 @@ public class Product {
         this.registStamp = registStamp;
     }
 
-    public String getCodeProduct() {
-        return codeProduct;
-    }
-
-    public void setCodeProduct(String codeProduct) {
-        this.codeProduct = codeProduct;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public Double getCost() {
-        return cost;
-    }
-
-    public void setCost(Double cost) {
-        this.cost = cost;
-    }
-
-    public Commodity getCommodity() {
-        return commodity;
-    }
-
-    public void setCommodity(Commodity commodity) {
-        this.commodity = commodity;
-    }
-
     public Supplier getSupplier() {
         return supplier;
     }
@@ -131,20 +62,20 @@ public class Product {
         this.supplier = supplier;
     }
 
-    public SizeId getSize() {
-        return size;
+    public String getProductCode() {
+        return productCode;
     }
 
-    public void setSize(SizeId size) {
-        this.size = size;
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
     }
 
-    public Color getColor() {
-        return color;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setColor(Color color) {
-        this.color = color;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public Integer getId() {
