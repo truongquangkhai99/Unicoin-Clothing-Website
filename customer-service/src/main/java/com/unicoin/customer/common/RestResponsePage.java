@@ -22,6 +22,9 @@ public class RestResponsePage<T> {
         pagination.totalOfElements = totalOfElements;
         this.pagination = pagination;
     }
+    public RestResponsePage(List<T> content) {
+        this.content = content;
+    }
 
     public RestResponsePage(List<T> content, int page, int size, long totalOfElements, int totalPages) {
         this.content = content;
