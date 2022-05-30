@@ -8,47 +8,58 @@ import java.time.Instant;
 public class Supplier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "supplier_id", nullable = false)
+    @Column(name = "SUPPLIER_ID", nullable = false)
     private Integer id;
 
-    @Column(name = "supplier_name", nullable = false)
+    @Column(name = "SUPPLIER_NAME", nullable = false)
     private String supplierName;
 
-    @Column(name = "phone_number", nullable = false, length = 15)
+    @Column(name = "PHONE_NUMBER", nullable = false, length = 15)
     private String phoneNumber;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "EMAIL", nullable = false)
     private String email;
 
-    @Column(name = "memo")
+    @Column(name = "MEMO")
     private String memo;
 
-    @Column(name = "address", nullable = false)
+    @Column(name = "ADDRESS", nullable = false)
     private String address;
 
-    @Column(name = "regist_stamp", nullable = false)
+    @Column(name = "REGIST_STAMP", nullable = false)
     private Instant registStamp;
 
-    @Column(name = "update_user", nullable = false, length = 45)
-    private String updateUser;
+    @Column(name = "UPDATE_STAMP", nullable = false)
+    private Instant updateStamp;
+
+    @Column(name = "UPDATE_USER", nullable = false)
+    private Integer updateUser;
 
     @Column(name = "status", nullable = false)
-    private Boolean status = false;
+    private Integer status;
 
-    public Boolean getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
-    public String getUpdateUser() {
+    public Integer getUpdateUser() {
         return updateUser;
     }
 
-    public void setUpdateUser(String updateUser) {
+    public void setUpdateUser(Integer updateUser) {
         this.updateUser = updateUser;
+    }
+
+    public Instant getUpdateStamp() {
+        return updateStamp;
+    }
+
+    public void setUpdateStamp(Instant updateStamp) {
+        this.updateStamp = updateStamp;
     }
 
     public Instant getRegistStamp() {

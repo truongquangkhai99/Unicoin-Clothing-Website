@@ -2,12 +2,14 @@ package com.unicoin.customer.service.impl;
 
 import com.unicoin.customer.common.JwtResponse;
 import com.unicoin.customer.common.RestResponsePage;
+import com.unicoin.customer.dto.UserDTO;
 import com.unicoin.customer.entity.Role;
 import com.unicoin.customer.entity.User;
 import com.unicoin.customer.entity.UserRole;
 import com.unicoin.customer.ex.AppException;
 import com.unicoin.customer.ex.ExceptionCode;
 import com.unicoin.customer.form.AddCustomerForm;
+import com.unicoin.customer.form.AddRoleForm;
 import com.unicoin.customer.repository.RoleRepository;
 import com.unicoin.customer.repository.UserRepository;
 import com.unicoin.customer.repository.UserRoleRepository;
@@ -23,7 +25,9 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -33,18 +37,32 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Autowired
-    UserRoleRepository userRoleRepository;
+    RoleRepository roleRepository;
 
     @Autowired
-    RoleRepository roleRepository;
+    UserRoleRepository userRoleRepository;
+
     @Override
-    public RestResponsePage<User> viewCustomer(Integer page, Integer size, String phoneNumber, String fullName, String email) {
+    public RestResponsePage<UserDTO> viewCustomer(Integer page, Integer size, String phoneNumber, String fullName, String email) {
         log.info("Start viewCustomer");
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "fullName").and(Sort.by(Sort.Direction.ASC, "registStamp")));
+        Pageable pageable = PageRequest.of(page - 1, size, Sort.by(Sort.Direction.ASC, "fullName").and(Sort.by(Sort.Direction.ASC, "registStamp")));
         Page<User> userPage = userRepository.searchAllCustomer(phoneNumber, fullName, email, pageable);
         if (userPage.isEmpty()) throw new AppException(ExceptionCode.NOTFOUND_CUSTOMERS);
+        List<UserDTO> dtoList = userPage.toList().stream().map(item ->
+                        UserDTO.builder()
+                                .id(item.getId())
+                                .fullName(item.getFullName())
+                                .phoneNumber(item.getPhoneNumber())
+                                .address(item.getAddress())
+                                .registStamp(item.getRegistStamp())
+                                .updateStamp(item.getUpdateStamp())
+                                .address(item.getAddress())
+                                .email(item.getEmail())
+                                .status(item.getStatus())
+                                .build())
+                .collect(Collectors.toList());
         log.info("End viewCustomer");
-        return new RestResponsePage<>(userPage.toList(), page, size, userPage.getTotalElements(), userPage.getTotalPages());
+        return new RestResponsePage<>(dtoList, page, size, userPage.getTotalElements(), userPage.getTotalPages());
     }
 
     @Override
@@ -52,14 +70,14 @@ public class UserServiceImpl implements UserService {
         log.info("start addCustomer");
         Optional<User> checkPhone = userRepository.findByPhoneNumber(addCustomerForm.getPhoneNumber());
         if(checkPhone.isPresent()){
-            throw  new AppException(ExceptionCode.CHECK_PHONE);
+            throw  new AppException(ExceptionCode.PHONENUMBER_ALREADY_EXIST);
         }
         Optional<User> checkEmail = userRepository.findByEmail(addCustomerForm.getEmail());
         if(checkEmail.isPresent()){
-            throw  new AppException(ExceptionCode.CHECK_EMAIL);
+            throw  new AppException(ExceptionCode.EMAIL_ALREADY_EXIST);
         }
         User user = new User();
-        BeanUtils.copyProperties(addCustomerForm,user);
+        BeanUtils.copyProperties(addCustomerForm, user);
         user.setRegistStamp(new Timestamp(new Date().getTime()));
         user.setUpdateStamp(new Timestamp(new Date().getTime()));
         user.setStatus(true);
@@ -72,7 +90,6 @@ public class UserServiceImpl implements UserService {
         UserRole userRole =UserRole.builder().userId(user).role(role).status(true).build();
         userRoleRepository.save(userRole);
         log.info("end add user_role");
-
     }
 
     @Override
@@ -97,14 +114,36 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void uDeleteCustomer(String phoneNumber) {
-        log.info("Start deleteCustomer: phoneNumber {}", phoneNumber);
+        log.info("Start uDeleteCustomer: phoneNumber {}", phoneNumber);
         Optional<User> optional = userRepository.findByPhoneNumber(phoneNumber);
-        if (optional.isEmpty()) throw  new AppException(ExceptionCode.PHONENUMBER_IS_NOT_REGISTER);
+        if (optional.isEmpty()) throw new AppException(ExceptionCode.PHONENUMBER_IS_NOT_REGISTER);
         User user = new User();
         BeanUtils.copyProperties(optional.get(), user);
         user.setStatus(!user.getStatus());
         user.setUpdateStamp(new Timestamp(new Date().getTime()));
         userRepository.save(user);
-        log.info("End deleteCustomer: phoneNumber {}", phoneNumber);
+        log.info("End uDeleteCustomer: phoneNumber {}", phoneNumber);
     }
+
+    @Override
+    public RestResponsePage<Role> getRoles() {
+        log.info("Start getRoles");
+        List<Role> listRoles = roleRepository.findAllByStatus(true);
+        log.info("End getRoles");
+        return new RestResponsePage<>(listRoles);
+    }
+
+    @Override
+    public void addRole(AddRoleForm roleForm) {
+        log.info("Start addRole");
+        Role role = Role.builder()
+                .roleName(roleForm.getRoleName())
+                .memo(roleForm.getMemo())
+                .status(true)
+                .build();
+        roleRepository.save(role);
+        log.info("End addRole");
+    }
+
+
 }

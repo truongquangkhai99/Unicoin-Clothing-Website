@@ -1,6 +1,7 @@
 package com.unicoin.customer.controller;
 
 import com.unicoin.customer.form.AddCustomerForm;
+import com.unicoin.customer.form.AddRoleForm;
 import com.unicoin.customer.resstresponse.ApiResponse;
 import com.unicoin.customer.resstresponse.SuccessResponse;
 import com.unicoin.customer.service.UserService;
@@ -48,6 +49,17 @@ public class UserController {
     @DeleteMapping("/{phoneNumber}")
     public ApiResponse deleteCustomer(@PathVariable("phoneNumber") String phoneNumber) {
         userService.uDeleteCustomer(phoneNumber);
+        return new SuccessResponse();
+    }
+
+    @GetMapping("/getRoles")
+    public ApiResponse getRoles(){
+        return new SuccessResponse(userService.getRoles());
+    }
+
+    @PostMapping("/addRole")
+    public ApiResponse addRole(AddRoleForm roleForm){
+        userService.addRole(roleForm);
         return new SuccessResponse();
     }
 }
