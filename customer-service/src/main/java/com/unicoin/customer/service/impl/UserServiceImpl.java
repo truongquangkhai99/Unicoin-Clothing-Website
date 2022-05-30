@@ -2,11 +2,15 @@ package com.unicoin.customer.service.impl;
 
 import com.unicoin.customer.common.JwtResponse;
 import com.unicoin.customer.common.RestResponsePage;
+import com.unicoin.customer.entity.Role;
 import com.unicoin.customer.entity.User;
+import com.unicoin.customer.entity.UserRole;
 import com.unicoin.customer.ex.AppException;
 import com.unicoin.customer.ex.ExceptionCode;
 import com.unicoin.customer.form.AddCustomerForm;
+import com.unicoin.customer.repository.RoleRepository;
 import com.unicoin.customer.repository.UserRepository;
+import com.unicoin.customer.repository.UserRoleRepository;
 import com.unicoin.customer.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -28,6 +32,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    UserRoleRepository userRoleRepository;
+
+    @Autowired
+    RoleRepository roleRepository;
     @Override
     public RestResponsePage<User> viewCustomer(Integer page, Integer size, String phoneNumber, String fullName, String email) {
         log.info("Start viewCustomer");
@@ -43,11 +52,11 @@ public class UserServiceImpl implements UserService {
         log.info("start addCustomer");
         Optional<User> checkPhone = userRepository.findByPhoneNumber(addCustomerForm.getPhoneNumber());
         if(checkPhone.isPresent()){
-            throw  new AppException(ExceptionCode.does_not_exist);
+            throw  new AppException(ExceptionCode.CHECK_PHONE);
         }
         Optional<User> checkEmail = userRepository.findByEmail(addCustomerForm.getEmail());
         if(checkEmail.isPresent()){
-            throw  new AppException(ExceptionCode.does_not_exist);
+            throw  new AppException(ExceptionCode.CHECK_EMAIL);
         }
         User user = new User();
         BeanUtils.copyProperties(addCustomerForm,user);
@@ -56,6 +65,14 @@ public class UserServiceImpl implements UserService {
         user.setStatus(true);
         userRepository.save(user);
         log.info("add Customer end");
+        log.info("start add user_role");
+        Optional<Role> checkid =roleRepository.findById(addCustomerForm.getRole_id());
+        Role role = new Role();
+        BeanUtils.copyProperties(checkid, role);
+        UserRole userRole =UserRole.builder().userId(user).role(role).status(true).build();
+        userRoleRepository.save(userRole);
+        log.info("end add user_role");
+
     }
 
     @Override
