@@ -5,12 +5,14 @@ import com.unicoin.customer.common.RestResponsePage;
 import com.unicoin.customer.dto.UserDTO;
 import com.unicoin.customer.entity.Role;
 import com.unicoin.customer.entity.User;
+import com.unicoin.customer.entity.UserRole;
 import com.unicoin.customer.ex.AppException;
 import com.unicoin.customer.ex.ExceptionCode;
 import com.unicoin.customer.form.AddCustomerForm;
 import com.unicoin.customer.form.AddRoleForm;
 import com.unicoin.customer.repository.RoleRepository;
 import com.unicoin.customer.repository.UserRepository;
+import com.unicoin.customer.repository.UserRoleRepository;
 import com.unicoin.customer.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -36,6 +38,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     RoleRepository roleRepository;
+
+    @Autowired
+    UserRoleRepository userRoleRepository;
 
     @Override
     public RestResponsePage<UserDTO> viewCustomer(Integer page, Integer size, String phoneNumber, String fullName, String email) {
@@ -64,12 +69,12 @@ public class UserServiceImpl implements UserService {
     public void addCustomer(AddCustomerForm addCustomerForm) {
         log.info("start addCustomer");
         Optional<User> checkPhone = userRepository.findByPhoneNumber(addCustomerForm.getPhoneNumber());
-        if (checkPhone.isPresent()) {
-            throw new AppException(ExceptionCode.NOT_EXIT);
+        if(checkPhone.isPresent()){
+            throw  new AppException(ExceptionCode.PHONENUMBER_ALREADY_EXIST);
         }
         Optional<User> checkEmail = userRepository.findByEmail(addCustomerForm.getEmail());
-        if (checkEmail.isPresent()) {
-            throw new AppException(ExceptionCode.NOT_EXIT);
+        if(checkEmail.isPresent()){
+            throw  new AppException(ExceptionCode.EMAIL_ALREADY_EXIST);
         }
         User user = new User();
         BeanUtils.copyProperties(addCustomerForm, user);
@@ -77,8 +82,14 @@ public class UserServiceImpl implements UserService {
         user.setUpdateStamp(new Timestamp(new Date().getTime()));
         user.setStatus(true);
         userRepository.save(user);
-
         log.info("add Customer end");
+        log.info("start add user_role");
+        Optional<Role> checkid =roleRepository.findById(addCustomerForm.getRole_id());
+        Role role = new Role();
+        BeanUtils.copyProperties(checkid, role);
+        UserRole userRole =UserRole.builder().userId(user).role(role).status(true).build();
+        userRoleRepository.save(userRole);
+        log.info("end add user_role");
     }
 
     @Override
@@ -87,8 +98,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateCustomer(String username) {
-
+    public void updateCustomer(Integer id, AddCustomerForm addCustomerForm) {
+        log.info("start update customer");
+        Optional<User> checkId = userRepository.findById(id);
+        if(checkId.isPresent()){
+            User user = checkId.get();
+            BeanUtils.copyProperties(addCustomerForm , user);
+            user.setUpdateStamp(new Timestamp(new Date().getTime()));
+            userRepository.save(user);
+            log.info("end update customer");
+        }else {
+            throw new AppException(ExceptionCode.VALID_ID);
+        }
     }
 
     @Override

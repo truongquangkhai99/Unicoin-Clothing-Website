@@ -1,6 +1,8 @@
 package com.unicoin.customer.form;
 
 
+import com.unicoin.customer.entity.Role;
+import com.unicoin.customer.entity.User;
 import lombok.*;
 
 
@@ -9,6 +11,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -38,4 +41,6 @@ public class AddCustomerForm {
     @NotBlank(message = "address is notBlank")
     @NotNull(message = "address is notnull")
     private String address;
+
+    private Integer role_id;
 }
