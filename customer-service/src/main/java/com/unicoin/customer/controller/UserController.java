@@ -39,9 +39,9 @@ public class UserController {
         return new SuccessResponse(userService.login());
     }
 
-    @PutMapping("/update/{username}")
-    public ApiResponse updateCustomer(@PathVariable("username") String username) {
-        userService.updateCustomer(username);
+    @PutMapping("/update/{id}")
+    public ApiResponse updateCustomer(@PathVariable("id") Integer id , @RequestBody AddCustomerForm addCustomerForm) {
+        userService.updateCustomer(id , addCustomerForm);
         return new SuccessResponse();
     }
 

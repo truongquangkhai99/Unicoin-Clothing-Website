@@ -43,11 +43,11 @@ public class UserServiceImpl implements UserService {
         log.info("start addCustomer");
         Optional<User> checkPhone = userRepository.findByPhoneNumber(addCustomerForm.getPhoneNumber());
         if(checkPhone.isPresent()){
-            throw  new AppException(ExceptionCode.NOT_EXIT);
+            throw  new AppException(ExceptionCode.does_not_exist);
         }
         Optional<User> checkEmail = userRepository.findByEmail(addCustomerForm.getEmail());
         if(checkEmail.isPresent()){
-            throw  new AppException(ExceptionCode.NOT_EXIT);
+            throw  new AppException(ExceptionCode.does_not_exist);
         }
         User user = new User();
         BeanUtils.copyProperties(addCustomerForm,user);
@@ -64,8 +64,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateCustomer(String username) {
-
+    public void updateCustomer(Integer id, AddCustomerForm addCustomerForm) {
+        log.info("start update customer");
+        Optional<User> checkId = userRepository.findById(id);
+        if(checkId.isPresent()){
+            User user = checkId.get();
+            BeanUtils.copyProperties(addCustomerForm , user);
+            user.setUpdateStamp(new Timestamp(new Date().getTime()));
+            userRepository.save(user);
+            log.info("end update customer");
+        }else {
+            throw new AppException(ExceptionCode.VALID_ID);
+        }
     }
 
     @Override
