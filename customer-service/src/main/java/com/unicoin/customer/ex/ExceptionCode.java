@@ -11,6 +11,7 @@ public enum ExceptionCode {
     PHONENUMBER_IS_NOT_REGISTER(1003, "error1003"),
     PHONENUMBER_ALREADY_EXIST(1500, "error1500"),
     EMAIL_ALREADY_EXIST(1501 ,"error1501"),
+    ROLE_ID_NOT_EXIST(1503, "error1503"),
     VALID_ID(1502,"error1502");
 
     private int status;

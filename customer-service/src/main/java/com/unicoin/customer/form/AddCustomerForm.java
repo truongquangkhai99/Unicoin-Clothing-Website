@@ -1,17 +1,13 @@
 package com.unicoin.customer.form;
 
-
-import com.unicoin.customer.entity.Role;
-import com.unicoin.customer.entity.User;
 import lombok.*;
-
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.util.List;
+
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,11 +21,9 @@ public class AddCustomerForm {
     @Pattern(message = "PhoneNumber is not valid", regexp = "^0[0-9]{9}")
     private String phoneNumber;
 
-    @NotBlank(message = "fullname is notBlank")
     @NotNull(message = "fullname is notnull")
-    private String fullname;
+    private String fullName;
 
-    @NotBlank(message = "emaill is notBlank")
     @NotNull(message = "emaill is notnull")
     @Email(message = "emaill is not valid")
     private String email;
@@ -38,9 +32,9 @@ public class AddCustomerForm {
     @NotNull(message = "password is notnull")
     private String password;
 
-    @NotBlank(message = "address is notBlank")
     @NotNull(message = "address is notnull")
     private String address;
 
+    @NotNull(message = "role_id is not null")
     private Integer role_id;
 }
