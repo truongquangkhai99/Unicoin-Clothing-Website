@@ -6,15 +6,12 @@ import com.unicoin.customer.resstresponse.ApiResponse;
 import com.unicoin.customer.resstresponse.SuccessResponse;
 import com.unicoin.customer.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/admin/customer")
-//        produces = MediaType.APPLICATION_JSON_VALUE,
-//        consumes = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
 
     @Autowired

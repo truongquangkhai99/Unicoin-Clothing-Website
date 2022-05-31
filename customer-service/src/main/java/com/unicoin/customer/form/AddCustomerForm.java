@@ -36,5 +36,5 @@ public class AddCustomerForm {
     private String address;
 
     @NotNull(message = "role_id is not null")
-    private Integer role_id;
+    private Integer roleId;
 }

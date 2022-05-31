@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         log.info("add Customer end");
         log.info("start add user_role");
-        Optional<Role> checkid = roleRepository.findById(addCustomerForm.getRole_id());
+        Optional<Role> checkid = roleRepository.findById(addCustomerForm.getRoleId());
         if(checkid.isPresent()){
             Role role1 = new Role();
             role1 = checkid.get();
