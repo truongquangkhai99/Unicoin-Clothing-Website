@@ -50,7 +50,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public void addAddress(AddAddressForm addAddressForm) {
-    log.info("start add Addresss");
+    log.info("start add Address");
         Address data = new Address();
         Optional<User> checkUserId = userRepository.findById(addAddressForm.getUserId());
         if(checkUserId.isEmpty()){
