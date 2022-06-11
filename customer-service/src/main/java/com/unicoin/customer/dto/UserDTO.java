@@ -13,16 +13,13 @@ import java.sql.Timestamp;
 @Builder
 public class UserDTO implements Serializable {
 
-    private Integer id;
+    private Long id;
 
     private String phoneNumber;
 
     private String fullName;
 
     private String email;
-
-
-    private String address;
 
     private Timestamp registStamp;
 

@@ -12,7 +12,11 @@ public enum ExceptionCode {
     PHONENUMBER_ALREADY_EXIST(1500, "error1500"),
     EMAIL_ALREADY_EXIST(1501 ,"error1501"),
     ROLE_ID_NOT_EXIST(1503, "error1503"),
-    VALID_ID(1502,"error1502");
+    VALID_ID(1502,"error1502"),
+
+    USER_ID_NOT_EXIST(1600,"error1600"),
+
+    ADDRESS_ID_NOT_EXIST(1601,"error1601");
 
     private int status;
     private String error;
