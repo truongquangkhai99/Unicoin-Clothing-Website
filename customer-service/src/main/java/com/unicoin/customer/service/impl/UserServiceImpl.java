@@ -2,6 +2,7 @@ package com.unicoin.customer.service.impl;
 
 import com.unicoin.customer.common.JwtResponse;
 import com.unicoin.customer.common.RestResponsePage;
+import com.unicoin.customer.dto.RoleDTO;
 import com.unicoin.customer.dto.UserDTO;
 import com.unicoin.customer.entity.Role;
 import com.unicoin.customer.entity.User;
@@ -53,10 +54,7 @@ public class UserServiceImpl implements UserService {
                                 .id(item.getId())
                                 .fullName(item.getFullName())
                                 .phoneNumber(item.getPhoneNumber())
-                                .address(item.getAddress())
                                 .registStamp(item.getRegistStamp())
-                                .updateStamp(item.getUpdateStamp())
-                                .address(item.getAddress())
                                 .email(item.getEmail())
                                 .status(item.getStatus())
                                 .build())
@@ -79,23 +77,22 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         BeanUtils.copyProperties(addCustomerForm, user);
         user.setRegistStamp(new Timestamp(new Date().getTime()));
-        user.setUpdateStamp(new Timestamp(new Date().getTime()));
         user.setStatus(true);
         userRepository.save(user);
         log.info("add Customer end");
         log.info("start add user_role");
         Optional<Role> checkid = roleRepository.findById(addCustomerForm.getRoleId());
-        if(checkid.isPresent()){
+        if (checkid.isPresent()) {
             Role role1 = new Role();
             role1 = checkid.get();
             log.info("data" + role1);
             UserRole userRole = new UserRole();
-            userRole.setUserId(user);
+            userRole.setUser(user);
             userRole.setRole(role1);
             userRole.setStatus(true);
             userRoleRepository.save(userRole);
-        }else {
-            throw  new AppException(ExceptionCode.ROLE_ID_NOT_EXIST);
+        } else {
+            throw new AppException(ExceptionCode.ROLE_ID_NOT_EXIST);
         }
         log.info("end add user_role");
     }
@@ -112,7 +109,6 @@ public class UserServiceImpl implements UserService {
         if (checkId.isPresent()) {
             User user = checkId.get();
             BeanUtils.copyProperties(addCustomerForm, user);
-            user.setUpdateStamp(new Timestamp(new Date().getTime()));
             userRepository.save(user);
             log.info("end update customer");
         } else {
@@ -128,7 +124,6 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         BeanUtils.copyProperties(optional.get(), user);
         user.setStatus(!user.getStatus());
-        user.setUpdateStamp(new Timestamp(new Date().getTime()));
         userRepository.save(user);
         log.info("End uDeleteCustomer: phoneNumber {}", phoneNumber);
     }

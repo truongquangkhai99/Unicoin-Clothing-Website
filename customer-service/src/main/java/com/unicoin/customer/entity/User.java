@@ -1,11 +1,13 @@
 package com.unicoin.customer.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Entity
@@ -14,7 +16,8 @@ import java.sql.Timestamp;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+@JsonIgnoreProperties
+public class User implements Serializable {
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,14 +35,8 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "address", nullable = false)
-    private String address;
-
     @Column(name = "regist_stamp", nullable = false)
     private Timestamp registStamp;
-
-    @Column(name = "update_stamp", nullable = false)
-    private Timestamp updateStamp;
 
     @Column(name = "status", nullable = false)
     private Boolean status;
