@@ -32,9 +32,4 @@ public class AddCustomerForm {
     @NotNull(message = "password is notnull")
     private String password;
 
-    @NotNull(message = "address is notnull")
-    private String address;
-
-    @NotNull(message = "role_id is not null")
-    private Integer roleId;
 }

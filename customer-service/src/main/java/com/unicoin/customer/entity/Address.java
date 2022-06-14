@@ -1,55 +1,35 @@
 package com.unicoin.customer.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
-import java.time.Instant;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "address")
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "address_id", nullable = false)
-    private Integer id;
+    private  Long addressId;
 
-    @Column(name = "line", nullable = false)
-    private String line;
+    @Column(name = "line" , nullable = false)
+    private  String line;
 
-    @Column(name = "status", nullable = false)
-    private Boolean status = false;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User userId;
 
-    @Column(name = "regist_stamp", nullable = false)
-    private Instant registStamp;
+    @Column(name = "status" , nullable = false)
+    private Boolean status;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getLine() {
-        return line;
-    }
-
-    public void setLine(String line) {
-        this.line = line;
-    }
-
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
-    public Instant getRegistStamp() {
-        return registStamp;
-    }
-
-    public void setRegistStamp(Instant registStamp) {
-        this.registStamp = registStamp;
-    }
-
+    @Column(name = "regist_stamp", nullable = true)
+    private Timestamp registStamp;
 }

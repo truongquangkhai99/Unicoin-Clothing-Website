@@ -2,11 +2,9 @@ package com.unicoin.customer.service.impl;
 
 import com.unicoin.customer.common.JwtResponse;
 import com.unicoin.customer.common.RestResponsePage;
-import com.unicoin.customer.dto.RoleDTO;
 import com.unicoin.customer.dto.UserDTO;
 import com.unicoin.customer.entity.Role;
 import com.unicoin.customer.entity.User;
-import com.unicoin.customer.entity.UserRole;
 import com.unicoin.customer.ex.AppException;
 import com.unicoin.customer.ex.ExceptionCode;
 import com.unicoin.customer.form.AddCustomerForm;
@@ -80,21 +78,6 @@ public class UserServiceImpl implements UserService {
         user.setStatus(true);
         userRepository.save(user);
         log.info("add Customer end");
-        log.info("start add user_role");
-        Optional<Role> checkid = roleRepository.findById(addCustomerForm.getRoleId());
-        if (checkid.isPresent()) {
-            Role role1 = new Role();
-            role1 = checkid.get();
-            log.info("data" + role1);
-            UserRole userRole = new UserRole();
-            userRole.setUser(user);
-            userRole.setRole(role1);
-            userRole.setStatus(true);
-            userRoleRepository.save(userRole);
-        } else {
-            throw new AppException(ExceptionCode.ROLE_ID_NOT_EXIST);
-        }
-        log.info("end add user_role");
     }
 
     @Override
@@ -103,7 +86,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateCustomer(Integer id, AddCustomerForm addCustomerForm) {
+    public void updateCustomer(Long id, AddCustomerForm addCustomerForm) {
         log.info("start update customer");
         Optional<User> checkId = userRepository.findById(id);
         if (checkId.isPresent()) {

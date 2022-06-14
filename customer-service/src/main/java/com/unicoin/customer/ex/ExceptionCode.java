@@ -14,6 +14,10 @@ public enum ExceptionCode {
     ROLE_ID_NOT_EXIST(1503, "error1503"),
     VALID_ID(1502,"error1502"),
 
+    USER_ID_NOT_EXIST(1600,"error1600"),
+
+    ADDRESS_ID_NOT_EXIST(1601,"error1601"),
+
     USERROLE_NOT_EXIST(1701,"error1701"),
 
     STATUS_IS_NOT_EXIST(1700,"error1700");

@@ -1,13 +1,11 @@
 package com.unicoin.customer.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Entity
@@ -16,12 +14,11 @@ import java.sql.Timestamp;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties
-public class User implements Serializable {
+public class User {
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "phone_number", nullable = false, length = 15)
     private String phoneNumber;
@@ -35,7 +32,7 @@ public class User implements Serializable {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "regist_stamp", nullable = false)
+    @Column(name = "regist_stamp", nullable = true)
     private Timestamp registStamp;
 
     @Column(name = "status", nullable = false)

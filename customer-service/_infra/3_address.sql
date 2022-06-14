@@ -6,5 +6,5 @@ CREATE TABLE `address` (
                            `regist_stamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                            PRIMARY KEY (`address_id`),
                            KEY `user_address_idx` (`user_id`),
-                           CONSTRAINT `user_address` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
+                           CONSTRAINT `user_address` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)roles
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
