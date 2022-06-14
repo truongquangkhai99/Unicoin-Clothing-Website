@@ -23,8 +23,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void deleteById(Integer integer) {
-        roleRepository.deleteById(integer);
+    public void deleteById(Long integer) {
+
     }
 
     @Override
@@ -38,12 +38,13 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public boolean existsById(Integer integer) {
-        return roleRepository.existsById(integer);
+    public boolean existsById(Long integer) {
+        return false;
     }
 
     @Override
-    public Optional<Role> findById(Integer integer) {
-        return roleRepository.findById(integer);
+    public Optional<Role> findById(Long integer) {
+        return Optional.empty();
     }
+
 }

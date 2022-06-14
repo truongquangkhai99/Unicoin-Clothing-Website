@@ -21,7 +21,7 @@ public class Role implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "role_id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(name = "role_name", nullable = false)
     private String roleName;

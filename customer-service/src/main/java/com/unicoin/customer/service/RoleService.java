@@ -14,13 +14,13 @@ public interface RoleService {
 
     <S extends Role> S save(S entity);
 
-    void deleteById(Integer integer);
+    void deleteById(Long integer);
 
     <S extends Role> Page<S> findAll(Example<S> example, Pageable pageable);
 
     List<Role> findAll();
 
-    boolean existsById(Integer integer);
+    boolean existsById(Long integer);
 
-    Optional<Role> findById(Integer integer);
+    Optional<Role> findById(Long integer);
 }
