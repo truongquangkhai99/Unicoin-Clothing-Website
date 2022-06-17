@@ -7,17 +7,20 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface RoleService {
 
     <S extends Role> S save(S entity);
 
-    void deleteById(Integer integer);
+    void deleteById(Long integer);
 
     <S extends Role> Page<S> findAll(Example<S> example, Pageable pageable);
 
     List<Role> findAll();
 
-    boolean existsById(Integer integer);
+    boolean existsById(Long integer);
+
+    Optional<Role> findById(Long integer);
 }

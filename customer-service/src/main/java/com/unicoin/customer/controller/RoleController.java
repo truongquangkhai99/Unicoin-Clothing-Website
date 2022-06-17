@@ -30,7 +30,7 @@ public class RoleController {
     return ResponseEntity.ok(roleService.findAll());
 }
 @PutMapping("/upadte/{id}")
-    public ResponseEntity<Role> updateRole(@PathVariable Integer id,@RequestBody Role role){
+    public ResponseEntity<Role> updateRole(@PathVariable Long id,@RequestBody Role role){
     if(!roleService.existsById(id)){
         return ResponseEntity.notFound().build();
     }

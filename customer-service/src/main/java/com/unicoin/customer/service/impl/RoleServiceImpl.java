@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -22,8 +23,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void deleteById(Integer integer) {
-        roleRepository.deleteById(integer);
+    public void deleteById(Long integer) {
+
     }
 
     @Override
@@ -37,8 +38,13 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public boolean existsById(Integer integer) {
-        return roleRepository.existsById(integer);
+    public boolean existsById(Long integer) {
+        return false;
+    }
+
+    @Override
+    public Optional<Role> findById(Long integer) {
+        return Optional.empty();
     }
 
 }
