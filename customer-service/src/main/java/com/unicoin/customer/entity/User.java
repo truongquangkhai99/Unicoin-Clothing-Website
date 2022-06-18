@@ -18,7 +18,7 @@ public class User {
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "phone_number", nullable = false, length = 15)
     private String phoneNumber;
@@ -32,14 +32,8 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "address", nullable = false)
-    private String address;
-
-    @Column(name = "regist_stamp", nullable = false)
+    @Column(name = "regist_stamp", nullable = true)
     private Timestamp registStamp;
-
-    @Column(name = "update_stamp", nullable = false)
-    private Timestamp updateStamp;
 
     @Column(name = "status", nullable = false)
     private Boolean status;

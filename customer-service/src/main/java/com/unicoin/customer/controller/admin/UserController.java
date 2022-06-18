@@ -6,15 +6,12 @@ import com.unicoin.customer.resstresponse.ApiResponse;
 import com.unicoin.customer.resstresponse.SuccessResponse;
 import com.unicoin.customer.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/admin/customer",
-        produces = MediaType.APPLICATION_JSON_VALUE,
-        consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/admin/customer")
 public class UserController {
 
     @Autowired
@@ -40,9 +37,9 @@ public class UserController {
         return new SuccessResponse(userService.login());
     }
 
-    @PutMapping("/update/{username}")
-    public ApiResponse updateCustomer(@PathVariable("username") String username) {
-        userService.updateCustomer(username);
+    @PutMapping("/update/{id}")
+    public ApiResponse updateCustomer(@PathVariable("id") Long id , @RequestBody AddCustomerForm addCustomerForm) {
+        userService.updateCustomer(id , addCustomerForm);
         return new SuccessResponse();
     }
 

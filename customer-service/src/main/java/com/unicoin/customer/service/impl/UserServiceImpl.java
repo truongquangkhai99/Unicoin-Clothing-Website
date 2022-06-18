@@ -11,6 +11,7 @@ import com.unicoin.customer.form.AddCustomerForm;
 import com.unicoin.customer.form.AddRoleForm;
 import com.unicoin.customer.repository.RoleRepository;
 import com.unicoin.customer.repository.UserRepository;
+import com.unicoin.customer.repository.UserRoleRepository;
 import com.unicoin.customer.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -37,6 +38,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     RoleRepository roleRepository;
 
+    @Autowired
+    UserRoleRepository userRoleRepository;
+
     @Override
     public RestResponsePage<UserDTO> viewCustomer(Integer page, Integer size, String phoneNumber, String fullName, String email) {
         log.info("Start viewCustomer");
@@ -48,10 +52,7 @@ public class UserServiceImpl implements UserService {
                                 .id(item.getId())
                                 .fullName(item.getFullName())
                                 .phoneNumber(item.getPhoneNumber())
-                                .address(item.getAddress())
                                 .registStamp(item.getRegistStamp())
-                                .updateStamp(item.getUpdateStamp())
-                                .address(item.getAddress())
                                 .email(item.getEmail())
                                 .status(item.getStatus())
                                 .build())
@@ -65,19 +66,17 @@ public class UserServiceImpl implements UserService {
         log.info("start addCustomer");
         Optional<User> checkPhone = userRepository.findByPhoneNumber(addCustomerForm.getPhoneNumber());
         if (checkPhone.isPresent()) {
-            throw new AppException(ExceptionCode.NOT_EXIT);
+            throw new AppException(ExceptionCode.PHONENUMBER_ALREADY_EXIST);
         }
         Optional<User> checkEmail = userRepository.findByEmail(addCustomerForm.getEmail());
         if (checkEmail.isPresent()) {
-            throw new AppException(ExceptionCode.NOT_EXIT);
+            throw new AppException(ExceptionCode.EMAIL_ALREADY_EXIST);
         }
         User user = new User();
         BeanUtils.copyProperties(addCustomerForm, user);
         user.setRegistStamp(new Timestamp(new Date().getTime()));
-        user.setUpdateStamp(new Timestamp(new Date().getTime()));
         user.setStatus(true);
         userRepository.save(user);
-
         log.info("add Customer end");
     }
 
@@ -87,8 +86,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateCustomer(String username) {
-
+    public void updateCustomer(Long id, AddCustomerForm addCustomerForm) {
+        log.info("start update customer");
+        Optional<User> checkId = userRepository.findById(id);
+        if (checkId.isPresent()) {
+            User user = checkId.get();
+            BeanUtils.copyProperties(addCustomerForm, user);
+            userRepository.save(user);
+            log.info("end update customer");
+        } else {
+            throw new AppException(ExceptionCode.VALID_ID);
+        }
     }
 
     @Override
@@ -100,7 +108,6 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         BeanUtils.copyProperties(optional.get(), user);
         user.setStatus(!user.getStatus());
-        user.setUpdateStamp(new Timestamp(new Date().getTime()));
         userRepository.save(user);
         log.info("End uDeleteCustomer: phoneNumber {}", phoneNumber);
     }

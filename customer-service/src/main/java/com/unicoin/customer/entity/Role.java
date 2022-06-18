@@ -1,40 +1,39 @@
 package com.unicoin.customer.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.Instant;
 
 @Entity
-@Table(name = "roles")
-@Data
 @Builder
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Role {
+@Table(name = "roles")
+public class Role implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "role_id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(name = "role_name", nullable = false)
     private String roleName;
 
-    @Column(name = "memo")
+    @Column(name = "memo", nullable = false)
     private String memo;
 
-    @Column(name = "regist_stamp", nullable = false)
+    @Column(name = "regist_stamp")
     private Instant registStamp;
 
-    @Column(name = "update_stamp", nullable = false)
-    private Instant updateStamp;
-
     @Column(name = "status", nullable = false)
-    private Boolean status = false;
+    private Boolean status = true;
 
-    @Column(name = "update_user", nullable = false)
-    private Integer updateUser;
+
 }

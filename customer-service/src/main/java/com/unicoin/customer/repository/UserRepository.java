@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select u from User u where (:phoneNumber is null or u.phoneNumber like concat('%', :phoneNumber, '%') )" +
             " and (:fullName is null or u.fullName like concat('%',  :fullName, '%'))" +
             "and (:email is null  or u.email like concat('%',  :email, '%'))")
@@ -21,6 +21,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
                                  Pageable pageable);
 
      Optional<User> findByPhoneNumber(String phoneNumber);
-
     Optional<User> findByEmail(String email);
 }
