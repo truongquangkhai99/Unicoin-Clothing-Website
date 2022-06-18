@@ -1,20 +1,29 @@
 package com.unicoin.product.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
-import java.time.Instant;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "products")
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Builder
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PRODUCT_ID", nullable = false)
-    private Integer id;
+    private Long id;
 
-    @Column(name = "PRODUCT_NAME", nullable = false)
+    @Column(name = "PRODUCT_NAME")
     private String productName;
 
-    @Column(name = "PRODUCT_CODE", nullable = false, length = 20)
+    @Column(name = "PRODUCT_CODE", length = 20)
     private String productCode;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -22,67 +31,12 @@ public class Product {
     private Supplier supplier;
 
     @Column(name = "REGIST_STAMP", nullable = false)
-    private Instant registStamp;
+    private Timestamp registStamp;
 
     @Column(name = "UPDATE_USER", nullable = false)
-    private Integer updateUser;
+    private Long updateUser;
 
-    @Column(name = "status", nullable = false)
+    @Column(name = "status")
     private Integer status;
 
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Integer getUpdateUser() {
-        return updateUser;
-    }
-
-    public void setUpdateUser(Integer updateUser) {
-        this.updateUser = updateUser;
-    }
-
-    public Instant getRegistStamp() {
-        return registStamp;
-    }
-
-    public void setRegistStamp(Instant registStamp) {
-        this.registStamp = registStamp;
-    }
-
-    public Supplier getSupplier() {
-        return supplier;
-    }
-
-    public void setSupplier(Supplier supplier) {
-        this.supplier = supplier;
-    }
-
-    public String getProductCode() {
-        return productCode;
-    }
-
-    public void setProductCode(String productCode) {
-        this.productCode = productCode;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 }

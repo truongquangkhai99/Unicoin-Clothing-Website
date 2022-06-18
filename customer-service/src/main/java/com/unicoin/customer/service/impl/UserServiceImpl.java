@@ -95,7 +95,8 @@ public class UserServiceImpl implements UserService {
     public void uDeleteCustomer(String phoneNumber) {
         log.info("Start uDeleteCustomer: phoneNumber {}", phoneNumber);
         Optional<User> optional = userRepository.findByPhoneNumber(phoneNumber);
-        if (optional.isEmpty()) throw new AppException(ExceptionCode.PHONENUMBER_IS_NOT_REGISTER);
+        if (optional.isEmpty())
+            throw new AppException(ExceptionCode.PHONENUMBER_IS_NOT_REGISTER);
         User user = new User();
         BeanUtils.copyProperties(optional.get(), user);
         user.setStatus(!user.getStatus());

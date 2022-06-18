@@ -1,4 +1,4 @@
-package com.unicoin.product.controller;
+package com.unicoin.product.controller.admin;
 
 
 import com.unicoin.clients.form.productform.ProductDemoForm;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/demo/product-manage")
-public class ProductManageController {
+public class ProductDemoManageController {
 
     @Autowired
     ProductDemoService productDemoService;

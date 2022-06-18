@@ -1,5 +1,9 @@
 package com.unicoin.product.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.Hibernate;
 
 import javax.persistence.Column;
@@ -9,52 +13,21 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Builder
 public class VariantValueId implements Serializable {
-    private static final long serialVersionUID = -8542078316737666182L;
+    private static final long serialVersionUID = 6712930963698801382L;
     @Column(name = "VARIANT_ID", nullable = false)
-    private Integer variantId;
-    @Column(name = "PRODUCT_ID", nullable = false)
-    private Integer productId;
+    private Long variantId;
     @Column(name = "OPTION_ID", nullable = false)
-    private Integer optionId;
-    @Column(name = "OPTION_VALUE_ID", nullable = false)
-    private Integer optionValueId;
+    private Long optionId;
 
-    public Integer getOptionValueId() {
-        return optionValueId;
-    }
-
-    public void setOptionValueId(Integer optionValueId) {
-        this.optionValueId = optionValueId;
-    }
-
-    public Integer getOptionId() {
-        return optionId;
-    }
-
-    public void setOptionId(Integer optionId) {
-        this.optionId = optionId;
-    }
-
-    public Integer getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Integer productId) {
-        this.productId = productId;
-    }
-
-    public Integer getVariantId() {
-        return variantId;
-    }
-
-    public void setVariantId(Integer variantId) {
-        this.variantId = variantId;
-    }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productId, optionId, variantId, optionValueId);
+        return Objects.hash(optionId, variantId);
     }
 
     @Override
@@ -62,9 +35,7 @@ public class VariantValueId implements Serializable {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         VariantValueId entity = (VariantValueId) o;
-        return Objects.equals(this.productId, entity.productId) &&
-                Objects.equals(this.optionId, entity.optionId) &&
-                Objects.equals(this.variantId, entity.variantId) &&
-                Objects.equals(this.optionValueId, entity.optionValueId);
+        return Objects.equals(this.optionId, entity.optionId) &&
+                Objects.equals(this.variantId, entity.variantId);
     }
 }
