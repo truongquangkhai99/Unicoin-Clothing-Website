@@ -1,4 +1,4 @@
-package com.unicoin.customer.controller;
+package com.unicoin.customer.controller.admin;
 
 import com.unicoin.customer.resstresponse.ResponseCheckCustomer;
 import com.unicoin.clients.form.customerform.CustomerDemoForm;

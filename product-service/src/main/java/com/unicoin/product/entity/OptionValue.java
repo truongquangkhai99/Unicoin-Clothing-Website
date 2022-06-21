@@ -1,54 +1,32 @@
 package com.unicoin.product.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "option_values")
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Builder
 public class OptionValue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "OPTION_VALUE_ID", nullable = false)
-    private Integer id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "OPTION_ID", nullable = false)
     private Option option;
 
-    @Column(name = "OPTION_VALUE", nullable = false, length = 10000)
+    @Column(name = "OPTION_VALUE", length = 10000)
     private String optionValue;
 
-    @Column(name = "STATUS", nullable = false)
+    @Column(name = "STATUS")
     private Integer status;
 
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public String getOptionValue() {
-        return optionValue;
-    }
-
-    public void setOptionValue(String optionValue) {
-        this.optionValue = optionValue;
-    }
-
-    public Option getOption() {
-        return option;
-    }
-
-    public void setOption(Option option) {
-        this.option = option;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 }
