@@ -1,4 +1,4 @@
-package com.unicoin.customer.controller;
+package com.unicoin.customer.controller.admin;
 
 import com.unicoin.customer.common.JwtRequest;
 import com.unicoin.customer.common.JwtResponse;

@@ -1,4 +1,4 @@
-package com.unicoin.customer.controller;
+package com.unicoin.customer.controller.admin;
 
 import com.unicoin.customer.form.AddCustomerForm;
 import com.unicoin.customer.form.AddRoleForm;

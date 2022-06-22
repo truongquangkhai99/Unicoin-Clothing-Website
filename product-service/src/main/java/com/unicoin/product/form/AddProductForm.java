@@ -1,17 +1,22 @@
-package com.unicoin.product.entity;
+package com.unicoin.product.form;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Data
-public class ProductDemo {
-    Long id;
+public class AddProductForm {
+
     private String productName;
-    private double price;
-    private String customerFistName;
+
+    private String productCode;
+
+    private Long supplier;
+
+    private Integer status;
+
 }
