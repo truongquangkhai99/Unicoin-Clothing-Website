@@ -23,7 +23,5 @@ public class UserDTO implements Serializable {
 
     private Timestamp registStamp;
 
-    private Timestamp updateStamp;
-
     private Boolean status;
 }

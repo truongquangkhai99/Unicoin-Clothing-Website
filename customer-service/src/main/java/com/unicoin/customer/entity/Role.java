@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.time.Instant;
 
 @Entity
@@ -30,7 +31,7 @@ public class Role implements Serializable {
     private String memo;
 
     @Column(name = "regist_stamp")
-    private Instant registStamp;
+    private Timestamp registStamp;
 
     @Column(name = "status", nullable = false)
     private Boolean status = true;
