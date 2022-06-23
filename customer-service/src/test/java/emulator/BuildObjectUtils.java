@@ -5,10 +5,15 @@ import com.unicoin.customer.dto.UserDTO;
 import com.unicoin.customer.entity.Role;
 import com.unicoin.customer.entity.User;
 import com.unicoin.customer.form.AddCustomerForm;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class BuildObjectUtils {
     public UserDTO UserDataOutputDto(){
@@ -21,6 +26,34 @@ public class BuildObjectUtils {
         Timestamp timestamp = Timestamp.valueOf("2022-06-22 08:51:23");
         userDTO.setRegistStamp(timestamp);
         return userDTO;
+    }
+
+    public User UserData(){
+        User user = new User();
+        user.setId(1l);
+        user.setStatus(true);
+        user.setEmail("quangvmph12936@fpt.edu.vn");
+        user.setFullName("quangdz");
+        user.setPassword("123");
+        user.setPhoneNumber("0989875657");
+        Timestamp timestamp = Timestamp.valueOf("2022-06-22 08:51:23");
+        user.setRegistStamp(timestamp);
+        return  user;
+    }
+
+    public AddCustomerForm addCustomerFormData(){
+        AddCustomerForm addCustomerForm = new AddCustomerForm();
+        addCustomerForm.setFullName("quangdz");
+        addCustomerForm.setEmail("quangvmph12936@fpt.edu.vn");
+        addCustomerForm.setPhoneNumber("0989875657");
+        addCustomerForm.setPassword("123");
+        return addCustomerForm;
+    }
+
+    public List<User> buildListUser(){
+        List<User> list = new ArrayList<>();
+        list.add(UserData());
+        return list;
     }
 
     public RestResponsePage<UserDTO> buidViewsCustomer(){
@@ -61,5 +94,11 @@ public class BuildObjectUtils {
 
     public RestResponsePage<Role> buildGetPageRole(){
         return new RestResponsePage<Role>(buildGetListRole());
+    }
+
+    public Page<User> buildPageUser(){
+        Pageable pageable = PageRequest.of(1 ,1);
+        Page<User> page = new PageImpl<>(buildListUser(),pageable,buildListUser().size());
+        return  page;
     }
 }

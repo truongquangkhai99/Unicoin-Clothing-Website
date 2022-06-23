@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -40,6 +41,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRoleRepository userRoleRepository;
+
+
+    private  PasswordEncoder passwordEncoder;
 
     @Override
     public RestResponsePage<UserDTO> viewCustomer(Integer page, Integer size, String phoneNumber, String fullName, String email) {
@@ -74,6 +78,7 @@ public class UserServiceImpl implements UserService {
         }
         User user = new User();
         BeanUtils.copyProperties(addCustomerForm, user);
+        user.setPassword(passwordEncoder.encode(addCustomerForm.getPassword()));
         user.setRegistStamp(new Timestamp(new Date().getTime()));
         user.setStatus(true);
         userRepository.save(user);
