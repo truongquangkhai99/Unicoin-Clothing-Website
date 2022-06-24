@@ -53,11 +53,10 @@ public class OptionServiceImpl implements OptionService {
         if (optionListRepository.existsOptionListByOptionCode(form.getOptionCode()))
             throw new AppException(ExceptionCode.OPTIONLIST_CODE_IS_EXIST);
 
-        Option option = new Option();
+        OptionList option = new OptionList();
         BeanUtils.copyProperties(form, option);
-        option.setStatus(1);
         option.setOptionCode(form.getOptionCode().toUpperCase());
-        Option entity = optionRepository.save(option);
+        OptionList entity = optionListRepository.save(option);
         OptionListDTO dto = new OptionListDTO();
         BeanUtils.copyProperties(entity, dto);
         List<OptionListDTO> dtoList = new ArrayList<>();
