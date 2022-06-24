@@ -1,4 +1,4 @@
-package com.unicoin.customer.dto;
+package com.unicoin.clients.customer.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -22,6 +23,8 @@ public class UserDTO implements Serializable {
     private String email;
 
     private Timestamp registStamp;
+
+    private Timestamp updateStamp;
 
     private Boolean status;
 }
