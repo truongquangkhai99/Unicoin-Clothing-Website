@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin("*")
-@RequestMapping("admin/customer/role")
+@RequestMapping("/admin/customer/role")
 public class RoleController {
     @Autowired
     RoleService roleService;

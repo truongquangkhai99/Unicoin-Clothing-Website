@@ -1,5 +1,6 @@
 package com.unicoin.customer.controller.admin;
 
+import com.unicoin.customer.dto.UserDTO;
 import com.unicoin.customer.form.AddCustomerForm;
 import com.unicoin.customer.form.AddRoleForm;
 import com.unicoin.customer.resstresponse.ApiResponse;
@@ -38,8 +39,8 @@ public class UserController {
     }
 
     @PutMapping("/update/{id}")
-    public ApiResponse updateCustomer(@PathVariable("id") Long id , @RequestBody AddCustomerForm addCustomerForm) {
-        userService.updateCustomer(id , addCustomerForm);
+    public ApiResponse updateCustomer(@PathVariable("id") Long id , @RequestBody UserDTO userDTO) {
+        userService.updateCustomer(id , userDTO);
         return new SuccessResponse();
     }
 

@@ -91,12 +91,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateCustomer(Long id, AddCustomerForm addCustomerForm) {
+    public void updateCustomer(Long id, UserDTO userDTO) {
         log.info("start update customer");
         Optional<User> checkId = userRepository.findById(id);
         if (checkId.isPresent()) {
             User user = checkId.get();
-            BeanUtils.copyProperties(addCustomerForm, user);
+            user.setEmail(userDTO.getEmail());
+            user.setPhoneNumber(userDTO.getPhoneNumber());
+            user.setFullName(userDTO.getFullName());
             userRepository.save(user);
             log.info("end update customer");
         } else {
