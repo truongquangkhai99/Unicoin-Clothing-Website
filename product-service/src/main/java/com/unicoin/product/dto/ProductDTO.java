@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @Builder
@@ -20,6 +21,8 @@ public class ProductDTO {
     private String productCode;
 
     private SupplierDTO supplier;
+
+    private List<ImageDTO> images;
 
     private Timestamp registStamp;
 
