@@ -68,6 +68,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addCustomer(AddCustomerForm addCustomerForm) {
         log.info("start addCustomer");
+        if(addCustomerForm.getPassword() == null){ throw  new AppException(ExceptionCode.PASSWORD_NOT_NULL);}
         Optional<User> checkPhone = userRepository.findByPhoneNumber(addCustomerForm.getPhoneNumber());
         if (checkPhone.isPresent()) {
             throw new AppException(ExceptionCode.PHONENUMBER_ALREADY_EXIST);
@@ -96,7 +97,9 @@ public class UserServiceImpl implements UserService {
         Optional<User> checkId = userRepository.findById(id);
         if (checkId.isPresent()) {
             User user = checkId.get();
-            BeanUtils.copyProperties(addCustomerForm, user);
+            user.setEmail(addCustomerForm.getEmail());
+            user.setPhoneNumber(addCustomerForm.getPhoneNumber());
+            user.setFullName(addCustomerForm.getFullName());
             userRepository.save(user);
             log.info("end update customer");
         } else {
