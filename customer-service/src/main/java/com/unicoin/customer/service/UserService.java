@@ -16,7 +16,7 @@ public interface UserService {
 
     JwtResponse login();
 
-    void updateCustomer(Long id  , UserDTO userDTO);
+    void updateCustomer(Long id  , AddCustomerForm addCustomerForm);
 
     void uDeleteCustomer(String phoneNumer);
 

@@ -39,8 +39,8 @@ public class UserController {
     }
 
     @PutMapping("/update/{id}")
-    public ApiResponse updateCustomer(@PathVariable("id") Long id , @RequestBody UserDTO userDTO) {
-        userService.updateCustomer(id , userDTO);
+    public ApiResponse updateCustomer(@PathVariable("id") Long id , @RequestBody AddCustomerForm addCustomerForm) {
+        userService.updateCustomer(id , addCustomerForm);
         return new SuccessResponse();
     }
 

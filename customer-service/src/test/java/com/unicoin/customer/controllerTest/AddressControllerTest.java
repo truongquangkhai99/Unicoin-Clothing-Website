@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unicoin.customer.controller.AddressController;
 import com.unicoin.customer.service.AddressService;
-import com.unicoin.customer.service.impl.AddressServiceImpl;
 import emulator.BuildObjectUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

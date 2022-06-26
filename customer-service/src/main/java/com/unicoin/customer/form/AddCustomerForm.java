@@ -28,8 +28,6 @@ public class AddCustomerForm {
     @Email(message = "emaill is not valid")
     private String email;
 
-    @NotBlank(message = "password is notBlank")
-    @NotNull(message = "password is notnull")
     private String password;
 
 }
