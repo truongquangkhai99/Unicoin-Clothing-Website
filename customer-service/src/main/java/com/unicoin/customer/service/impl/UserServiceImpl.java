@@ -42,8 +42,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRoleRepository userRoleRepository;
 
-
-    private  PasswordEncoder passwordEncoder;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Override
     public RestResponsePage<UserDTO> viewCustomer(Integer page, Integer size, String phoneNumber, String fullName, String email) {

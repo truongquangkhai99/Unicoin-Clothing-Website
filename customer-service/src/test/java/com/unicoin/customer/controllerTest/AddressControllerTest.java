@@ -23,8 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.IOException;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class AddressControllerTest {
@@ -66,5 +65,34 @@ public class AddressControllerTest {
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(url).accept(MediaType.APPLICATION_JSON).params(param)).andReturn();
         int status = result.getResponse().getStatus();
         assertEquals(200, status);
+    }
+
+    @Test
+    public void AddAddressTest_ShouldReturnSuccess() throws Exception{
+        String url = "/admin/customer/address/add";
+        mockAddressService=mock(AddressService.class);
+       doNothing().when(mockAddressService).addAddress(any());
+        if(mockMvc == null){ throw  new Exception("mvc null");}
+        String inputJson = mapToJson(buildObjectUtils.addAddressForm());
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(url).accept(MediaType.APPLICATION_JSON).content(inputJson)).andReturn();
+        int status = result.getResponse().getStatus();
+        assertEquals(200 , status);
+    }
+
+    @Test
+    public void UpdateAddressTest_ShouldReturnSuccess() throws  Exception{
+        String url = "/admin/customer/address/update/{addressId}";
+        mockAddressService = mock(AddressService.class);
+        String inputJson = mapToJson(buildObjectUtils.addAddressForm());
+        if(mockMvc == null){throw  new Exception("mvc null");}
+        doNothing().when(mockAddressService).updateAddress(any(), isNull());
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put(url , "1").accept(MediaType.APPLICATION_JSON).content(inputJson)).andReturn();
+        int status = result.getResponse().getStatus();
+        assertEquals(200 , status);
+    }
+
+    @Test
+    public  void DeleteAddressTest_ShouldReturnSuccess() throws Exception{
+        String url = "/admin/customer/address/update/{addressId}";
     }
 }
