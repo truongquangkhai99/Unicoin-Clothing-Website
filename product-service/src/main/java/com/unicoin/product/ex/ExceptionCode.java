@@ -17,7 +17,8 @@ public enum ExceptionCode {
     OPTION_IS_USING_YOU_CANNOT_DELETE(2204, "error2204"),
     VARIANTVALUE_HAS_ADDED(2300, "error2300"),
     OPTIONVALUE_IS_NOT_EXIST(2400, "error2400"),
-    OPTIONVALUE_IS_USING_YOU_CANNOT_DELETE(2401, "error2401");
+    OPTIONVALUE_IS_USING_YOU_CANNOT_DELETE(2401, "error2401"),
+    VARIANT_IS_NOT_EXIST(2500, "error2500");
 
     private int status;
     private String error;

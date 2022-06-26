@@ -1,5 +1,6 @@
 package com.unicoin.product.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,17 +8,14 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 @Builder
-public class VariantDTO {
-    private Long variantId;
-    private String skuID;
-    private String variantName;
+public class ProductShopDTO {
     private Long productId;
-    private String productName;
-    private Integer qty;
-    private Long price;
-    private List<OptionVariantDTO> option;
+    private SupplierDTO supplier;
+    private List<VariantDTO> variantList;
+    private Long priceMin;
+    private Long priceMax;
 }

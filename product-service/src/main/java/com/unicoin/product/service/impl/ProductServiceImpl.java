@@ -10,6 +10,7 @@ import com.unicoin.product.ex.AppException;
 import com.unicoin.product.ex.ExceptionCode;
 import com.unicoin.product.form.AddOptionValueForm;
 import com.unicoin.product.form.AddProductForm;
+import com.unicoin.product.form.UpdatePriceForm;
 import com.unicoin.product.form.ValueForm;
 import com.unicoin.product.repository.*;
 import com.unicoin.product.service.ProductService;
@@ -51,6 +52,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     VariantValueRepository variantValueRepository;
+
+    @Autowired
+    ImageRepository imageRepository;
 
 
     @Override
@@ -196,6 +200,61 @@ public class ProductServiceImpl implements ProductService {
         return getVariantByProductId(optionalProduct.get());
     }
 
+    @Override
+    public void addImagesForProduct(Long productId, List<String> imageUrls) {
+        Optional<Product> optionalProduct = productRepository.findById(productId);
+        if (optionalProduct.isEmpty())
+            throw new AppException(ExceptionCode.PRODUCT_IS_NOT_EXIST);
+
+        for (String imageUrl : imageUrls) {
+            imageRepository.save(Image.builder()
+                    .imageUrl(imageUrl)
+                    .status(true)
+                    .product(optionalProduct.get())
+                    .registStamp(new Timestamp(new Date().getTime()))
+                    .build());
+        }
+    }
+
+    @Override
+    public RestResponsePage<VariantDTO> updatePrice(List<UpdatePriceForm> updatePriceForms) {
+        List<VariantDTO> variantDTOS = new ArrayList<>();
+        for (UpdatePriceForm form :
+                updatePriceForms) {
+            Optional<Variant> variantOptional = variantRepository.findById(form.getVariantId());
+            if (variantOptional.isEmpty()) {
+                throw new AppException(ExceptionCode.VARIANT_IS_NOT_EXIST);
+            }
+            Variant variant = variantOptional.get();
+            variant.setPrice(form.getPrice());
+            variant.setQty(form.getQty());
+            List<VariantValue> variantValues = variantValueRepository.findAllByVariant(variant);
+            List<OptionVariantDTO> optionVariantDTOS = new ArrayList<>();
+            for (VariantValue value :
+                    variantValues) {
+                optionVariantDTOS.add(OptionVariantDTO.builder()
+                        .optionId(value.getOption().getId())
+                        .optionName(value.getOption().getOptionName())
+                        .optionCode(value.getOption().getOptionCode())
+                        .optionValueId(value.getOptionValue().getId())
+                        .optionValue(value.getOptionValue().getOptionValue())
+                        .build());
+            }
+            variantRepository.save(variant);
+            variantDTOS.add(VariantDTO.builder()
+                    .variantId(variant.getId())
+                    .productId(variant.getProduct().getId())
+                    .qty(variant.getQty())
+                    .price(variant.getPrice())
+                    .productName(variant.getProduct().getProductName())
+                    .option(optionVariantDTOS)
+                    .skuID(variant.getSkuId())
+                    .variantName(variant.getVariantName())
+                    .build());
+        }
+        return new RestResponsePage<>(variantDTOS, 1, variantDTOS.size(), variantDTOS.size(), 1);
+    }
+
 
     public RestResponsePage<VariantDTO> getVariantByProductId(Product product) {
         //find all variant
@@ -223,6 +282,7 @@ public class ProductServiceImpl implements ProductService {
                     .productName(variant.getProduct().getProductName())
                     .option(optionVariantDTOS)
                     .skuID(variant.getSkuId())
+                    .variantName(variant.getVariantName())
                     .build());
         }
         RestResponsePage<VariantDTO> restResponsePage = new RestResponsePage<>(variantDTOS, 1, variantDTOS.size(), variantDTOS.size(), 1);
@@ -242,6 +302,7 @@ public class ProductServiceImpl implements ProductService {
                         .price(0L)
                         .qty(0)
                         .skuId(product.getProductCode() + "-" + option.getOptionCode() + item.getId())
+                        .variantName(product.getProductName() + "-" + item.getOptionValue())
                         .status(2)
                         .build());
                 VariantValue variantValue = variantValueRepository.save(VariantValue.builder()
@@ -272,15 +333,21 @@ public class ProductServiceImpl implements ProductService {
                     for (VariantValue value : variantValueItems) {
                         String[] optionCodes = value.getVariant().getSkuId().split("-");
                         String skuId = product.getProductCode();
+                        String[] variantNames = value.getVariant().getVariantName().split("-");
+                        String variantName = product.getProductName();
                         for (int j = 1; j < optionCodes.length; j++) {
                             String optionCodeFeature = "";
+                            String variantNameFeature = "";
                             String optionCode = optionCodes[j].substring(0, 2);
                             if (optionCode.equalsIgnoreCase(item.getOption().getOptionCode())) {
                                 optionCodeFeature = optionCode + item.getId();
+                                variantNameFeature = item.getOptionValue();
                             } else {
                                 optionCodeFeature = optionCodes[j];
+                                variantNameFeature = variantNames[j];
                             }
                             skuId = skuId + "-" + optionCodeFeature;
+                            variantName = variantName + "-" + variantNameFeature;
                         }
                         //luu variant
                         Variant variant = variantRepository.save(Variant.builder()
@@ -288,6 +355,7 @@ public class ProductServiceImpl implements ProductService {
                                 .qty(0)
                                 .price(0L)
                                 .skuId(skuId)
+                                .variantName(variantName)
                                 .status(2)
                                 .build());
                         String[] variantSkuIdArr = variant.getSkuId().split("-");
@@ -320,6 +388,7 @@ public class ProductServiceImpl implements ProductService {
                     for (Variant variant :
                             variantList) {
                         String skuId = variant.getSkuId();
+                        String variantName = variant.getVariantName();
 
                         //kiem tra xem variantValue da duoc them vao truoc do chua
                         Optional<VariantValue> optionalVariantValue = variantValueRepository.findVariantValueByOptionAndOptionValueAndVariant(option, item, variant);
@@ -335,6 +404,7 @@ public class ProductServiceImpl implements ProductService {
                                         .price(0L)
                                         .qty(0)
                                         .skuId(skuId + "-" + option.getOptionCode() + item.getId())
+                                        .variantName(variantName + "-" + item.getOptionValue())
                                         .status(2)
                                         .build());
                                 VariantValue variantValue = variantValueRepository.save(VariantValue.builder()
@@ -353,6 +423,7 @@ public class ProductServiceImpl implements ProductService {
                                         .price(0L)
                                         .qty(0)
                                         .skuId(skuId + "-" + option.getOptionCode() + item.getId())
+                                        .variantName(variantName + "-" + item.getOptionValue())
                                         .status(2)
                                         .build());
 

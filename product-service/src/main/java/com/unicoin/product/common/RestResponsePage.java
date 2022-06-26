@@ -36,6 +36,7 @@ public class RestResponsePage<T> {
         this.pagination = pagination;
     }
 
+
     @Getter
     @Setter
     public class Pagination {

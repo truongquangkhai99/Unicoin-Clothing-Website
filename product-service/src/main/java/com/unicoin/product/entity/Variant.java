@@ -26,6 +26,9 @@ public class Variant {
     @Column(name = "SKU_ID")
     private String skuId;
 
+    @Column(name = "VARIANT_NAME")
+    private String variantName;
+
     @Column(name = "QTY")
     private Integer qty;
 
