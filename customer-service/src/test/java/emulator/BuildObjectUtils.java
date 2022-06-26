@@ -1,7 +1,9 @@
 package emulator;
 
 import com.unicoin.customer.common.RestResponsePage;
+import com.unicoin.customer.dto.AddressDTO;
 import com.unicoin.customer.dto.UserDTO;
+import com.unicoin.customer.entity.Address;
 import com.unicoin.customer.entity.Role;
 import com.unicoin.customer.entity.User;
 import com.unicoin.customer.form.AddCustomerForm;
@@ -100,5 +102,25 @@ public class BuildObjectUtils {
         Pageable pageable = PageRequest.of(1 ,1);
         Page<User> page = new PageImpl<>(buildListUser(),pageable,buildListUser().size());
         return  page;
+    }
+
+    public AddressDTO addressData(){
+        AddressDTO address = new AddressDTO();
+        address.setAddressId(1l);
+        address.setLine("35 le duc tho");
+        address.setStatus(true);
+        Timestamp timestamp = Timestamp.valueOf("2022-06-26 01:05:09");
+        address.setRegistStamp(timestamp);
+        return address;
+    }
+
+    public List<AddressDTO> buildListAddress(){
+        List<AddressDTO> data = new ArrayList<>();
+        data.add(addressData());
+        return  data;
+    }
+
+    public RestResponsePage<AddressDTO> buildPageAddress(){
+       return  new RestResponsePage<AddressDTO>(buildListAddress(),1,1,1,1);
     }
 }

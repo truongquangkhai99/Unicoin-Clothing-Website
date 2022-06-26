@@ -48,31 +48,33 @@ public class ShopServiceImpl implements ShopService {
                             .imageUrl(item.getImageUrl())
                             .build())
                     .collect(Collectors.toList());
-            List<VariantDTO> variantDTOs = variantList.stream().map(item ->
-                    VariantDTO.builder()
-                            .variantName(item.getVariantName())
-                            .variantId(item.getId())
-                            .productName(item.getProduct().getProductName())
-                            .price(item.getPrice())
-                            .qty(item.getQty())
-                            .skuID(item.getSkuId())
-                            .build()).collect(Collectors.toList());
-            productShopDTOList.add(ProductShopDTO.builder()
-                    .productId(product.getId())
-                    .priceMax(variantList.get(0).getPrice())
-                    .priceMin(variantList.get(variantList.size() - 1).getPrice())
-                    .images(imageDTOS)
-                    .supplier(SupplierDTO.builder()
-                            .supplierCode(product.getSupplier().getSupplierCode())
-                            .supplierName(product.getSupplier().getSupplierName())
-                            .memo(product.getSupplier().getMemo())
-                            .email(product.getSupplier().getEmail())
-                            .address(product.getSupplier().getAddress())
-                            .phoneNumber(product.getSupplier().getPhoneNumber())
-                            .supplierId(product.getSupplier().getId())
-                            .build())
-                    .variantList(variantDTOs)
-                    .build());
+            if (variantList.size() > 0) {
+                List<VariantDTO> variantDTOs = variantList.stream().map(item ->
+                        VariantDTO.builder()
+                                .variantName(item.getVariantName())
+                                .variantId(item.getId())
+                                .productName(item.getProduct().getProductName())
+                                .price(item.getPrice())
+                                .qty(item.getQty())
+                                .skuID(item.getSkuId())
+                                .build()).collect(Collectors.toList());
+                productShopDTOList.add(ProductShopDTO.builder()
+                        .productId(product.getId())
+                        .priceMax(variantList.get(0).getPrice())
+                        .priceMin(variantList.get(variantList.size() - 1).getPrice())
+                        .images(imageDTOS)
+                        .supplier(SupplierDTO.builder()
+                                .supplierCode(product.getSupplier().getSupplierCode())
+                                .supplierName(product.getSupplier().getSupplierName())
+                                .memo(product.getSupplier().getMemo())
+                                .email(product.getSupplier().getEmail())
+                                .address(product.getSupplier().getAddress())
+                                .phoneNumber(product.getSupplier().getPhoneNumber())
+                                .supplierId(product.getSupplier().getId())
+                                .build())
+                        .variantList(variantDTOs)
+                        .build());
+            }
         }
         return new RestResponsePage<ProductShopDTO>(productShopDTOList, 1, productList.size(), productList.size(), 1);
     }
