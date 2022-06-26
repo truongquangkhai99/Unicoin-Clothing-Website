@@ -4,12 +4,15 @@ package com.unicoin.product.controller.admin;
 import com.unicoin.product.form.AddOptionValueForm;
 import com.unicoin.product.form.AddOptionListForm;
 import com.unicoin.product.form.AddProductForm;
+import com.unicoin.product.form.UpdatePriceForm;
 import com.unicoin.product.resstresponse.ApiResponse;
 import com.unicoin.product.resstresponse.SuccessResponse;
 import com.unicoin.product.service.OptionService;
 import com.unicoin.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin/product")
@@ -46,6 +49,11 @@ public class ProductController {
         return new SuccessResponse(productService.generateVariant(form));
     }
 
+    @PostMapping("/variant/update-price")
+    public ApiResponse updatePriceForVariant(@RequestBody List<UpdatePriceForm> updatePriceForms){
+        return new SuccessResponse(productService.updatePrice(updatePriceForms));
+    }
+
     @DeleteMapping("/option-value/{optionValueId}")
     public ApiResponse deleteOptionValue(@PathVariable Long optionValueId){
         optionService.deleteOptionValue(optionValueId);
@@ -61,6 +69,13 @@ public class ProductController {
     @GetMapping("/view-variants/{productId}")
     public ApiResponse viewVariantsByProduct(@PathVariable Long productId){
         return new SuccessResponse(productService.viewVariantsByProduct(productId));
+    }
+
+    @PostMapping("/add-image/{productId}")
+    public ApiResponse addImagesForProduct(@PathVariable Long productId,
+                                           @RequestBody List<String> imageUrls){
+        productService.addImagesForProduct(productId, imageUrls);
+        return new SuccessResponse();
     }
 
 }
