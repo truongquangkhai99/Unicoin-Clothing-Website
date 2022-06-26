@@ -15,7 +15,9 @@ import java.util.List;
 public class ProductShopDTO {
     private Long productId;
     private SupplierDTO supplier;
+    private List<ImageDTO> images;
     private List<VariantDTO> variantList;
     private Long priceMin;
     private Long priceMax;
+
 }

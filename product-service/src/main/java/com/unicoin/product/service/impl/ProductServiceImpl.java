@@ -97,6 +97,7 @@ public class ProductServiceImpl implements ProductService {
     public RestResponsePage<ProductDTO> viewProduct() {
         log.info("Start viewProduct");
         List<Product> productList = productRepository.getAllByStatus(1);
+
         List<ProductDTO> dtoList = productList.stream().map(item ->
                 ProductDTO.builder()
                         .id(item.getId())
