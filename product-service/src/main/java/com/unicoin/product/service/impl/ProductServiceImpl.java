@@ -1,10 +1,7 @@
 package com.unicoin.product.service.impl;
 
 import com.unicoin.product.common.RestResponsePage;
-import com.unicoin.product.dto.ProductDTO;
-import com.unicoin.product.dto.OptionVariantDTO;
-import com.unicoin.product.dto.SupplierDTO;
-import com.unicoin.product.dto.VariantDTO;
+import com.unicoin.product.dto.*;
 import com.unicoin.product.entity.*;
 import com.unicoin.product.ex.AppException;
 import com.unicoin.product.ex.ExceptionCode;
@@ -97,7 +94,6 @@ public class ProductServiceImpl implements ProductService {
     public RestResponsePage<ProductDTO> viewProduct() {
         log.info("Start viewProduct");
         List<Product> productList = productRepository.getAllByStatus(1);
-
         List<ProductDTO> dtoList = productList.stream().map(item ->
                 ProductDTO.builder()
                         .id(item.getId())
@@ -115,6 +111,13 @@ public class ProductServiceImpl implements ProductService {
                                 .phoneNumber(item.getSupplier().getPhoneNumber())
                                 .build())
                         .updateUser(item.getUpdateUser())
+                        .images(imageRepository.findAllByProduct(item).stream().map(
+                                        image -> ImageDTO.builder()
+                                                .imageId(image.getId())
+                                                .imageUrl(image.getImageUrl())
+                                                .build()
+                                ).collect(Collectors.toList())
+                        )
                         .build()).collect(Collectors.toList());
         log.info("End viewProduct");
         return new RestResponsePage<>(dtoList, 1, productList.size(), productList.size(), 1);
