@@ -6,6 +6,7 @@ import com.unicoin.customer.dto.UserDTO;
 import com.unicoin.customer.entity.Address;
 import com.unicoin.customer.entity.Role;
 import com.unicoin.customer.entity.User;
+import com.unicoin.customer.form.AddAddressForm;
 import com.unicoin.customer.form.AddCustomerForm;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -103,7 +104,7 @@ public class BuildObjectUtils {
         Page<User> page = new PageImpl<>(buildListUser(),pageable,buildListUser().size());
         return  page;
     }
-
+//build data address
     public AddressDTO addressData(){
         AddressDTO address = new AddressDTO();
         address.setAddressId(1l);
@@ -112,6 +113,13 @@ public class BuildObjectUtils {
         Timestamp timestamp = Timestamp.valueOf("2022-06-26 01:05:09");
         address.setRegistStamp(timestamp);
         return address;
+    }
+
+    public AddAddressForm addAddressForm(){
+        AddAddressForm addAddressForm = new AddAddressForm();
+        addAddressForm.setLine("35 le duc tho");
+        addAddressForm.setUserId(1l);
+        return addAddressForm;
     }
 
     public List<AddressDTO> buildListAddress(){
