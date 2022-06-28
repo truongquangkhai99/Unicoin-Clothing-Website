@@ -1,14 +1,12 @@
 package com.unicoin.product.service.impl;
 
+import com.unicoin.product.common.CommonsUtils;
 import com.unicoin.product.common.RestResponsePage;
 import com.unicoin.product.dto.*;
 import com.unicoin.product.entity.*;
 import com.unicoin.product.ex.AppException;
 import com.unicoin.product.ex.ExceptionCode;
-import com.unicoin.product.form.AddOptionValueForm;
-import com.unicoin.product.form.AddProductForm;
-import com.unicoin.product.form.UpdatePriceForm;
-import com.unicoin.product.form.ValueForm;
+import com.unicoin.product.form.*;
 import com.unicoin.product.repository.*;
 import com.unicoin.product.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
@@ -94,9 +92,10 @@ public class ProductServiceImpl implements ProductService {
     public RestResponsePage<ProductDTO> viewProduct() {
         log.info("Start viewProduct");
         List<Product> productList = productRepository.getAllByStatus(1);
+
         List<ProductDTO> dtoList = productList.stream().map(item ->
                 ProductDTO.builder()
-                        .id(item.getId())
+                        .productId(item.getId())
                         .productCode(item.getProductCode())
                         .productName(item.getProductName())
                         .registStamp(item.getRegistStamp())
@@ -111,7 +110,11 @@ public class ProductServiceImpl implements ProductService {
                                 .phoneNumber(item.getSupplier().getPhoneNumber())
                                 .build())
                         .updateUser(item.getUpdateUser())
-                        .images(imageRepository.findAllByProduct(item).stream().map(
+                        .imageMain(ImageDTO.builder()
+                                .imageId(imageRepository.findAllByProductAndImageType(item, CommonsUtils.TYPE_MAIN).get(0).getId())
+                                .imageUrl(imageRepository.findAllByProductAndImageType(item, CommonsUtils.TYPE_MAIN).get(0).getImageUrl())
+                                .build())
+                        .imageSubs(imageRepository.findAllByProductAndImageType(item, CommonsUtils.TYPE_SUB).stream().map(
                                         image -> ImageDTO.builder()
                                                 .imageId(image.getId())
                                                 .imageUrl(image.getImageUrl())
@@ -205,14 +208,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void addImagesForProduct(Long productId, List<String> imageUrls) {
+    public void addImagesForProduct(Long productId, List<AddImageForm> imageUrls) {
         Optional<Product> optionalProduct = productRepository.findById(productId);
         if (optionalProduct.isEmpty())
             throw new AppException(ExceptionCode.PRODUCT_IS_NOT_EXIST);
 
-        for (String imageUrl : imageUrls) {
+        for (AddImageForm image : imageUrls) {
             imageRepository.save(Image.builder()
-                    .imageUrl(imageUrl)
+                    .imageUrl(image.getImageUrl())
+                    .imageType(image.getImageType())
                     .status(true)
                     .product(optionalProduct.get())
                     .registStamp(new Timestamp(new Date().getTime()))

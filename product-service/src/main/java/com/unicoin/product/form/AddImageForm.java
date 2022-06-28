@@ -1,16 +1,16 @@
-package com.unicoin.product.dto;
+package com.unicoin.product.form;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Builder
-public class ImageDTO {
-    private Long imageId;
+public class AddImageForm {
     private String imageUrl;
     private String imageType;
 }

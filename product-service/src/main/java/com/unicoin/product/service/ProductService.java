@@ -2,6 +2,7 @@ package com.unicoin.product.service;
 
 import com.unicoin.product.common.RestResponsePage;
 import com.unicoin.product.dto.VariantDTO;
+import com.unicoin.product.form.AddImageForm;
 import com.unicoin.product.form.AddOptionValueForm;
 import com.unicoin.product.dto.ProductDTO;
 import com.unicoin.product.form.AddProductForm;
@@ -20,7 +21,7 @@ public interface ProductService{
 
     RestResponsePage<VariantDTO> viewVariantsByProduct(Long productId);
 
-    void addImagesForProduct(Long productId, List<String> imageUrls);
+    void addImagesForProduct(Long productId, List<AddImageForm> imageUrls);
 
     RestResponsePage<VariantDTO> updatePrice(List<UpdatePriceForm> updatePriceForms);
 }
