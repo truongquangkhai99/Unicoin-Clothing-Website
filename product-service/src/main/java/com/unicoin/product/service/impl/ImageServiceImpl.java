@@ -4,6 +4,7 @@ import com.unicoin.product.entity.Image;
 import com.unicoin.product.entity.Product;
 import com.unicoin.product.ex.AppException;
 import com.unicoin.product.ex.ExceptionCode;
+import com.unicoin.product.form.AddImageForm;
 import com.unicoin.product.repository.ImageRepository;
 import com.unicoin.product.repository.ProductRepository;
 import com.unicoin.product.service.ImageService;
@@ -28,16 +29,17 @@ public class ImageServiceImpl implements ImageService {
     ProductRepository productRepo;
 
     @Override
-    public List<Image> addImages(Long productId, List<String> images) {
+    public List<Image> addImages(Long productId, List<AddImageForm> images) {
         Optional<Product> optionalProduct = productRepo.findById(productId);
         if (optionalProduct.isEmpty()) {
             throw new AppException(ExceptionCode.PRODUCT_IS_NOT_EXIST);
         }
         List<Image> imageList = new ArrayList<>();
-        for (String imageUrl :
+        for (AddImageForm imageForm :
                 images) {
             Image image = imageRepo.save(Image.builder()
-                    .imageUrl(imageUrl)
+                    .imageUrl(imageForm.getImageUrl())
+                    .imageType(imageForm.getImageType())
                     .product(optionalProduct.get())
                     .status(true)
                     .registStamp(new Timestamp(new Date().getTime()))
@@ -50,7 +52,7 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public void deleteImage(Long id) {
         Optional<Image> optional = imageRepo.findById(id);
-        if (optional.isEmpty()){
+        if (optional.isEmpty()) {
 //            throw new AppException(ExceptionCode.IMAGE_IS_NOT_EXIST);
         }
         imageRepo.delete(optional.get());
