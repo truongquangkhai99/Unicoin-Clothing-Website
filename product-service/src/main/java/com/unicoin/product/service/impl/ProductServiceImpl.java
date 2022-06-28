@@ -213,14 +213,24 @@ public class ProductServiceImpl implements ProductService {
         if (optionalProduct.isEmpty())
             throw new AppException(ExceptionCode.PRODUCT_IS_NOT_EXIST);
 
+
         for (AddImageForm image : imageUrls) {
-            imageRepository.save(Image.builder()
-                    .imageUrl(image.getImageUrl())
-                    .imageType(image.getImageType())
-                    .status(true)
-                    .product(optionalProduct.get())
-                    .registStamp(new Timestamp(new Date().getTime()))
-                    .build());
+            if (CommonsUtils.TYPE_MAIN.equals(image.getImageType())) {
+                List<Image> imagesMains = imageRepository.findAllByProductAndImageType(optionalProduct.get(), CommonsUtils.TYPE_MAIN);
+                if (imagesMains.size() > 0){
+                    Image imageMain = imagesMains.get(0);
+                    imageMain.setImageUrl(image.getImageUrl());
+                    imageRepository.save(imageMain);
+                }
+            } else {
+                imageRepository.save(Image.builder()
+                        .imageUrl(image.getImageUrl())
+                        .imageType(image.getImageType())
+                        .status(true)
+                        .product(optionalProduct.get())
+                        .registStamp(new Timestamp(new Date().getTime()))
+                        .build());
+            }
         }
     }
 
