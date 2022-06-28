@@ -1,10 +1,8 @@
 package com.unicoin.product.service;
 
 import com.unicoin.product.common.RestResponsePage;
-import com.unicoin.product.dto.ProductShopDTO;
-
-import java.util.List;
+import com.unicoin.product.dto.ProductDTO;
 
 public interface ShopService {
-    RestResponsePage<ProductShopDTO> getAllProduct();
+    RestResponsePage<ProductDTO> getAllProduct();
 }
