@@ -46,18 +46,26 @@ public class ShopServiceImpl implements ShopService {
             List<Variant> variantList = variantRepository.findAllByProduct(product, Sort.by(Sort.Direction.DESC, "price"));
             List<Image> imageSubs = imageRepository.findAllByProductAndImageType(product, CommonsUtils.TYPE_SUB);
             List<Image> imageMains = imageRepository.findAllByProductAndImageType(product, CommonsUtils.TYPE_MAIN);
-            List<ImageDTO> imageDTOS = imageSubs.stream().map(item ->
-                            ImageDTO.builder()
-                                    .imageId(item.getId())
-                                    .imageUrl(item.getImageUrl())
-                                    .imageType(item.getImageType())
-                                    .build())
-                    .collect(Collectors.toList());
-            ImageDTO imageMain = ImageDTO.builder()
-                    .imageId(imageMains.get(0).getId())
-                    .imageUrl(imageMains.get(0).getImageUrl())
-                    .imageType(imageMains.get(0).getImageType())
-                    .build();
+            List<ImageDTO> imageDTOS = new ArrayList<>();
+            if (imageSubs.size() > 0) {
+                imageDTOS = imageSubs.stream().map(item ->
+                                ImageDTO.builder()
+                                        .imageId(item.getId())
+                                        .imageUrl(item.getImageUrl())
+                                        .imageType(item.getImageType())
+                                        .build())
+                        .collect(Collectors.toList());
+            }
+            ImageDTO imageMain = new ImageDTO();
+            if (imageMains.size() > 0) {
+                imageMain = ImageDTO.builder()
+                        .imageId(imageMains.get(0).getId())
+                        .imageUrl(imageMains.get(0).getImageUrl())
+                        .imageType(imageMains.get(0).getImageType())
+                        .build();
+            }else {
+                imageMain = null;
+            }
             if (variantList.size() > 0) {
                 List<VariantDTO> variantDTOs = variantList.stream().map(item ->
                         VariantDTO.builder()

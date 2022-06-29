@@ -93,35 +93,49 @@ public class ProductServiceImpl implements ProductService {
         log.info("Start viewProduct");
         List<Product> productList = productRepository.getAllByStatus(1);
 
-        List<ProductDTO> dtoList = productList.stream().map(item ->
-                ProductDTO.builder()
-                        .productId(item.getId())
-                        .productCode(item.getProductCode())
-                        .productName(item.getProductName())
-                        .registStamp(item.getRegistStamp())
-                        .status(item.getStatus())
-                        .supplier(SupplierDTO.builder()
-                                .supplierId(item.getSupplier().getId())
-                                .supplierName(item.getSupplier().getSupplierName())
-                                .supplierCode(item.getSupplier().getSupplierCode())
-                                .address(item.getSupplier().getAddress())
-                                .email(item.getSupplier().getEmail())
-                                .memo(item.getSupplier().getMemo())
-                                .phoneNumber(item.getSupplier().getPhoneNumber())
-                                .build())
-                        .updateUser(item.getUpdateUser())
-                        .imageMain(ImageDTO.builder()
-                                .imageId(imageRepository.findAllByProductAndImageType(item, CommonsUtils.TYPE_MAIN).get(0).getId())
-                                .imageUrl(imageRepository.findAllByProductAndImageType(item, CommonsUtils.TYPE_MAIN).get(0).getImageUrl())
-                                .build())
-                        .imageSubs(imageRepository.findAllByProductAndImageType(item, CommonsUtils.TYPE_SUB).stream().map(
-                                        image -> ImageDTO.builder()
-                                                .imageId(image.getId())
-                                                .imageUrl(image.getImageUrl())
-                                                .build()
-                                ).collect(Collectors.toList())
-                        )
-                        .build()).collect(Collectors.toList());
+        List<ProductDTO> dtoList = new ArrayList<>();
+        for (Product item : productList) {
+            List<Image> imageMains = imageRepository.findAllByProductAndImageType(item, CommonsUtils.TYPE_MAIN);
+            List<Image> imageSubs = imageRepository.findAllByProductAndImageType(item, CommonsUtils.TYPE_SUB);
+            ImageDTO imageMainDTO = new ImageDTO();
+                    if (imageMains.size() > 0){
+                        imageMainDTO = ImageDTO.builder()
+                                .imageId(imageMains.get(0).getId())
+                                .imageUrl(imageMains.get(0).getImageUrl())
+                                .build();
+                    }else {
+                        imageMainDTO = null;
+                    }
+            List<ImageDTO> imageSubDTOs = new ArrayList<>();
+                    if (imageSubs.size() > 0){
+                        imageSubDTOs = imageSubs.stream().map(
+                                image -> ImageDTO.builder()
+                                        .imageId(image.getId())
+                                        .imageUrl(image.getImageUrl())
+                                        .build()
+                        ).collect(Collectors.toList());
+                    }
+            ProductDTO productDTO = ProductDTO.builder()
+                    .productId(item.getId())
+                    .productCode(item.getProductCode())
+                    .productName(item.getProductName())
+                    .registStamp(item.getRegistStamp())
+                    .status(item.getStatus())
+                    .supplier(SupplierDTO.builder()
+                            .supplierId(item.getSupplier().getId())
+                            .supplierName(item.getSupplier().getSupplierName())
+                            .supplierCode(item.getSupplier().getSupplierCode())
+                            .address(item.getSupplier().getAddress())
+                            .email(item.getSupplier().getEmail())
+                            .memo(item.getSupplier().getMemo())
+                            .phoneNumber(item.getSupplier().getPhoneNumber())
+                            .build())
+                    .updateUser(item.getUpdateUser())
+                    .imageMain(imageMainDTO)
+                    .imageSubs(imageSubDTOs)
+                    .build();
+            dtoList.add(productDTO);
+        }
         log.info("End viewProduct");
         return new RestResponsePage<>(dtoList, 1, productList.size(), productList.size(), 1);
     }
@@ -217,7 +231,7 @@ public class ProductServiceImpl implements ProductService {
         for (AddImageForm image : imageUrls) {
             if (CommonsUtils.TYPE_MAIN.equals(image.getImageType())) {
                 List<Image> imagesMains = imageRepository.findAllByProductAndImageType(optionalProduct.get(), CommonsUtils.TYPE_MAIN);
-                if (imagesMains.size() > 0){
+                if (imagesMains.size() > 0) {
                     Image imageMain = imagesMains.get(0);
                     imageMain.setImageUrl(image.getImageUrl());
                     imageRepository.save(imageMain);
