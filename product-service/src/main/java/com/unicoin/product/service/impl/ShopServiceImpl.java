@@ -63,11 +63,12 @@ public class ShopServiceImpl implements ShopService {
                         .imageUrl(imageMains.get(0).getImageUrl())
                         .imageType(imageMains.get(0).getImageType())
                         .build();
-            }else {
+            } else {
                 imageMain = null;
             }
+            List<VariantDTO> variantDTOs = new ArrayList<>();
             if (variantList.size() > 0) {
-                List<VariantDTO> variantDTOs = variantList.stream().map(item ->
+                variantDTOs = variantList.stream().map(item ->
                         VariantDTO.builder()
                                 .variantName(item.getVariantName())
                                 .variantId(item.getId())
@@ -85,29 +86,29 @@ public class ShopServiceImpl implements ShopService {
                                                 .build()
                                 ).collect(Collectors.toList()))
                                 .build()).collect(Collectors.toList());
-                productDTOS.add(ProductDTO.builder()
-                        .productId(product.getId())
-                        .productName(product.getProductName())
-                        .productCode(product.getProductCode())
-                        .priceMax(variantList.get(0).getPrice())
-                        .priceMin(variantList.get(variantList.size() - 1).getPrice())
-                        .imageSubs(imageDTOS)
-                        .imageMain(imageMain)
-                        .supplier(SupplierDTO.builder()
-                                .supplierCode(product.getSupplier().getSupplierCode())
-                                .supplierName(product.getSupplier().getSupplierName())
-                                .memo(product.getSupplier().getMemo())
-                                .email(product.getSupplier().getEmail())
-                                .address(product.getSupplier().getAddress())
-                                .phoneNumber(product.getSupplier().getPhoneNumber())
-                                .supplierId(product.getSupplier().getId())
-                                .build())
-                        .variantList(variantDTOs)
-                        .status(product.getStatus())
-                        .registStamp(product.getRegistStamp())
-                        .updateUser(product.getUpdateUser())
-                        .build());
             }
+            productDTOS.add(ProductDTO.builder()
+                    .productId(product.getId())
+                    .productName(product.getProductName())
+                    .productCode(product.getProductCode())
+                    .priceMax(variantList.size() > 0 ? variantList.get(0).getPrice() : 0)
+                    .priceMin(variantList.size() > 0 ? variantList.get(variantList.size() - 1).getPrice() : 0)
+                    .imageSubs(imageDTOS)
+                    .imageMain(imageMain)
+                    .supplier(SupplierDTO.builder()
+                            .supplierCode(product.getSupplier().getSupplierCode())
+                            .supplierName(product.getSupplier().getSupplierName())
+                            .memo(product.getSupplier().getMemo())
+                            .email(product.getSupplier().getEmail())
+                            .address(product.getSupplier().getAddress())
+                            .phoneNumber(product.getSupplier().getPhoneNumber())
+                            .supplierId(product.getSupplier().getId())
+                            .build())
+                    .variantList(variantDTOs)
+                    .status(product.getStatus())
+                    .registStamp(product.getRegistStamp())
+                    .updateUser(product.getUpdateUser())
+                    .build());
         }
         return new RestResponsePage<ProductDTO>(productDTOS, 1, productList.size(), productList.size(), 1);
     }
