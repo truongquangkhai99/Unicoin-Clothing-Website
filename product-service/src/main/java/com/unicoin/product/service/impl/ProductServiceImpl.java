@@ -98,23 +98,23 @@ public class ProductServiceImpl implements ProductService {
             List<Image> imageMains = imageRepository.findAllByProductAndImageType(item, CommonsUtils.TYPE_MAIN);
             List<Image> imageSubs = imageRepository.findAllByProductAndImageType(item, CommonsUtils.TYPE_SUB);
             ImageDTO imageMainDTO = new ImageDTO();
-                    if (imageMains.size() > 0){
-                        imageMainDTO = ImageDTO.builder()
-                                .imageId(imageMains.get(0).getId())
-                                .imageUrl(imageMains.get(0).getImageUrl())
-                                .build();
-                    }else {
-                        imageMainDTO = null;
-                    }
+            if (imageMains.size() > 0) {
+                imageMainDTO = ImageDTO.builder()
+                        .imageId(imageMains.get(0).getId())
+                        .imageUrl(imageMains.get(0).getImageUrl())
+                        .build();
+            } else {
+                imageMainDTO = null;
+            }
             List<ImageDTO> imageSubDTOs = new ArrayList<>();
-                    if (imageSubs.size() > 0){
-                        imageSubDTOs = imageSubs.stream().map(
-                                image -> ImageDTO.builder()
-                                        .imageId(image.getId())
-                                        .imageUrl(image.getImageUrl())
-                                        .build()
-                        ).collect(Collectors.toList());
-                    }
+            if (imageSubs.size() > 0) {
+                imageSubDTOs = imageSubs.stream().map(
+                        image -> ImageDTO.builder()
+                                .imageId(image.getId())
+                                .imageUrl(image.getImageUrl())
+                                .build()
+                ).collect(Collectors.toList());
+            }
             ProductDTO productDTO = ProductDTO.builder()
                     .productId(item.getId())
                     .productCode(item.getProductCode())
@@ -147,7 +147,7 @@ public class ProductServiceImpl implements ProductService {
         if (optionalProduct.isEmpty())
             throw new AppException(ExceptionCode.PRODUCT_IS_NOT_EXIST);
 
-        Optional<Option> optionalOption = optionRepository.findOptionByOptionName(form.getOption().getOptionName());
+        Optional<Option> optionalOption = optionRepository.findOptionByOptionNameAndAndOptionCode(form.getOption().getOptionName(), form.getOption().getOptionCode());
         Option option = new Option();
         if (optionalOption.isEmpty()) {
             //save option of product to db
@@ -235,15 +235,25 @@ public class ProductServiceImpl implements ProductService {
                     Image imageMain = imagesMains.get(0);
                     imageMain.setImageUrl(image.getImageUrl());
                     imageRepository.save(imageMain);
+                } else {
+                    imageRepository.save(Image.builder()
+                            .product(optionalProduct.get())
+                            .imageUrl(image.getImageUrl())
+                            .imageType(image.getImageType())
+                            .registStamp(new Timestamp(new Date().getTime()))
+                            .status(true)
+                            .build());
                 }
             } else {
-                imageRepository.save(Image.builder()
-                        .imageUrl(image.getImageUrl())
-                        .imageType(image.getImageType())
-                        .status(true)
-                        .product(optionalProduct.get())
-                        .registStamp(new Timestamp(new Date().getTime()))
-                        .build());
+                if (!imageRepository.existsByImageUrlAndImageType(image.getImageUrl(), CommonsUtils.TYPE_SUB)) {
+                    imageRepository.save(Image.builder()
+                            .imageUrl(image.getImageUrl())
+                            .imageType(image.getImageType())
+                            .status(true)
+                            .product(optionalProduct.get())
+                            .registStamp(new Timestamp(new Date().getTime()))
+                            .build());
+                }
             }
         }
     }

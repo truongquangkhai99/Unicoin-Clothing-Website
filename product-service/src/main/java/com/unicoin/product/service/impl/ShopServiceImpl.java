@@ -6,7 +6,6 @@ import com.unicoin.product.dto.*;
 import com.unicoin.product.entity.Image;
 import com.unicoin.product.entity.Product;
 import com.unicoin.product.entity.Variant;
-import com.unicoin.product.entity.VariantValue;
 import com.unicoin.product.repository.ImageRepository;
 import com.unicoin.product.repository.ProductRepository;
 import com.unicoin.product.repository.VariantRepository;
