@@ -1,19 +1,15 @@
-package com.unicoin.order.service.impl;
+package com.unicoin.product.service.impl;
 
-import com.mysql.cj.log.Log;
-import com.unicoin.clients.form.orderform.OrderRequest;
-import com.unicoin.order.config.ImportOrdersDTO;
-import com.unicoin.order.entity.ImportOrderDetail;
-import com.unicoin.order.entity.ImportOrders;
-import com.unicoin.order.entity.Order;
-import com.unicoin.order.ex.AppException;
-import com.unicoin.order.ex.ExceptionCode;
-import com.unicoin.order.form.AddImportOrderDetail;
-import com.unicoin.order.repository.ImportOrderDetailRepository;
-import com.unicoin.order.repository.ImportOrdersRepository;
-import com.unicoin.order.service.OrderService;
+import com.unicoin.product.dto.ImportOrdersDTO;
+import com.unicoin.product.entity.ImportOrderDetail;
+import com.unicoin.product.entity.ImportOrders;
+import com.unicoin.product.ex.AppException;
+import com.unicoin.product.ex.ExceptionCode;
+import com.unicoin.product.form.AddImportOrderDetail;
+import com.unicoin.product.repository.ImportOrderDetailRepository;
+import com.unicoin.product.repository.ImportOrdersRepository;
+import com.unicoin.product.service.ImportOrdersService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,13 +20,13 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-public class OrderServiceImpl implements OrderService {
-
+public class ImportOrdersServiceImpl implements ImportOrdersService {
     @Autowired
     ImportOrdersRepository importOrdersRepository;
 
     @Autowired
     ImportOrderDetailRepository importOrderDetailRepository;
+
 
     @Override
     public ImportOrdersDTO viewsImportOrders() {
@@ -64,23 +60,12 @@ public class OrderServiceImpl implements OrderService {
             }
             log.info("end add");
         }else {
-                throw  new AppException(ExceptionCode.IMPORTORDERSID_NOT_EXIST);
+            throw  new AppException(ExceptionCode.IMPORTORDERSDETAILID_NOT_EXIST);
         }
     }
 
     @Override
-    public void saveOrder(OrderRequest request) {
-        Order order = Order.builder()
-                .createAt(request.getCreateAt())
-                .customerFistName(request.getCustomerFistName())
-                .build();
-        OrderRequest orderRequest = new OrderRequest();
-        BeanUtils.copyProperties(order, orderRequest);
-
-    }
-
-    @Override
-    public void updateOrderDetail(Long orderId , Integer status) {
+    public void updateOrderDetail(Long orderId, Integer status) {
         log.info("start update set status orders");
         Optional<ImportOrders> dataCheck = importOrdersRepository.findById(orderId);
         if(dataCheck.isPresent()){
@@ -88,9 +73,19 @@ public class OrderServiceImpl implements OrderService {
             importOrders.setStatus(status);
             importOrdersRepository.save(importOrders);
         }else {
-            throw  new AppException(ExceptionCode.IMPORTORDERSID_NOT_EXIST);
+            throw  new AppException(ExceptionCode.IMPORTORDERSDETAILID_NOT_EXIST);
         }
         log.info("end update status");
     }
 
+    @Override
+    public void deleteOrderDetail(Long id) {
+        log.info("start delete orderDetail");
+        Optional<ImportOrderDetail> dataCheck=importOrderDetailRepository.findById(id);
+        if(dataCheck.isPresent()){
+            importOrderDetailRepository.deleteById(id);
+        }else {
+            throw  new AppException(ExceptionCode.IMPORTORDERSDETAILID_NOT_EXIST);
+        }
+    }
 }
