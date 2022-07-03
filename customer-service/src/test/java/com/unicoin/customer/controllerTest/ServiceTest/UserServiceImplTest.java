@@ -15,11 +15,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 public class UserServiceImplTest {
     @InjectMocks
     private UserServiceImpl mockService;
@@ -27,7 +28,7 @@ public class UserServiceImplTest {
     @Mock
     UserRepository mockRepository;
 
-    private BuildObjectUtils buildObjectUtils;
+    private BuildObjectUtils buildObjectUtils = new BuildObjectUtils();
 
     @BeforeEach
     public void setup(){

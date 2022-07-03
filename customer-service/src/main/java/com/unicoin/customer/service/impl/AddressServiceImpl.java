@@ -33,19 +33,12 @@ public class AddressServiceImpl implements AddressService {
     UserRepository userRepository;
 
     @Override
-    public RestResponsePage<AddressDTO> viewsAddress(Integer page, Integer size, Long userId) {
+    public RestResponsePage<Address> viewsAddress(Long userId) {
         log.info("start views address by userId");
-        Pageable pageable = PageRequest.of((page -1), size );
-        Page<Address> pageDto = addressRepository.findAllByUser(userId , pageable);
-        if(pageDto.isEmpty()) throw new AppException(ExceptionCode.USER_ID_NOT_EXIST);
-        List<AddressDTO> listDto = pageDto.toList().stream().map(item ->AddressDTO.builder()
-                .addressId(item.getAddressId())
-                .line(item.getLine())
-                .status(item.getStatus())
-                .registStamp(item.getRegistStamp())
-                .build()).collect(Collectors.toList());
+        Optional<User> data = userRepository.findById(userId);
+        List<Address> listAddress = addressRepository.findAllByUserId(data.get());
         log.info("end views");
-        return new  RestResponsePage<>(listDto , page , size , pageDto.getTotalElements() , pageDto.getTotalPages());
+        return new  RestResponsePage<>(listAddress , 1 , listAddress.size() , listAddress.size() , 1);
     }
 
     @Override

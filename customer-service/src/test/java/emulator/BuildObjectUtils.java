@@ -117,18 +117,45 @@ public class BuildObjectUtils {
 
     public AddAddressForm addAddressForm(){
         AddAddressForm addAddressForm = new AddAddressForm();
-        addAddressForm.setLine("35 le duc tho");
+        addAddressForm.setLine("36 le duc tho");
         addAddressForm.setUserId(1l);
         return addAddressForm;
     }
 
+    public Address addressDataEntity(){
+        Address address = new Address();
+        address.setAddressId(1l);
+        address.setUserId(UserData());
+        address.setLine("35 le duc tho");
+        address.setStatus(true);
+        Timestamp timestamp = Timestamp.valueOf("2022-06-26 01:05:09");
+        address.setRegistStamp(timestamp);
+        return address;
+    }
+
+    public List<Address> buildListAddressEntity(){
+        List<Address>  data = new ArrayList<>();
+        data.add(addressDataEntity());
+        return data;
+    }
+
+    public Page<Address> buildPageAddressEntity(){
+        Pageable pageable = PageRequest.of(1 , 1);
+        Page<Address> data = new PageImpl<>(buildListAddressEntity(),pageable,buildListAddressEntity().size());
+        return data;
+    }
     public List<AddressDTO> buildListAddress(){
         List<AddressDTO> data = new ArrayList<>();
         data.add(addressData());
         return  data;
     }
 
-    public RestResponsePage<AddressDTO> buildPageAddress(){
-       return  new RestResponsePage<AddressDTO>(buildListAddress(),1,1,1,1);
+    public RestResponsePage<Address> buildPageAddress(){
+       return  new RestResponsePage<Address>(buildListAddressEntity(),1,1,1,1);
+    }
+
+    public Optional<User> buildOpUser(){
+        Optional<User> data = Optional.of(UserData());
+        return data;
     }
 }
