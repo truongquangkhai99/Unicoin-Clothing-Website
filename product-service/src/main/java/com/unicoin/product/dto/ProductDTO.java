@@ -14,7 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductDTO {
-    private Long id;
+
+    private Long productId;
 
     private String productName;
 
@@ -22,11 +23,19 @@ public class ProductDTO {
 
     private SupplierDTO supplier;
 
-    private List<ImageDTO> images;
+    private List<ImageDTO> imageSubs;
+
+    private ImageDTO imageMain;
+
+    private List<VariantDTO> variantList;
 
     private Timestamp registStamp;
 
     private Long updateUser;
+
+    private Long priceMax;
+
+    private Long priceMin;
 
     private Integer status;
 }

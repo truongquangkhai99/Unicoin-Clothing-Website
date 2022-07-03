@@ -1,14 +1,12 @@
 package com.unicoin.product.service.impl;
 
+import com.unicoin.product.common.CommonsUtils;
 import com.unicoin.product.common.RestResponsePage;
 import com.unicoin.product.dto.*;
 import com.unicoin.product.entity.*;
 import com.unicoin.product.ex.AppException;
 import com.unicoin.product.ex.ExceptionCode;
-import com.unicoin.product.form.AddOptionValueForm;
-import com.unicoin.product.form.AddProductForm;
-import com.unicoin.product.form.UpdatePriceForm;
-import com.unicoin.product.form.ValueForm;
+import com.unicoin.product.form.*;
 import com.unicoin.product.repository.*;
 import com.unicoin.product.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
@@ -94,31 +92,50 @@ public class ProductServiceImpl implements ProductService {
     public RestResponsePage<ProductDTO> viewProduct() {
         log.info("Start viewProduct");
         List<Product> productList = productRepository.getAllByStatus(1);
-        List<ProductDTO> dtoList = productList.stream().map(item ->
-                ProductDTO.builder()
-                        .id(item.getId())
-                        .productCode(item.getProductCode())
-                        .productName(item.getProductName())
-                        .registStamp(item.getRegistStamp())
-                        .status(item.getStatus())
-                        .supplier(SupplierDTO.builder()
-                                .supplierId(item.getSupplier().getId())
-                                .supplierName(item.getSupplier().getSupplierName())
-                                .supplierCode(item.getSupplier().getSupplierCode())
-                                .address(item.getSupplier().getAddress())
-                                .email(item.getSupplier().getEmail())
-                                .memo(item.getSupplier().getMemo())
-                                .phoneNumber(item.getSupplier().getPhoneNumber())
-                                .build())
-                        .updateUser(item.getUpdateUser())
-                        .images(imageRepository.findAllByProduct(item).stream().map(
-                                        image -> ImageDTO.builder()
-                                                .imageId(image.getId())
-                                                .imageUrl(image.getImageUrl())
-                                                .build()
-                                ).collect(Collectors.toList())
-                        )
-                        .build()).collect(Collectors.toList());
+
+        List<ProductDTO> dtoList = new ArrayList<>();
+        for (Product item : productList) {
+            List<Image> imageMains = imageRepository.findAllByProductAndImageType(item, CommonsUtils.TYPE_MAIN);
+            List<Image> imageSubs = imageRepository.findAllByProductAndImageType(item, CommonsUtils.TYPE_SUB);
+            ImageDTO imageMainDTO = new ImageDTO();
+            if (imageMains.size() > 0) {
+                imageMainDTO = ImageDTO.builder()
+                        .imageId(imageMains.get(0).getId())
+                        .imageUrl(imageMains.get(0).getImageUrl())
+                        .build();
+            } else {
+                imageMainDTO = null;
+            }
+            List<ImageDTO> imageSubDTOs = new ArrayList<>();
+            if (imageSubs.size() > 0) {
+                imageSubDTOs = imageSubs.stream().map(
+                        image -> ImageDTO.builder()
+                                .imageId(image.getId())
+                                .imageUrl(image.getImageUrl())
+                                .build()
+                ).collect(Collectors.toList());
+            }
+            ProductDTO productDTO = ProductDTO.builder()
+                    .productId(item.getId())
+                    .productCode(item.getProductCode())
+                    .productName(item.getProductName())
+                    .registStamp(item.getRegistStamp())
+                    .status(item.getStatus())
+                    .supplier(SupplierDTO.builder()
+                            .supplierId(item.getSupplier().getId())
+                            .supplierName(item.getSupplier().getSupplierName())
+                            .supplierCode(item.getSupplier().getSupplierCode())
+                            .address(item.getSupplier().getAddress())
+                            .email(item.getSupplier().getEmail())
+                            .memo(item.getSupplier().getMemo())
+                            .phoneNumber(item.getSupplier().getPhoneNumber())
+                            .build())
+                    .updateUser(item.getUpdateUser())
+                    .imageMain(imageMainDTO)
+                    .imageSubs(imageSubDTOs)
+                    .build();
+            dtoList.add(productDTO);
+        }
         log.info("End viewProduct");
         return new RestResponsePage<>(dtoList, 1, productList.size(), productList.size(), 1);
     }
@@ -130,7 +147,7 @@ public class ProductServiceImpl implements ProductService {
         if (optionalProduct.isEmpty())
             throw new AppException(ExceptionCode.PRODUCT_IS_NOT_EXIST);
 
-        Optional<Option> optionalOption = optionRepository.findOptionByOptionName(form.getOption().getOptionName());
+        Optional<Option> optionalOption = optionRepository.findOptionByOptionNameAndAndOptionCode(form.getOption().getOptionName(), form.getOption().getOptionCode());
         Option option = new Option();
         if (optionalOption.isEmpty()) {
             //save option of product to db
@@ -205,18 +222,39 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void addImagesForProduct(Long productId, List<String> imageUrls) {
+    public void addImagesForProduct(Long productId, List<AddImageForm> imageUrls) {
         Optional<Product> optionalProduct = productRepository.findById(productId);
         if (optionalProduct.isEmpty())
             throw new AppException(ExceptionCode.PRODUCT_IS_NOT_EXIST);
 
-        for (String imageUrl : imageUrls) {
-            imageRepository.save(Image.builder()
-                    .imageUrl(imageUrl)
-                    .status(true)
-                    .product(optionalProduct.get())
-                    .registStamp(new Timestamp(new Date().getTime()))
-                    .build());
+
+        for (AddImageForm image : imageUrls) {
+            if (CommonsUtils.TYPE_MAIN.equals(image.getImageType())) {
+                List<Image> imagesMains = imageRepository.findAllByProductAndImageType(optionalProduct.get(), CommonsUtils.TYPE_MAIN);
+                if (imagesMains.size() > 0) {
+                    Image imageMain = imagesMains.get(0);
+                    imageMain.setImageUrl(image.getImageUrl());
+                    imageRepository.save(imageMain);
+                } else {
+                    imageRepository.save(Image.builder()
+                            .product(optionalProduct.get())
+                            .imageUrl(image.getImageUrl())
+                            .imageType(image.getImageType())
+                            .registStamp(new Timestamp(new Date().getTime()))
+                            .status(true)
+                            .build());
+                }
+            } else {
+                if (!imageRepository.existsByImageUrlAndImageType(image.getImageUrl(), CommonsUtils.TYPE_SUB)) {
+                    imageRepository.save(Image.builder()
+                            .imageUrl(image.getImageUrl())
+                            .imageType(image.getImageType())
+                            .status(true)
+                            .product(optionalProduct.get())
+                            .registStamp(new Timestamp(new Date().getTime()))
+                            .build());
+                }
+            }
         }
     }
 

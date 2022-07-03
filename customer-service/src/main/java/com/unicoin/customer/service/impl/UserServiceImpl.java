@@ -1,6 +1,7 @@
 package com.unicoin.customer.service.impl;
 
-import com.unicoin.customer.common.JwtResponse;
+import com.unicoin.customer.dto.JwtRequest;
+import com.unicoin.customer.dto.JwtResponse;
 import com.unicoin.customer.common.RestResponsePage;
 import com.unicoin.customer.dto.UserDTO;
 import com.unicoin.customer.entity.Role;
@@ -87,7 +88,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public JwtResponse login() {
+    public JwtResponse login(JwtRequest jwtRequest) {
+        
         return null;
     }
 

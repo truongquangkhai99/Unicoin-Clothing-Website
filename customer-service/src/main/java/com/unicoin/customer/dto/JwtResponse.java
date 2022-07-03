@@ -1,4 +1,4 @@
-package com.unicoin.customer.common;
+package com.unicoin.customer.dto;
 
 import lombok.Builder;
 import lombok.Getter;
