@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/orders")
 @RequestMapping("/admin/orders")
 @Slf4j
 public class OrderController {
@@ -19,6 +20,10 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
+
+    @PostMapping("")
+    public ApiResponse createOrder(@RequestBody OrderRequest request){
+        orderService.saveOrder(request);
     @GetMapping("")
     public ApiResponse viewsImportOrders(){
         return  new SuccessResponse(orderService.viewsImportOrders());

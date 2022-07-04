@@ -19,7 +19,8 @@ public enum ExceptionCode {
     OPTIONVALUE_IS_NOT_EXIST(2400, "error2400"),
     OPTIONVALUE_IS_USING_YOU_CANNOT_DELETE(2401, "error2401"),
     VARIANT_IS_NOT_EXIST(2500, "error2500"),
-
+    EXPORTORDERS_NOT_EXIST(4000, "error4000");
+    VARIANT_IS_NOT_EXIST(2500, "error2500"),
     IMPORTORDERSDETAILID_NOT_EXIST(3000,"error3000");
 
     private int status;
