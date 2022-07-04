@@ -1,10 +1,7 @@
 package com.unicoin.product.controller.admin;
 
 
-import com.unicoin.product.form.AddOptionValueForm;
-import com.unicoin.product.form.AddOptionListForm;
-import com.unicoin.product.form.AddProductForm;
-import com.unicoin.product.form.UpdatePriceForm;
+import com.unicoin.product.form.*;
 import com.unicoin.product.resstresponse.ApiResponse;
 import com.unicoin.product.resstresponse.SuccessResponse;
 import com.unicoin.product.service.OptionService;
@@ -73,7 +70,7 @@ public class ProductController {
 
     @PostMapping("/add-image/{productId}")
     public ApiResponse addImagesForProduct(@PathVariable Long productId,
-                                           @RequestBody List<String> imageUrls){
+                                           @RequestBody List<AddImageForm> imageUrls){
         productService.addImagesForProduct(productId, imageUrls);
         return new SuccessResponse();
     }

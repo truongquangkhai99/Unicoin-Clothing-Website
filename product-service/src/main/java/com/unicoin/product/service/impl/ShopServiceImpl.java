@@ -1,16 +1,15 @@
 package com.unicoin.product.service.impl;
 
+import com.unicoin.product.common.CommonsUtils;
 import com.unicoin.product.common.RestResponsePage;
-import com.unicoin.product.dto.ImageDTO;
-import com.unicoin.product.dto.ProductShopDTO;
-import com.unicoin.product.dto.SupplierDTO;
-import com.unicoin.product.dto.VariantDTO;
+import com.unicoin.product.dto.*;
 import com.unicoin.product.entity.Image;
 import com.unicoin.product.entity.Product;
 import com.unicoin.product.entity.Variant;
 import com.unicoin.product.repository.ImageRepository;
 import com.unicoin.product.repository.ProductRepository;
 import com.unicoin.product.repository.VariantRepository;
+import com.unicoin.product.repository.VariantValueRepository;
 import com.unicoin.product.service.ShopService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,22 +33,41 @@ public class ShopServiceImpl implements ShopService {
     @Autowired
     ImageRepository imageRepository;
 
+    @Autowired
+    VariantValueRepository variantValueRepository;
+
     @Override
-    public RestResponsePage<ProductShopDTO> getAllProduct() {
+    public RestResponsePage<ProductDTO> getAllProduct() {
         List<Product> productList = productRepository.getAllByStatus(1);
-        List<ProductShopDTO> productShopDTOList = new ArrayList<>();
+        List<ProductDTO> productDTOS = new ArrayList<>();
         for (Product product :
                 productList) {
             List<Variant> variantList = variantRepository.findAllByProduct(product, Sort.by(Sort.Direction.DESC, "price"));
-            List<Image> images = imageRepository.findAllByProduct(product);
-            List<ImageDTO> imageDTOS = images.stream().map(item ->
-                    ImageDTO.builder()
-                            .imageId(item.getId())
-                            .imageUrl(item.getImageUrl())
-                            .build())
-                    .collect(Collectors.toList());
+            List<Image> imageSubs = imageRepository.findAllByProductAndImageType(product, CommonsUtils.TYPE_SUB);
+            List<Image> imageMains = imageRepository.findAllByProductAndImageType(product, CommonsUtils.TYPE_MAIN);
+            List<ImageDTO> imageDTOS = new ArrayList<>();
+            if (imageSubs.size() > 0) {
+                imageDTOS = imageSubs.stream().map(item ->
+                                ImageDTO.builder()
+                                        .imageId(item.getId())
+                                        .imageUrl(item.getImageUrl())
+                                        .imageType(item.getImageType())
+                                        .build())
+                        .collect(Collectors.toList());
+            }
+            ImageDTO imageMain = new ImageDTO();
+            if (imageMains.size() > 0) {
+                imageMain = ImageDTO.builder()
+                        .imageId(imageMains.get(0).getId())
+                        .imageUrl(imageMains.get(0).getImageUrl())
+                        .imageType(imageMains.get(0).getImageType())
+                        .build();
+            } else {
+                imageMain = null;
+            }
+            List<VariantDTO> variantDTOs = new ArrayList<>();
             if (variantList.size() > 0) {
-                List<VariantDTO> variantDTOs = variantList.stream().map(item ->
+                variantDTOs = variantList.stream().map(item ->
                         VariantDTO.builder()
                                 .variantName(item.getVariantName())
                                 .variantId(item.getId())
@@ -57,25 +75,40 @@ public class ShopServiceImpl implements ShopService {
                                 .price(item.getPrice())
                                 .qty(item.getQty())
                                 .skuID(item.getSkuId())
+                                .option(variantValueRepository.findAllByVariant(item).stream().map(
+                                        value -> OptionVariantDTO.builder()
+                                                .optionId(value.getOption().getId())
+                                                .optionName(value.getOption().getOptionName())
+                                                .optionCode(value.getOption().getOptionCode())
+                                                .optionValueId(value.getOptionValue().getId())
+                                                .optionValue(value.getOptionValue().getOptionValue())
+                                                .build()
+                                ).collect(Collectors.toList()))
                                 .build()).collect(Collectors.toList());
-                productShopDTOList.add(ProductShopDTO.builder()
-                        .productId(product.getId())
-                        .priceMax(variantList.get(0).getPrice())
-                        .priceMin(variantList.get(variantList.size() - 1).getPrice())
-                        .images(imageDTOS)
-                        .supplier(SupplierDTO.builder()
-                                .supplierCode(product.getSupplier().getSupplierCode())
-                                .supplierName(product.getSupplier().getSupplierName())
-                                .memo(product.getSupplier().getMemo())
-                                .email(product.getSupplier().getEmail())
-                                .address(product.getSupplier().getAddress())
-                                .phoneNumber(product.getSupplier().getPhoneNumber())
-                                .supplierId(product.getSupplier().getId())
-                                .build())
-                        .variantList(variantDTOs)
-                        .build());
             }
+            productDTOS.add(ProductDTO.builder()
+                    .productId(product.getId())
+                    .productName(product.getProductName())
+                    .productCode(product.getProductCode())
+                    .priceMax(variantList.size() > 0 ? variantList.get(0).getPrice() : 0)
+                    .priceMin(variantList.size() > 0 ? variantList.get(variantList.size() - 1).getPrice() : 0)
+                    .imageSubs(imageDTOS)
+                    .imageMain(imageMain)
+                    .supplier(SupplierDTO.builder()
+                            .supplierCode(product.getSupplier().getSupplierCode())
+                            .supplierName(product.getSupplier().getSupplierName())
+                            .memo(product.getSupplier().getMemo())
+                            .email(product.getSupplier().getEmail())
+                            .address(product.getSupplier().getAddress())
+                            .phoneNumber(product.getSupplier().getPhoneNumber())
+                            .supplierId(product.getSupplier().getId())
+                            .build())
+                    .variantList(variantDTOs)
+                    .status(product.getStatus())
+                    .registStamp(product.getRegistStamp())
+                    .updateUser(product.getUpdateUser())
+                    .build());
         }
-        return new RestResponsePage<ProductShopDTO>(productShopDTOList, 1, productList.size(), productList.size(), 1);
+        return new RestResponsePage<ProductDTO>(productDTOS, 1, productList.size(), productList.size(), 1);
     }
 }

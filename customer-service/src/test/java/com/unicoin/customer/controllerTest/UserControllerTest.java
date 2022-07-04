@@ -107,15 +107,15 @@ public class UserControllerTest {
         assertEquals(200 , status);
     }
 
-    @Test
-    public void loginTest_ShouldReturnSuccess() throws Exception {
-        mockUserService = mock(UserService.class);
-        when(mockUserService.login()).thenReturn(null);
-        String url = "/admin/customer/login";
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(url).contentType(MediaType.APPLICATION_JSON)).andReturn();
-        int status =  result.getResponse().getStatus();
-        assertEquals(200 , status);
-    }
+//    @Test
+//    public void loginTest_ShouldReturnSuccess() throws Exception {
+//        mockUserService = mock(UserService.class);
+//        when(mockUserService.login()).thenReturn(null);
+//        String url = "/admin/customer/login";
+//        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(url).contentType(MediaType.APPLICATION_JSON)).andReturn();
+//        int status =  result.getResponse().getStatus();
+//        assertEquals(200 , status);
+//    }
 
     @Test
     public void getRoleTest_ShouldReturnSuccess()  throws Exception {

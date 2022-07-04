@@ -28,6 +28,9 @@ public class Image {
     @Column(name = "image_url", nullable = false, length = 10000)
     private String imageUrl;
 
+    @Column(name = "image_type", nullable = false, length = 10000)
+    private String imageType;
+
     @Column(name = "regist_stamp", nullable = false)
     private Timestamp registStamp;
 

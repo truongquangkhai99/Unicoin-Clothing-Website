@@ -10,8 +10,8 @@ import java.util.Date;
 @Setter
 @Builder
 public class Order {
-
     private Long id;
     private String customerFistName;
     private Date createAt;
+
 }

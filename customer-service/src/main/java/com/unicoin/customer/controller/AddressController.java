@@ -16,13 +16,9 @@ public class AddressController {
     @Autowired
     AddressService addressService;
 
-    @GetMapping("")
-    public ApiResponse viewsAddress(@RequestParam(value = "size", defaultValue = "10") Integer size,
-                                    @RequestParam(value = "page", defaultValue = "1") Integer page,
-                                    @RequestParam(value = "userId", required = false) Long userId
-
-    ){
-       return new SuccessResponse(addressService.viewsAddress(page , size , userId)) ;
+    @GetMapping("/{userId}")
+    public ApiResponse viewsAddress(@PathVariable(value = "userId", required = true) Long userId){
+       return new SuccessResponse(addressService.viewsAddress(userId)) ;
     }
 
     @PostMapping("/add")

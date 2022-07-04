@@ -1,24 +1,29 @@
 package com.unicoin.customer.controller.admin;
 
+import com.unicoin.customer.dto.JwtRequest;
 import com.unicoin.customer.dto.UserDTO;
 import com.unicoin.customer.form.AddCustomerForm;
 import com.unicoin.customer.form.AddRoleForm;
 import com.unicoin.customer.resstresponse.ApiResponse;
 import com.unicoin.customer.resstresponse.SuccessResponse;
 import com.unicoin.customer.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/admin/customer")
+@Slf4j
 public class UserController {
 
     @Autowired
     UserService userService;
 
     @GetMapping("")
+    @PreAuthorize("hasAnyRole('adad')")
     public ApiResponse viewCustomer(@RequestParam(value = "size", defaultValue = "10") Integer size,
                                     @RequestParam(value = "page", defaultValue = "1") Integer page,
                                     @RequestParam(value = "phoneNumber", required = false) String phoneNumber,
@@ -34,8 +39,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ApiResponse login() {
-        return new SuccessResponse(userService.login());
+    public ApiResponse login(@RequestBody JwtRequest jwtRequest) {
+        return new SuccessResponse(userService.login(jwtRequest));
     }
 
     @PutMapping("/update/{id}")

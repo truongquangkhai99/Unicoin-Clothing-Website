@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 @Data
 @Builder
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PRODUCT_ID", nullable = false)
