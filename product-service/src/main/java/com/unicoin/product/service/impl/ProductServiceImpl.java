@@ -405,7 +405,7 @@ public class ProductServiceImpl implements ProductService {
                         for (int j = 1; j < variantSkuIdArr.length; j++) {
                             String optionCode = variantSkuIdArr[j].substring(0, 2);
                             String optionValueId = variantSkuIdArr[j].substring(2);
-                            Optional<Option> optional = optionRepository.findOptionByOptionCode(optionCode);
+                            Optional<Option> optional = optionRepository.findOptionByOptionCodeAndProduct(optionCode, product);
                             if (optional.isEmpty())
                                 throw new AppException(ExceptionCode.OPTION_IS_NOT_EXIST);
                             Optional<OptionValue> valueOptional = optionValueRepository.findById(Long.valueOf(optionValueId));
@@ -484,7 +484,7 @@ public class ProductServiceImpl implements ProductService {
                                 for (int j = 1; j < (optionCodes.length - 1); j++) {
                                     String optionCode = optionCodes[j].substring(0, 2);
                                     String optionValueId = optionCodes[j].substring(2);
-                                    Optional<Option> optional = optionRepository.findOptionByOptionCode(optionCode);
+                                    Optional<Option> optional = optionRepository.findOptionByOptionCodeAndProduct(optionCode, product);
                                     if (optional.isEmpty())
                                         throw new AppException(ExceptionCode.OPTION_IS_NOT_EXIST);
                                     Optional<OptionValue> valueOptional = optionValueRepository.findById(Long.valueOf(optionValueId));
