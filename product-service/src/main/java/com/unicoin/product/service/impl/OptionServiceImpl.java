@@ -47,6 +47,8 @@ public class OptionServiceImpl implements OptionService {
     @Override
     public RestResponsePage<OptionListDTO> addOptionList(AddOptionListForm form) {
         log.info("Start addOption {}", form);
+        form.setOptionName(form.getOptionName().toUpperCase());
+        form.setOptionCode(form.getOptionCode().toUpperCase());
         if (optionListRepository.existsOptionListByOptionName(form.getOptionName()))
             throw new AppException(ExceptionCode.OPTIONLIST_NAME_IS_EXIST);
 

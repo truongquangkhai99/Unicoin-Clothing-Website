@@ -69,7 +69,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addCustomer(AddCustomerForm addCustomerForm) {
         log.info("start addCustomer");
-        if(addCustomerForm.getPassword() == null){ throw  new AppException(ExceptionCode.PASSWORD_NOT_NULL);}
+        if (addCustomerForm.getPassword() == null) {
+            throw new AppException(ExceptionCode.PASSWORD_NOT_NULL);
+        }
         Optional<User> checkPhone = userRepository.findByPhoneNumber(addCustomerForm.getPhoneNumber());
         if (checkPhone.isPresent()) {
             throw new AppException(ExceptionCode.PHONENUMBER_ALREADY_EXIST);

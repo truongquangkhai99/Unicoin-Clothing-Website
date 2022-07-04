@@ -87,7 +87,7 @@ public class ShopServiceImpl implements ShopService {
                                 .build()).collect(Collectors.toList());
             }
             productDTOS.add(ProductDTO.builder()
-                    .productId(product.getId())
+                    .id(product.getId())
                     .productName(product.getProductName())
                     .productCode(product.getProductCode())
                     .priceMax(variantList.size() > 0 ? variantList.get(0).getPrice() : 0)

@@ -17,7 +17,8 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(value = "/admin/customer")
 @Slf4j
-public class UserController {
+@CrossOrigin("*")
+public class    UserController {
 
     @Autowired
     UserService userService;
@@ -26,7 +27,7 @@ public class UserController {
     @PreAuthorize("hasAnyRole('adad')")
     public ApiResponse viewCustomer(@RequestParam(value = "size", defaultValue = "10") Integer size,
                                     @RequestParam(value = "page", defaultValue = "1") Integer page,
-                                    @RequestParam(value = "phoneNymber", required = false) String phoneNumber,
+                                    @RequestParam(value = "phoneNumber", required = false) String phoneNumber,
                                     @RequestParam(value = "fullName", required = false) String fullName,
                                     @RequestParam(value = "email", required = false) String email) {
         return new SuccessResponse(userService.viewCustomer(page, size, phoneNumber, fullName, email));
