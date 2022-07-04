@@ -147,7 +147,7 @@ public class ProductServiceImpl implements ProductService {
         if (optionalProduct.isEmpty())
             throw new AppException(ExceptionCode.PRODUCT_IS_NOT_EXIST);
 
-        Optional<Option> optionalOption = optionRepository.findOptionByOptionNameAndAndOptionCodeAndProduct(form.getOption().getOptionName(), form.getOption().getOptionCode(), optionalProduct.get());
+        Optional<Option> optionalOption = optionRepository.findOptionByOptionNameAndOptionCodeAndProduct(form.getOption().getOptionName(), form.getOption().getOptionCode(), optionalProduct.get());
         Option option = new Option();
         if (optionalOption.isEmpty()) {
             //save option of product to db
