@@ -147,7 +147,7 @@ public class ProductServiceImpl implements ProductService {
         if (optionalProduct.isEmpty())
             throw new AppException(ExceptionCode.PRODUCT_IS_NOT_EXIST);
 
-        Optional<Option> optionalOption = optionRepository.findOptionByOptionNameAndAndOptionCodeAndProduct(form.getOption().getOptionName(), form.getOption().getOptionCode(), optionalProduct.get());
+        Optional<Option> optionalOption = optionRepository.findOptionByOptionNameAndOptionCodeAndProduct(form.getOption().getOptionName(), form.getOption().getOptionCode(), optionalProduct.get());
         Option option = new Option();
         if (optionalOption.isEmpty()) {
             //save option of product to db
@@ -405,7 +405,7 @@ public class ProductServiceImpl implements ProductService {
                         for (int j = 1; j < variantSkuIdArr.length; j++) {
                             String optionCode = variantSkuIdArr[j].substring(0, 2);
                             String optionValueId = variantSkuIdArr[j].substring(2);
-                            Optional<Option> optional = optionRepository.findOptionByOptionCode(optionCode);
+                            Optional<Option> optional = optionRepository.findOptionByOptionCodeAndProduct(optionCode, product);
                             if (optional.isEmpty())
                                 throw new AppException(ExceptionCode.OPTION_IS_NOT_EXIST);
                             Optional<OptionValue> valueOptional = optionValueRepository.findById(Long.valueOf(optionValueId));
@@ -484,7 +484,7 @@ public class ProductServiceImpl implements ProductService {
                                 for (int j = 1; j < (optionCodes.length - 1); j++) {
                                     String optionCode = optionCodes[j].substring(0, 2);
                                     String optionValueId = optionCodes[j].substring(2);
-                                    Optional<Option> optional = optionRepository.findOptionByOptionCode(optionCode);
+                                    Optional<Option> optional = optionRepository.findOptionByOptionCodeAndProduct(optionCode, product);
                                     if (optional.isEmpty())
                                         throw new AppException(ExceptionCode.OPTION_IS_NOT_EXIST);
                                     Optional<OptionValue> valueOptional = optionValueRepository.findById(Long.valueOf(optionValueId));

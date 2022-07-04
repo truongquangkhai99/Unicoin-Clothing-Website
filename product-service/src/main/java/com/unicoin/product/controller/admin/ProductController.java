@@ -13,7 +13,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin/product")
-@CrossOrigin("*")
 public class ProductController {
 
     @Autowired

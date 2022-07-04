@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface OptionRepository  extends JpaRepository<Option, Long> {
 
-    Optional<Option> findOptionByOptionNameAndAndOptionCodeAndProduct(String optionName, String optionCode, Product product);
-    Optional<Option> findOptionByOptionCode(String code);
+    Optional<Option> findOptionByOptionNameAndOptionCodeAndProduct(String optionName, String optionCode, Product product);
+    Optional<Option> findOptionByOptionCodeAndProduct(String code, Product product);
     List<Option> findAllByProduct(Product product);
 }
