@@ -116,7 +116,7 @@ public class ProductServiceImpl implements ProductService {
                 ).collect(Collectors.toList());
             }
             ProductDTO productDTO = ProductDTO.builder()
-                    .productId(item.getId())
+                    .id(item.getId())
                     .productCode(item.getProductCode())
                     .productName(item.getProductName())
                     .registStamp(item.getRegistStamp())
@@ -147,7 +147,7 @@ public class ProductServiceImpl implements ProductService {
         if (optionalProduct.isEmpty())
             throw new AppException(ExceptionCode.PRODUCT_IS_NOT_EXIST);
 
-        Optional<Option> optionalOption = optionRepository.findOptionByOptionNameAndAndOptionCode(form.getOption().getOptionName(), form.getOption().getOptionCode());
+        Optional<Option> optionalOption = optionRepository.findOptionByOptionNameAndAndOptionCodeAndProduct(form.getOption().getOptionName(), form.getOption().getOptionCode(), optionalProduct.get());
         Option option = new Option();
         if (optionalOption.isEmpty()) {
             //save option of product to db
