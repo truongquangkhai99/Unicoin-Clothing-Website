@@ -24,14 +24,14 @@ public class ExportOrderController {
     }
 
     @GetMapping("/viewsExportOrderDetail")
-    public ApiResponse viewsAllExportOrderDetail(@RequestParam(value="goodIssueId") Long goodIssueId){
-       return new SuccessResponse(exportOrderService.viewsAllExportOrderDetail(goodIssueId));
+    public ApiResponse viewsAllExportOrderDetail(@RequestParam(value="exportOrderId") Long exportOrderId){
+       return new SuccessResponse(exportOrderService.viewsAllExportOrderDetail(exportOrderId));
     }
 
     @PutMapping("/update")
-    public ApiResponse updateExportOrder(@RequestParam(value = "googIssueId") Long googIssueId, @RequestParam
+    public ApiResponse updateExportOrder(@RequestParam(value = "exportOrderId") Long exportOrderId, @RequestParam
             (value="status") Integer status){
-        exportOrderService.updateExportOrder(googIssueId,status);
+        exportOrderService.updateExportOrder(exportOrderId,status);
         return new SuccessResponse();
     }
 

@@ -57,7 +57,7 @@ public class ExportOrderServiceImpl implements ExportOrderService {
                     .variantId(i.getVariantId())
                     .quantity(i.getQuantity())
                     .price(i.getPrice())
-                    .goodIssueId(i.getGoodIssueId())
+                    .exportOrderId(i.getExportOrderId())
                     .build();
             exportOrderDetaiRepository.save(exportOrderDetail);
         }
@@ -66,9 +66,9 @@ public class ExportOrderServiceImpl implements ExportOrderService {
     }
 
     @Override
-    public List<ExportOrderDetail> viewsAllExportOrderDetail(Long goodIssueId) {
+    public List<ExportOrderDetail> viewsAllExportOrderDetail(Long exportOrderId) {
         log.info("Start views export orderDetail");
-        List<ExportOrderDetail> data= exportOrderDetaiRepository.findAllByGoodIssueId(goodIssueId);
+        List<ExportOrderDetail> data= exportOrderDetaiRepository.findAllByExportOrderId(exportOrderId);
         if(data.size()<0){
             throw  new AppException(ExceptionCode.EXPORTORDERS_NOT_EXIST);
         }
@@ -76,9 +76,9 @@ public class ExportOrderServiceImpl implements ExportOrderService {
     }
 
     @Override
-    public void updateExportOrder(Long goodIssueId, Integer status) {
+    public void updateExportOrder(Long exportOrderId, Integer status) {
         log.info("start update export order");
-        Optional<ExportOrder> check= exportOrderRepository.findById(goodIssueId);
+        Optional<ExportOrder> check= exportOrderRepository.findById(exportOrderId);
         if(check.isPresent()){
             ExportOrder exportOrder=check.get();
             exportOrder.setStatus(status);

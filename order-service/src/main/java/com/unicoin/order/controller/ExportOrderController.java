@@ -20,16 +20,16 @@ public class ExportOrderController {
         return new SuccessResponse(exportOrderService.viewsAllExportOrder(userId));
     }
 
-    @PostMapping("/add/{goods_issue_id}")
+    @PostMapping("/add/{export_order_id}")
     public ApiResponse createExportOrder(@RequestBody AddExportOrders addExportOrders ){
         exportOrderService.addExportOrderDetail(addExportOrders);
         return new SuccessResponse();
     }
 
     @PutMapping("/update")
-    public ApiResponse updateExportOrder(@RequestParam(value = "goodIssueId") Long goodIssueId, @RequestParam
+    public ApiResponse updateExportOrder(@RequestParam(value = "exportOrderId") Long exportOrderId, @RequestParam
             (value="status") Integer status){
-        exportOrderService.updateExportOrder(goodIssueId,status);
+        exportOrderService.updateExportOrder(exportOrderId,status);
         return new SuccessResponse();
     }
 }

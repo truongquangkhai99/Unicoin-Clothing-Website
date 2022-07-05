@@ -17,7 +17,7 @@ import java.sql.Timestamp;
 public class ExportOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "goods_issue_id", nullable = false)
+    @Column(name = "export_order_id", nullable = false)
     private Long id;
 
     @Column(name = "used_id")

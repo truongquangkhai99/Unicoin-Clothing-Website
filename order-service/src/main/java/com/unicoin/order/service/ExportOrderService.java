@@ -10,6 +10,6 @@ import java.util.List;
 public interface ExportOrderService {
     List<ExportOrder> viewsAllExportOrder(Integer userId);
     public void addExportOrderDetail(AddExportOrders addExportOrders);
-    List<ExportOrderDetail> viewsAllExportOrderDetail(Long goodIssueId);
-    public void updateExportOrder(Long goodIssueId, Integer status);
+    List<ExportOrderDetail> viewsAllExportOrderDetail(Long exportOrderId);
+    public void updateExportOrder(Long exportOrderId, Integer status);
 }

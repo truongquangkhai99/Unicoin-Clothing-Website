@@ -12,7 +12,7 @@ public interface ExportOrderService {
 
     ExportOrder addExportOrder(AddExportOrders addExportOrders);
     public void addExportOrderDetail(AddExportOrderDetail addExportOrderDetail);
-    List<ExportOrderDetail> viewsAllExportOrderDetail(Long goodIssueId);
-    public void updateExportOrder(Long goodIssueId, Integer status);
+    List<ExportOrderDetail> viewsAllExportOrderDetail(Long exportOrderId);
+    public void updateExportOrder(Long exportOrderId, Integer status);
     public void deleteExportOrderDetail(Long id);
 }

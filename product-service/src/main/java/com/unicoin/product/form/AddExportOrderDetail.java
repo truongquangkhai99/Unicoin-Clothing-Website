@@ -14,5 +14,5 @@ public class AddExportOrderDetail {
     private Integer variantId;
     private Integer quantity;
     private Double price;
-    private Long goodIssueId;
+    private Long exportOrderId;
 }

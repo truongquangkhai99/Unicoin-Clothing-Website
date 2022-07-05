@@ -29,8 +29,8 @@ public class ExportOrderDetail {
     private Double price;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "goods_issue_id", nullable = false)
-    private ExportOrder goodIssueId;
+    @JoinColumn(name = "export_order_id", nullable = false)
+    private ExportOrder exportOrderId;
 
 
 }

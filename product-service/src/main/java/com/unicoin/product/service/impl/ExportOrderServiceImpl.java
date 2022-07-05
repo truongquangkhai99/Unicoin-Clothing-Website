@@ -56,23 +56,23 @@ public class ExportOrderServiceImpl implements ExportOrderService {
     public void addExportOrderDetail(AddExportOrderDetail addExportOrderDetail){
         log.info("start add exportOrderDetail");
         ExportOrderDetail data= new ExportOrderDetail();
-        Optional<ExportOrder> check= exportOrderRepository.findById(addExportOrderDetail.getGoodIssueId());
+        Optional<ExportOrder> check= exportOrderRepository.findById(addExportOrderDetail.getExportOrderId());
         if(check.isEmpty()){
             throw new AppException(ExceptionCode.EXPORTORDERS_NOT_EXIST);
         }
-        ExportOrder exportOrder=exportOrderRepository.findById(addExportOrderDetail.getGoodIssueId()).get();
+        ExportOrder exportOrder=exportOrderRepository.findById(addExportOrderDetail.getExportOrderId()).get();
         data.setVariantId(addExportOrderDetail.getVariantId());
         data.setQuantity(addExportOrderDetail.getQuantity());
         data.setPrice(addExportOrderDetail.getPrice());
-        data.setGoodIssueId(exportOrder);
+        data.setExportOrderId(exportOrder);
         exportOrderDetaiRepository.save(data);
         log.info("end add exportOrderDetail");
     }
 
     @Override
-    public List<ExportOrderDetail> viewsAllExportOrderDetail(Long goodIssueId) {
+    public List<ExportOrderDetail> viewsAllExportOrderDetail(Long exportOrderId) {
         log.info("start views exportOrderDetail");
-        List<ExportOrderDetail> data= exportOrderDetaiRepository.findAllByGoodIssueId(goodIssueId);
+        List<ExportOrderDetail> data= exportOrderDetaiRepository.findAllByExportOrderId(exportOrderId);
         if(data.size()<0){
             throw  new AppException(ExceptionCode.EXPORTORDERS_NOT_EXIST);
         }
@@ -80,9 +80,9 @@ public class ExportOrderServiceImpl implements ExportOrderService {
     }
 
     @Override
-    public void updateExportOrder(Long goodIssueId, Integer status) {
+    public void updateExportOrder(Long exportOrderId, Integer status) {
         log.info("start update exportOrders");
-        Optional<ExportOrder> check= exportOrderRepository.findById(goodIssueId);
+        Optional<ExportOrder> check= exportOrderRepository.findById(exportOrderId);
         if(check.isPresent()){
             ExportOrder exportOrder=check.get();
             exportOrder.setStatus(status);

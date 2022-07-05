@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 
 public interface ExportOrderDetaiRepository extends JpaRepository<ExportOrderDetail,Long> {
-    List<ExportOrderDetail> findAllByGoodIssueId(Long goodIssueId);
+    List<ExportOrderDetail> findAllByExportOrderId(Long ExportOrderId);
 }
