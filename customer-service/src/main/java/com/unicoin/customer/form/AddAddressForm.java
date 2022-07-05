@@ -17,4 +17,5 @@ public class AddAddressForm {
 
     @NotNull(message = "userId is not null")
     private Long userId;
+
 }
