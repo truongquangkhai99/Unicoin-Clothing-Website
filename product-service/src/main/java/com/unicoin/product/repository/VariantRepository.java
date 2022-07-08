@@ -18,4 +18,5 @@ public interface VariantRepository extends JpaRepository<Variant, Long> {
     List<Variant> findAllByProduct(@Param("product")Product product, Sort sort);
 
    boolean existsByProductAndStatus(Product product, Integer status);
+
 }

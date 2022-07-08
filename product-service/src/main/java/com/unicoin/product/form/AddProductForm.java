@@ -15,6 +15,8 @@ public class AddProductForm {
 
     private String productCode;
 
+    private String description;
+
     private Long supplier;
 
     private Integer status;

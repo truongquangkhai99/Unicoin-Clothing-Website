@@ -18,18 +18,6 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
-  #datasource config
-  datasource:
-    username: root
-    password: Unicoin123
-    data-source-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/unicoin_order_service
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: none
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 server:
   port: 3000
   servlet:
@@ -44,12 +32,12 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
 
-rabbitmq:
-  exchanges:
-    internal: internal.exchange
-  queue:
-    order-service: order-service.queue
-  routing-keys:
-    internal-order-service: internal.order-service.routing-key
+#rabbitmq:
+#  exchanges:
+#    internal: internal.exchange
+#  queue:
+#    order-service: order-service.queue
+#  routing-keys:
+#    internal-order-service: internal.order-service.routing-key
 
 

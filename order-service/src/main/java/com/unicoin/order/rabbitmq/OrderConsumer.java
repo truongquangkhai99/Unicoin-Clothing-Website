@@ -1,7 +1,9 @@
 package com.unicoin.order.rabbitmq;
 
-import com.unicoin.clients.form.orderform.OrderRequest;
-import com.unicoin.order.config.OrderConfig;
+import com.unicoin.clients.commons.RabbitKey;
+import com.unicoin.clients.rabbitmqModel.QueueExportOrder;
+import com.unicoin.clients.rabbitmqModel.QueueImportOrder;
+import com.unicoin.clients.rabbitmqModel.QueueReturnOrder;
 import com.unicoin.order.service.OrderService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,16 +26,26 @@ public class OrderConsumer {
 //    orderService.saveOrder(orderRequest);
 //    }
 
-    //listener nhan request theo queue duoc con fig trong class config
-    @RabbitListener(queues = OrderConfig.TOPIC_QUEUE_ADD_ORDER)
-    public void comsumerAdd(OrderRequest orderRequest){
-    log.info("Consumed ADD {} from queue", orderRequest);
-    orderService.saveOrder(orderRequest);
+    //    @RabbitListener(queues = OrderConfig.TOPIC_QUEUE_UPDATE_ORDER)
+//    public void comsumerUpdate(OrderRequest orderRequest){
+//    log.info("Consumed UPDATE {} from queue", orderRequest);
+//    orderService.saveOrder(orderRequest);
+//    }
+
+
+    //listener nhan request theo ROUTING_KEY duoc con fig trong class config
+    @RabbitListener(queues = RabbitKey.QUEUE_ADD_EXPORT_ORDER)
+    public void comsumerAddExportOrder(QueueExportOrder order){
+    log.info("Consumed add export order {} from queue", order);
     }
 
-    @RabbitListener(queues = OrderConfig.TOPIC_QUEUE_UPDATE_ORDER)
-    public void comsumerUpdate(OrderRequest orderRequest){
-    log.info("Consumed UPDATE {} from queue", orderRequest);
-    orderService.saveOrder(orderRequest);
+    @RabbitListener(queues = RabbitKey.QUEUE_ADD_IMPORT_ORDER)
+    public void comsumerAddImportOrder(QueueExportOrder order){
+        log.info("Consumed add import order {} from queue", order);
     }
+
+//    @RabbitListener(queues = RabbitKey.QUEUE_ADD_IMPORT_ORDER)
+//    public void comsumerAddReturnOrder(QueueReturnOrder order){
+//        log.info("Consumed add return order {} from queue", order);
+//    }
 }
