@@ -62,7 +62,6 @@ public class ExportOrderServiceImpl implements ExportOrderService {
             exportOrderDetaiRepository.save(exportOrderDetail);
         }
         log.info("end add exportOders");
-
     }
 
     @Override

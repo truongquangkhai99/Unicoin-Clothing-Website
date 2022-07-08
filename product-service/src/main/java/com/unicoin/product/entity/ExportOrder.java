@@ -38,6 +38,4 @@ public class ExportOrder {
     @Column(name = "status")
     private Integer status;
 
-
-
 }

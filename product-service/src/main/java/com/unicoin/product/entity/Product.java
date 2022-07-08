@@ -27,6 +27,9 @@ public class Product {
     @Column(name = "PRODUCT_CODE", length = 20)
     private String productCode;
 
+    @Column(name = "DESCRIPTION", length = 20)
+    private String description;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "SUPPLIER_ID", nullable = false)
     private Supplier supplier;

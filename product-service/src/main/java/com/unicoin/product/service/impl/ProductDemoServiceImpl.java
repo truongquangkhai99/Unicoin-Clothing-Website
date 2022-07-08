@@ -35,49 +35,49 @@ public class ProductDemoServiceImpl implements ProductDemoService {
 
     @Override
     public ProductDemo addProduct(ProductDemoForm productDemoForm) {
-        log.info("customer Name " + productDemoForm.getProductName());
-        //call api qua resttempalte: param 1: api // param2: kieu du lieu tra ve // param3: tham so truyen vao
-//        ResponseCheckCustomer responseCheckCustomer = restTemplate.getForObject("http://CUSTOMER-SERVICE/api/demo/customers/check-customer/{customerFistName}",
-//                ResponseCheckCustomer.class,
-//                productDemoForm.getCustomerFistName());
-        ResponseCheckCustomer responseCheckCustomer = customerFeign.checkCustomer(productDemoForm.getCustomerFistName());
-        if (responseCheckCustomer.isCheckCustomer()){
-            ProductDemo productDemo = ProductDemo.builder()
-                    .productName(productDemoForm.getProductName())
-                    .price(productDemoForm.getPrice())
-                    .customerFistName(productDemoForm.getCustomerFistName())
-                    .build();
-            log.info("Product {}", productDemo);
-            return productDemo;
-        }else {
+//        log.info("customer Name " + productDemoForm.getProductName());
+//        //call api qua resttempalte: param 1: api // param2: kieu du lieu tra ve // param3: tham so truyen vao
+////        ResponseCheckCustomer responseCheckCustomer = restTemplate.getForObject("http://CUSTOMER-SERVICE/api/demo/customers/check-customer/{customerFistName}",
+////                ResponseCheckCustomer.class,
+////                productDemoForm.getCustomerFistName());
+//        ResponseCheckCustomer responseCheckCustomer = customerFeign.checkCustomer(productDemoForm.getCustomerFistName());
+//        if (responseCheckCustomer.isCheckCustomer()){
+//            ProductDemo productDemo = ProductDemo.builder()
+//                    .productName(productDemoForm.getProductName())
+//                    .price(productDemoForm.getPrice())
+//                    .customerFistName(productDemoForm.getCustomerFistName())
+//                    .build();
+//            log.info("Product {}", productDemo);
+//            return productDemo;
+//        }else {
             return null;
-        }
+//        }
     }
 
     @Override
     public void sendAddOrder() {
-        OrderRequest orderRequest = OrderRequest.builder()
-                .customerFistName("hai")
-                .createAt(new Date())
-                .build();
+//        OrderRequest orderRequest = OrderRequest.builder()
+//                .customerFistName("hai")
+//                .createAt(new Date())
+//                .build();
         //add order synchronized
 //        OrderRequest orderResp = orderFeign.createOrder(orderRequest);
 
         //add order async
-        log.info("order add: {}, order name: {}", orderRequest, orderRequest.getCustomerFistName());
-        producer.publish(orderRequest, "direct-exchange", "topic-exchange-add-order");
+//        log.info("order add: {}, order name: {}", orderRequest, orderRequest.getCustomerFistName());
+//        producer.publish(orderRequest, "direct-exchange", "topic-exchange-add-order");
     }
     @Override
     public void sendUpdateOrder() {
-        OrderRequest orderRequest = OrderRequest.builder()
-                .customerFistName("hai")
-                .createAt(new Date())
-                .build();
+//        OrderRequest orderRequest = OrderRequest.builder()
+//                .customerFistName("hai")
+//                .createAt(new Date())
+//                .build();
         //add order synchronized
 //        OrderRequest orderResp = orderFeign.createOrder(orderRequest);
 
         //add order async
-        log.info("order update: {}, order name: {}", orderRequest, orderRequest.getCustomerFistName());
-        producer.publish(orderRequest, "direct-exchange", "topic-exchange-update-order");
+//        log.info("order update: {}, order name: {}", orderRequest, orderRequest.getCustomerFistName());
+//        producer.publish(orderRequest, "direct-exchange", "topic-exchange-update-order");
     }
 }

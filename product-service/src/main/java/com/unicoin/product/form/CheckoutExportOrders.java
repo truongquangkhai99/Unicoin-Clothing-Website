@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class AddExportOrders {
-    private Integer usedId;
+public class CheckoutExportOrders {
+    private Long id;
     private String nameRecipient;
     private String phoneRecipient;
     private String address;

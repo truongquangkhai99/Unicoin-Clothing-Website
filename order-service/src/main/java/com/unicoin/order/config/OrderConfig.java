@@ -1,5 +1,8 @@
 package com.unicoin.order.config;
 
+import com.unicoin.clients.commons.RabbitKey;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.beans.factory.annotation.Value;
@@ -7,98 +10,61 @@ import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
+
 @Configuration
 @EnableRabbit
+@Data
+@Slf4j
 public class OrderConfig {
 
     @Bean
     @LoadBalanced
-    public RestTemplate restTemplate(){
+    public RestTemplate restTemplate() {
         return new RestTemplate();
     }
+    @Bean
+    public DirectExchange exchange() {
+//        log.info("internal-exchange: " + internalExchange);
+        return new DirectExchange(RabbitKey.DIRECT_EXCHANGE);
+    }
 
-//    @Value(("${rabbitmq.exchanges.internal}"))
-//    private String internalExchange;
-//
-//    @Value("${rabbitmq.queue.order-service}")
-//    private String orderServiceQueue;
-//
-//    @Value("${rabbitmq.routing-keys.internal-order-service}")
-//    private String internalOrderServiceRoutingKey;
-//
-//    @Bean
-//    public TopicExchange internalTopicExchange(){
-//        return new TopicExchange((this.internalExchange));
-//    }
-//
-//    @Bean
-//    public Queue orderServiceQueue(){
-//        return new Queue(this.orderServiceQueue);
-//    }
-//
-//    @Bean
-//    public Binding internalOerderServiceBinding(){
-//        return BindingBuilder
-//                .bind(orderServiceQueue())
-//                .to(internalTopicExchange())
-//                .with(this.internalOrderServiceRoutingKey);
-//    }
-//
-//    public String getInternalExchange() {
-//        return internalExchange;
-//    }
-//
-//    public String getOrderServiceQueue() {
-//        return orderServiceQueue;
-//    }
-//
-//    public String getInternalOrderServiceRoutingKey() {
-//        return internalOrderServiceRoutingKey;
-//    }
+    @Bean
+    public Queue exportOrderServiceQueue() {
+//        log.info("order service Queue: " + this.orderServiceQueue);
+        return new Queue(RabbitKey.QUEUE_ADD_EXPORT_ORDER);
+    }
+    @Bean
+    public Queue importOrderServiceQueue() {
+//        log.info("order service Queue: " + this.orderServiceQueue);
+        return new Queue(RabbitKey.QUEUE_ADD_IMPORT_ORDER);
+    }
 
-    public static  final String TOPIC_EXCHANGE_NAME = "topic-exchange";
-    public static  final String DIRECT_EXCHANGE_NAME = "direct-exchange";
+    @Bean
+    public Binding exportOrderBinding() {
+//        log.info("order service Queue: {}, exchange: {}, routing key: " + orderRoutingKey, orderServiceQueue(), internalTopicExchange());
+        return BindingBuilder
+                .bind(exportOrderServiceQueue())
+                .to(exchange())
+                .with(RabbitKey.EXPORT_ORDER_ROUTING_KEYS);
+    }
 
-    public static final String TOPIC_QUEUE_ADD_ORDER = "order-queue-add-order";
-    public static final String TOPIC_QUEUE_UPDATE_ORDER = "order-queue-update-order";
-
-
+    @Bean
+    public Binding importOrderBinding() {
+//        log.info("order service Queue: {}, exchange: {}, routing key: " + orderRoutingKey, orderServiceQueue(), internalTopicExchange());
+        return BindingBuilder
+                .bind(importOrderServiceQueue())
+                .to(exchange())
+                .with(RabbitKey.IMPORT_ORDER_ROUTING_KEYS);
+    }
     //config kieu exchange gom co:
     /**
-    *  direct exchange : gui va nhan queue theo routing key chinh xac
-    *  default exchange : ban chat la direct exchange nhung  k co ten
-    *  fanout exchange: message se duoc gui den toan bo listener hien co trong service
-    *  topic exchange: chuyen message theo su trung khop cua routing key va queue name
-    *
-    *
-    *
-    * */
-    @Bean
-    public Declarables directBindings(){
-        Queue addOrderQueue = new Queue(TOPIC_QUEUE_ADD_ORDER);
-        Queue updateOrderQueue = new Queue(TOPIC_QUEUE_UPDATE_ORDER);
+     *  direct exchange : gui va nhan queue theo routing key chinh xac
+     *  default exchange : ban chat la direct exchange nhung  k co ten
+     *  fanout exchange: message se duoc gui den toan bo listener hien co trong service
+     *  topic exchange: chuyen message theo su trung khop cua routing key va queue name
+     *
+     *
+     *
+     //    * */
 
-        DirectExchange directExchange = new DirectExchange(DIRECT_EXCHANGE_NAME);
-        return new Declarables(
-                addOrderQueue,
-                updateOrderQueue,
-                directExchange,
-                BindingBuilder.bind(addOrderQueue).to(directExchange).with("topic-exchange-add-order"),
-                BindingBuilder.bind(updateOrderQueue).to(directExchange).with("topic-exchange-update-order")
-        );
-    }
-//    @Bean
-//    public Declarables topicBindings(){
-//        Queue addOrderQueue = new Queue(TOPIC_QUEUE_ADD_ORDER);
-//        Queue updateOrderQueue = new Queue(TOPIC_QUEUE_UPDATE_ORDER);
-//
-//        TopicExchange topicExchange = new TopicExchange(TOPIC_EXCHANGE_NAME);
-//        return new Declarables(
-//                addOrderQueue,
-//                updateOrderQueue,
-//                topicExchange,
-//                BindingBuilder.bind(addOrderQueue).to(topicExchange).with("*-add-order"),
-//                BindingBuilder.bind(updateOrderQueue).to(topicExchange).with("topic-exchange-update-order")
-//        );
-//    }
 }
