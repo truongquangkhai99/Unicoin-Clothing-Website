@@ -5,7 +5,7 @@ import com.unicoin.product.entity.ExportOrderDetail;
 import com.unicoin.product.ex.AppException;
 import com.unicoin.product.ex.ExceptionCode;
 import com.unicoin.product.form.AddExportOrderDetail;
-import com.unicoin.product.form.AddExportOrders;
+import com.unicoin.product.form.CheckoutExportOrders;
 import com.unicoin.product.repository.ExportOrderDetaiRepository;
 import com.unicoin.product.repository.ExportOrderRepository;
 import com.unicoin.product.service.ExportOrderCounterService;
@@ -28,7 +28,7 @@ public class ExportOrderCounterServiceimpl implements ExportOrderCounterService 
     ExportOrderDetaiRepository exportOrderDetaiRepository;
 
     @Override
-    public ExportOrder createExportOrder(AddExportOrders addExportOrders){
+    public ExportOrder createExportOrder(CheckoutExportOrders addExportOrders){
         log.info("start create export order counter");
         ExportOrder exportOrder=new ExportOrder();
         BeanUtils.copyProperties(addExportOrders,exportOrder);

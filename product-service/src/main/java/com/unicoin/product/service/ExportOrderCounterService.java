@@ -2,10 +2,10 @@ package com.unicoin.product.service;
 
 import com.unicoin.product.entity.ExportOrder;
 import com.unicoin.product.form.AddExportOrderDetail;
-import com.unicoin.product.form.AddExportOrders;
+import com.unicoin.product.form.CheckoutExportOrders;
 
 public interface ExportOrderCounterService {
-    ExportOrder createExportOrder(AddExportOrders addExportOrders);
+    ExportOrder createExportOrder(CheckoutExportOrders addExportOrders);
 
     void deleteExportOrder(Long orderId);
 

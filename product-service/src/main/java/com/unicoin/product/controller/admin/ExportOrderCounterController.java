@@ -2,7 +2,7 @@ package com.unicoin.product.controller.admin;
 
 
 import com.unicoin.product.form.AddExportOrderDetail;
-import com.unicoin.product.form.AddExportOrders;
+import com.unicoin.product.form.CheckoutExportOrders;
 import com.unicoin.product.resstresponse.ApiResponse;
 import com.unicoin.product.resstresponse.SuccessResponse;
 import com.unicoin.product.service.ExportOrderCounterService;
@@ -18,7 +18,7 @@ public class ExportOrderCounterController {
     ExportOrderCounterService exportOrderService;
 
     @GetMapping("/create-export-order")
-    public ApiResponse createOrder(@RequestBody  AddExportOrders exportOrders){
+    public ApiResponse createOrder(@RequestBody CheckoutExportOrders exportOrders){
         return new SuccessResponse(exportOrderService.createExportOrder(exportOrders));
     }
 
