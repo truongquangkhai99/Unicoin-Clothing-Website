@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ImportOrdersService {
     ImportOrdersDTO viewsImportOrders();
-    void AddImportOrderDetail(List<AddImportOrderDetail> addImportOrderDetail , Long importOrderId);
+    void AddImportOrderDetail(List<AddImportOrderDetail> addImportOrderDetail , Long importOrdersId);
 
     void updateOrderDetail(Long orderId , Integer status);
 

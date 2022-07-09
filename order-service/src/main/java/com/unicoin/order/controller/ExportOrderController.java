@@ -32,4 +32,20 @@ public class ExportOrderController {
         exportOrderService.updateExportOrder(exportOrderId,status);
         return new SuccessResponse();
     }
+
+    @GetMapping("/status")
+    public ApiResponse getExportOrderByStatus(@RequestParam(value="status") Integer status){
+        return new SuccessResponse(exportOrderService.getExportOrderByStatus(status));
+    }
+
+    @GetMapping("/{id}")
+    public ApiResponse getExportOrderDetailByExportOrderId(@PathVariable Long id){
+        return new SuccessResponse(exportOrderService.getExportOrderDetailByExportOrderId(id));
+    }
+
+    @GetMapping("/find")
+    public  ApiResponse viewExportOrderByUserId(@RequestParam(value="id", required = false) Long id){
+        return new SuccessResponse(exportOrderService.viewExportOrderByUserId(id));
+    }
+
 }

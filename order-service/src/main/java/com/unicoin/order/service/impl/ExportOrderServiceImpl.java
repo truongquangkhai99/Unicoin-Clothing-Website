@@ -1,5 +1,7 @@
 package com.unicoin.order.service.impl;
 
+import com.unicoin.order.DTO.ExportOrderDTO;
+import com.unicoin.order.DTO.ExportOrderDetailDTO;
 import com.unicoin.order.entity.ExportOrder;
 import com.unicoin.order.entity.ExportOrderDetail;
 import com.unicoin.order.ex.AppException;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -65,16 +68,6 @@ public class ExportOrderServiceImpl implements ExportOrderService {
     }
 
     @Override
-    public List<ExportOrderDetail> viewsAllExportOrderDetail(Long exportOrderId) {
-        log.info("Start views export orderDetail");
-        List<ExportOrderDetail> data= exportOrderDetaiRepository.findAllByExportOrderId(exportOrderId);
-        if(data.size()<0){
-            throw  new AppException(ExceptionCode.EXPORTORDERS_NOT_EXIST);
-        }
-        return data;
-    }
-
-    @Override
     public void updateExportOrder(Long exportOrderId, Integer status) {
         log.info("start update export order");
         Optional<ExportOrder> check= exportOrderRepository.findById(exportOrderId);
@@ -86,5 +79,50 @@ public class ExportOrderServiceImpl implements ExportOrderService {
             throw  new AppException(ExceptionCode.EXPORTORDERS_NOT_EXIST);
         }
         log.info("end update exportOders");
+    }
+
+
+
+    @Override
+    public List<ExportOrderDTO> getExportOrderByStatus(Integer status){
+        List<ExportOrder> list=exportOrderRepository.searchExportOrderByStatus(status);
+        List<ExportOrderDTO> listDTO=list.stream().map(item->ExportOrderDTO.builder()
+                .id(item.getId())
+                .usedId(item.getUsedId())
+                .nameRecipient(item.getNameRecipient())
+                .phoneRecipient(item.getPhoneRecipient())
+                .address(item.getAddress())
+                .registStamp(item.getRegistStamp())
+                .status(item.getStatus())
+                .build()).collect(Collectors.toList());
+        return listDTO;
+    }
+
+    @Override
+    public List<ExportOrderDetailDTO> getExportOrderDetailByExportOrderId(Long id) {
+        Optional<ExportOrder> optional = exportOrderRepository.findById(id);
+        if (optional.isEmpty()) throw  new AppException(ExceptionCode.EXPORTORDERS_NOT_EXIST);
+        List<ExportOrderDetail> exportOrderDetails = exportOrderDetaiRepository.findAllByExportOrderId(optional.get());
+        List<ExportOrderDetailDTO> listDTO=exportOrderDetails.stream().map(item -> ExportOrderDetailDTO.builder()
+                .id(item.getId())
+                .variantId(item.getVariantId())
+                .quantity(item.getQuantity())
+                .price(item.getPrice())
+                .exportOrderId(item.getExportOrderId().getId())
+                .build()).collect(Collectors.toList());
+        return listDTO;
+    }
+
+    @Override
+    public List<ExportOrder> viewExportOrderByUserId(Long id) {
+        return null;
+    }
+
+    @Override
+    public List<ExportOrder> viewExportOrderByOption(Long id){
+        log.info("Start víews");
+        List<ExportOrder> data=exportOrderRepository.viewExportOrderByUserId(id);
+        log.info("data"+data);
+        return data;
     }
 }

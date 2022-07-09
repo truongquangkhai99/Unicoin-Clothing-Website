@@ -1,6 +1,5 @@
 package com.unicoin.order.controller;
 
-import com.unicoin.clients.form.orderform.OrderRequest;
 import com.unicoin.order.form.AddImportOrderDetail;
 import com.unicoin.order.resstresponse.ApiResponse;
 import com.unicoin.order.resstresponse.SuccessResponse;
@@ -26,8 +25,8 @@ public class OrderController {
 
     @PostMapping("/add/{importOrderId}")
     public ApiResponse createOrder(@RequestBody List<AddImportOrderDetail> addImportOrderDetail
-                                    ,@PathVariable Long importOrderId ){
-        orderService.AddImportOrderDetail(addImportOrderDetail , importOrderId);
+                                    ,@PathVariable Long importOrdersId ){
+        orderService.AddImportOrderDetail(addImportOrderDetail , importOrdersId);
       return new SuccessResponse();
     }
 
@@ -35,5 +34,15 @@ public class OrderController {
             public ApiResponse updateOrders( @RequestParam(value = "importId") Long importId, @RequestParam(value = "status") Integer status){
         orderService.updateOrderDetail(importId , status);
         return new SuccessResponse();
+    }
+
+    @GetMapping("/status")
+    public ApiResponse getImportOrderByStatus(@RequestParam(value="status") Integer status){
+        return new SuccessResponse(orderService.getImportOrderByStatus(status));
+    }
+
+    @GetMapping("/{id}")
+    public ApiResponse getImportOrderDetailByImportOrdersId(@PathVariable Long id){
+        return new SuccessResponse(orderService.getImportOrderDetailByImportOrdersId(id));
     }
 }
