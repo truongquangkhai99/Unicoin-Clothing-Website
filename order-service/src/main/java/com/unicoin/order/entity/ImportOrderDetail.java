@@ -20,13 +20,13 @@ public class ImportOrderDetail {
     private Long id ;
 
     @Column(name = "VARIANT_ID" , nullable = false)
-    private Integer variantId;
+    private Long variantId;
 
     @Column(name = "QUANTITY" , nullable = false)
     private Integer quantity;
 
     @Column(name = "COST" , nullable = false)
-    private Integer cost;
+    private Long cost;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "IMPORT_ORDER_ID", nullable = false)
