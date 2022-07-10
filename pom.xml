@@ -15,6 +15,7 @@
         <module>order-service</module>
         <module>api-gateway</module>
         <module>amqp</module>
+        <module>login-service</module>
     </modules>
 
     <name>unicoinmicroservice</name>
