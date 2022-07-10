@@ -44,8 +44,8 @@ public class ExportOrderController {
     }
 
     @GetMapping("/find")
-    public  ApiResponse viewExportOrderByUserId(@RequestParam(value="id", required = false) Long id){
-        return new SuccessResponse(exportOrderService.viewExportOrderByUserId(id));
+    public  ApiResponse viewExportOrderByOption(@RequestParam(value="id", required = false) Long id){
+        return new SuccessResponse(exportOrderService.viewExportOrderByOption(id));
     }
 
 }

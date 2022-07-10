@@ -20,8 +20,6 @@ public interface ExportOrderService {
 
     List<ExportOrderDetailDTO> getExportOrderDetailByExportOrderId(Long id);
 
-    List<ExportOrder> viewExportOrderByUserId(Long id);
-
-
     List<ExportOrder> viewExportOrderByOption(Long id);
+
 }
