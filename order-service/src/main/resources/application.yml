@@ -6,17 +6,17 @@ spring:
   rabbitmq:
     addresses: localhost:5672
   #datasource config
-  datasource:
-    username: root
-    password: Unicoin123
-    data-source-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/unicoin_order_service
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: none
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+#  datasource:
+#    username: root
+#    password: Unicoin123
+#    data-source-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/unicoin_order_service
+#  jpa:
+#    show-sql: true
+#    hibernate:
+#      ddl-auto: none
+#      naming:
+#        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
 server:
   port: 3000

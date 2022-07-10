@@ -1,12 +1,12 @@
-package com.unicoin.customer.service.impl;
+package com.unicoin.customer.config.oauth2;
 
-import com.unicoin.customer.entity.User;
 import com.unicoin.customer.entity.UserRole;
 import com.unicoin.customer.repository.UserRepository;
 import com.unicoin.customer.repository.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,7 +30,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         //Kiem tra user co ton  tai khong
 //        Optional<User> account = userRepository.findByPhoneNumber(phoneNumber);
 //        if (account.isEmpty()) throw new UsernameNotFoundException(phoneNumber);
-        User user1 = User.builder().phoneNumber("0333103855").password("$2a$10$Ex2t/uOBPytNH2iQPH5f9Ok3RdyyrSDIPvgMljaDkmg5K3zSAZk7m").build();
+
 //        List<UserRole> userRoles = userRoleRepository.findAllByUserId(account.get());
         List<GrantedAuthority> authorityList = new ArrayList<>();
 //        for (UserRole role :
@@ -39,11 +39,6 @@ public class UserDetailServiceImpl implements UserDetailsService {
 //        }
         authorityList.add(new SimpleGrantedAuthority("admin"));
         authorityList.add(new SimpleGrantedAuthority("user"));
-        org.springframework.security.core.userdetails.User user = new org.springframework.security.core.userdetails.User(
-                user1.getPhoneNumber(),
-                user1.getPassword(),
-                authorityList
-        );
-        return user;
+        return User.withUsername("0333103855").password("1").authorities(authorityList).build();
     }
 }

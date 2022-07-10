@@ -26,7 +26,7 @@ public class ExportOrderDetail {
     private Integer quantity;
 
     @Column(name = "price")
-    private Double price;
+    private Long price;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "export_order_id", nullable = false)

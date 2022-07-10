@@ -23,8 +23,8 @@ public class ImportOrdersController {
 
     @PostMapping("/add/{importOrderId}")
     public ApiResponse createOrder(@RequestBody List<AddImportOrderDetail> addImportOrderDetail
-            ,@PathVariable Long importOrderId ){
-        importOrdersService.AddImportOrderDetail(addImportOrderDetail , importOrderId);
+            ,@PathVariable Long importOrdersId ){
+        importOrdersService.AddImportOrderDetail(addImportOrderDetail , importOrdersId);
         return new SuccessResponse();
     }
 

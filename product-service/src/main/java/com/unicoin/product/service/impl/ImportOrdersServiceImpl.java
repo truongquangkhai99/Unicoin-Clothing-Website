@@ -50,9 +50,9 @@ public class ImportOrdersServiceImpl implements ImportOrdersService {
     }
 
     @Override
-    public void AddImportOrderDetail(List<AddImportOrderDetail> addImportOrderDetail, Long importOrderId) {
+    public void AddImportOrderDetail(List<AddImportOrderDetail> addImportOrderDetail, Long importOrdersId) {
         log.info("start add importOrderDetail");
-        Optional<ImportOrders> dataOrders = importOrdersRepository.findById(importOrderId);
+        Optional<ImportOrders> dataOrders = importOrdersRepository.findById(importOrdersId);
         ImportOrders importOrders = dataOrders.get();
         if(dataOrders.isPresent()){
             for (AddImportOrderDetail item : addImportOrderDetail){
