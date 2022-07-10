@@ -14,6 +14,6 @@ public class FormExportOrderDetail {
     private Long id;
     private Integer variantId;
     private Integer quantity;
-    private Double price;
+    private Long price;
     private ExportOrder exportOrderId;
 }

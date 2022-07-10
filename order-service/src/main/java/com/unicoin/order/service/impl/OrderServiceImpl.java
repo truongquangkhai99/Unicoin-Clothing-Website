@@ -1,6 +1,5 @@
 package com.unicoin.order.service.impl;
 
-import com.mysql.cj.log.Log;
 import com.unicoin.clients.form.orderform.OrderRequest;
 import com.unicoin.order.DTO.ImportOrderDTO;
 import com.unicoin.order.DTO.ImportOrderDetailDTO;
@@ -61,7 +60,7 @@ public class OrderServiceImpl implements OrderService {
                 ImportOrderDetail importOrderDetail = ImportOrderDetail.builder()
                         .variantId(i.getVarianId())
                         .quantity(i.getQuantity())
-                        .cost(i.getCost())
+                        .price(i.getPrice())
                         .importOrdersId(importOrders).build();
                 importOrderDetailRepository.save(importOrderDetail);
             }
@@ -117,7 +116,7 @@ public class OrderServiceImpl implements OrderService {
                 .id(item.getId())
                 .variantId(item.getVariantId())
                 .quantity(item.getQuantity())
-                .cost(item.getCost())
+                .price(item.getPrice())
                 .importOrdersId(item.getImportOrdersId().getId())
                 .build()).collect(Collectors.toList());
         return listDTO;

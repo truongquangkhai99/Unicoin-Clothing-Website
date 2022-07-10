@@ -10,8 +10,8 @@ import lombok.*;
 @Builder
 public class ImportOrderDetailDTO {
     private Long id ;
-    private Integer variantId;
+    private Long variantId;
     private Integer quantity;
-    private Integer cost;
+    private Long price;
     private Long importOrdersId ;
 }

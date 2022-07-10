@@ -13,10 +13,10 @@ import java.util.List;
 @NoArgsConstructor
 public class AddImportOrderDetail {
 
-    private Integer varianId;
+    private Long varianId;
 
     private Integer quantity;
 
-    private Integer cost;
+    private Long price;
 
 }
