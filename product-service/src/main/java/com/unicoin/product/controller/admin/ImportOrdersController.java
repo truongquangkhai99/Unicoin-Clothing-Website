@@ -28,15 +28,4 @@ public class ImportOrdersController {
         return new SuccessResponse();
     }
 
-    @PutMapping("/update")
-    public ApiResponse updateOrders( @RequestParam(value = "importId") Long importId, @RequestParam(value = "status") Integer status){
-        importOrdersService.updateOrderDetail(importId , status);
-        return new SuccessResponse();
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public ApiResponse deleteOrders(@PathVariable Long id){
-        importOrdersService.deleteOrderDetail(id);
-        return new SuccessResponse();
-    }
 }

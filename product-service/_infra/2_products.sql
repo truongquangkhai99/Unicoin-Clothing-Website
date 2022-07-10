@@ -3,7 +3,7 @@ CREATE TABLE `products` (
                               `PRODUCT_NAME` varchar(255),
                               `PRODUCT_CODE` VARCHAR(20),
                               `SUPPLIER_ID` int NOT NULL ,
-                              `DESCRIPTION` VARCHAR (2000),
+                              `DESCRIPTION` VARCHAR(3000),
                               `REGIST_STAMP` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                               `UPDATE_USER` INT,
                               `status` INT,
