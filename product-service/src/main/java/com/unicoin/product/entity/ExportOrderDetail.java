@@ -22,11 +22,14 @@ public class ExportOrderDetail {
     @Column(name = "variant_id")
     private Integer variantId;
 
+    @Column(name = "variant_name")
+    private String variantName;
+
     @Column(name = "quantity")
     private Integer quantity;
 
     @Column(name = "price")
-    private Double price;
+    private Long price;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "export_order_id", nullable = false)
