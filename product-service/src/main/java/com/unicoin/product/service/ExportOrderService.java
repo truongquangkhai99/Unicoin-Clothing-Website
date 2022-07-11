@@ -1,5 +1,6 @@
 package com.unicoin.product.service;
 
+import com.unicoin.product.dto.ExportOrderDetailDTO;
 import com.unicoin.product.entity.ExportOrder;
 import com.unicoin.product.entity.ExportOrderDetail;
 import com.unicoin.product.form.AddExportOrderDetail;
@@ -19,4 +20,6 @@ public interface ExportOrderService {
     void deleteExportOrderDetail(Long id);
 
     void checkoutOrder(CheckoutExportOrders checkoutExportOrders);
+
+    List<ExportOrderDetailDTO> viewExportOrderByOrderId(Long orderId);
 }

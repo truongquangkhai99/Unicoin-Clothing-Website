@@ -12,7 +12,4 @@ public interface ImportOrdersService {
     ImportOrdersDTO viewsImportOrders();
     void AddImportOrderDetail(List<AddImportOrderDetail> addImportOrderDetail , Long importOrderId);
 
-    void updateOrderDetail(Long orderId , Integer status);
-
-    void deleteOrderDetail(Long id);
 }

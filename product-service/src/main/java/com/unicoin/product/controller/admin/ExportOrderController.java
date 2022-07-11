@@ -35,4 +35,9 @@ public class ExportOrderController {
         return new SuccessResponse();
     }
 
+    @GetMapping("/view-export-order/{orderId}")
+    public ApiResponse viewExportOrder(@PathVariable("orderId") Long orderId){
+        return new SuccessResponse(exportOrderService.viewExportOrderByOrderId(orderId));
+    }
+
 }

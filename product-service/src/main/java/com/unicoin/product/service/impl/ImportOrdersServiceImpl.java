@@ -71,7 +71,7 @@ public class ImportOrdersServiceImpl implements ImportOrdersService {
                     ImportOrderDetail importOrderDetail = ImportOrderDetail.builder()
                             .variantId(variant)
                             .quantity(item.getQuantity())
-                            .cost(item.getCost())
+                            .price(item.getCost())
                             .importOrdersId(importOrders).build();
                     importOrderDetailRepository.save(importOrderDetail);
                 }
