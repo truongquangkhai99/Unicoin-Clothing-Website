@@ -20,12 +20,4 @@ public class OrderApplication {
         SpringApplication.run(OrderApplication.class, args);
     }
 
-//    @Bean
-//    CommandLineRunner commandLineRunner(RabbitMQMessageProducer producer, OrderConfig orderConfig){
-//        return args -> {
-//            producer.publish("foo",
-//                    orderConfig.getInternalExchange(),
-//                    orderConfig.getInternalOrderServiceRoutingKey());
-//        };
-//    }
 }

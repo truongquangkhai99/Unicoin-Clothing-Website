@@ -34,13 +34,14 @@ public class UserDetailServiceImpl implements UserDetailsService {
         Optional<com.unicoin.customer.entity.User> account = userRepository.findByPhoneNumber(phoneNumber);
         if (account.isEmpty()) throw new UsernameNotFoundException(phoneNumber);
 
-//        List<UserRole> userRoles = userRoleRepository.findAllByUser(account.get());
+        List<UserRole> userRoles = userRoleRepository.findAllByUser(account.get());
         List<GrantedAuthority> authorityList = new ArrayList<>();
-//        for (UserRole role :
-//                userRoles) {
-//            authorityList.add(new SimpleGrantedAuthority(role.getRole().getRoleName().toUpperCase()));
-//        }
-        authorityList.add(new SimpleGrantedAuthority("admin"));
+        if (userRoles.size() > 0){
+            for (UserRole role :
+                    userRoles) {
+                authorityList.add(new SimpleGrantedAuthority(role.getRole().getRoleName().toUpperCase()));
+            }
+        }
         User user = new User(account.get().getPhoneNumber(), account.get().getPassword(), authorityList);
         log.info("User detail: {}", user);
         return user;
