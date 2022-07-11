@@ -4,6 +4,7 @@ import com.unicoin.amqp.RabbitMQMessageProducer;
 import com.unicoin.clients.commons.RabbitKey;
 import com.unicoin.clients.rabbitmqModel.QueueExportOrder;
 import com.unicoin.clients.rabbitmqModel.QueueExportOrderDetail;
+import com.unicoin.product.dto.ExportOrderDetailDTO;
 import com.unicoin.product.rabbitmq.RabbitMqPublishMessage;
 import com.unicoin.product.entity.ExportOrder;
 import com.unicoin.product.entity.ExportOrderDetail;
@@ -52,6 +53,10 @@ public class ExportOrderServiceImpl implements ExportOrderService {
     public ExportOrder addExportOrder() {
         log.info("start add exportOrders");
         ExportOrder exportOrder = new ExportOrder();
+        List<ExportOrder> exportOrders = exportOrderRepository.findAllByUsedId(1);
+        if (exportOrders.size() > 0){
+            exportOrder = exportOrders.get(0);
+        }
         exportOrder.setStatus(1);
         exportOrder.setUsedId(1);
         exportOrderRepository.save(exportOrder);
@@ -69,6 +74,7 @@ public class ExportOrderServiceImpl implements ExportOrderService {
         }
         ExportOrder exportOrder = exportOrderRepository.findById(addExportOrderDetail.getExportOrderId()).get();
         data.setVariantId(addExportOrderDetail.getVariantId());
+        data.setVariantName(addExportOrderDetail.getVariantName());
         data.setQuantity(addExportOrderDetail.getQuantity());
         data.setPrice(addExportOrderDetail.getPrice());
         data.setExportOrderId(exportOrder);
@@ -130,5 +136,23 @@ public class ExportOrderServiceImpl implements ExportOrderService {
                 .collect(Collectors.toList()));
         producer.publish(queueExportOrder, RabbitKey.DIRECT_EXCHANGE, RabbitKey.EXPORT_ORDER_ROUTING_KEYS);
         log.info("End checkout Order: {}", orders);
+    }
+
+    @Override
+    public List<ExportOrderDetailDTO> viewExportOrderByOrderId(Long orderId) {
+        Optional<ExportOrder> optionalExportOrder = exportOrderRepository.findById(orderId);
+        if (optionalExportOrder.isEmpty())
+            throw new AppException(ExceptionCode.EXPORTORDERS_NOT_EXIST);
+        List<ExportOrderDetail> orderDetails = exportOrderDetaiRepository.findAllByExportOrderId(optionalExportOrder.get());
+        List<ExportOrderDetailDTO> detailDTOS = orderDetails.stream().map(item ->
+                ExportOrderDetailDTO.builder()
+                        .orderId(item.getExportOrderId().getId())
+                        .id(item.getId())
+                        .quantity(item.getQuantity())
+                        .price(item.getPrice())
+                        .variantId(item.getVariantId())
+                        .variantName(item.getVariantName())
+                        .build()).collect(Collectors.toList());
+        return detailDTOS;
     }
 }

@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AddExportOrderDetail {
     private Integer variantId;
+    private String variantName;
     private Integer quantity;
-    private Double price;
+    private Long price;
     private Long exportOrderId;
 }

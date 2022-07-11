@@ -114,11 +114,6 @@ public class ExportOrderServiceImpl implements ExportOrderService {
     }
 
     @Override
-    public List<ExportOrder> viewExportOrderByUserId(Long id) {
-        return null;
-    }
-
-    @Override
     public List<ExportOrder> viewExportOrderByOption(Long id){
         log.info("Start víews");
         List<ExportOrder> data=exportOrderRepository.viewExportOrderByUserId(id);
