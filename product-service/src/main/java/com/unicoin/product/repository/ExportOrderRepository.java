@@ -10,4 +10,6 @@ import java.util.List;
 public interface ExportOrderRepository extends JpaRepository<ExportOrder,Long> {
 
     List<ExportOrder> findAllByUsedId(Integer userId);
+
+
 }
