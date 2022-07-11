@@ -10,4 +10,6 @@ public interface ImportOrdersService {
     ImportOrdersDTO viewsImportOrders();
 
     void AddImportOrderDetail(List<AddImportOrderDetail> addImportOrderDetail , Long importOrderId);
+
+    Long sumPriceImportOrder(Long id);
 }

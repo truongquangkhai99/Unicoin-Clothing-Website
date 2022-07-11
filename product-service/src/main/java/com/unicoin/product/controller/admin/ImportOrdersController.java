@@ -27,5 +27,8 @@ public class ImportOrdersController {
         importOrdersService.AddImportOrderDetail(addImportOrderDetail , importOrdersId);
         return new SuccessResponse();
     }
-
+    @GetMapping("/sum-price-orde/{id}")
+    public  ApiResponse sumPriceOrder(@PathVariable("id") Long id){
+        return  new SuccessResponse((importOrdersService.sumPriceImportOrder(id)));
+    }
 }

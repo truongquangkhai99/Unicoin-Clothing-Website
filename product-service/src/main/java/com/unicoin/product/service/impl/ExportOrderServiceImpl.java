@@ -167,7 +167,7 @@ public class ExportOrderServiceImpl implements ExportOrderService {
             List<ExportOrderDetail> list = exportOrderDetaiRepository.findAllByExportOrderId(exportOrder);
             if (exportOrder.getStatus() == 1) {
                 for (ExportOrderDetail item : list) {
-                    sumPrice = sumPrice + item.getPrice();
+                    sumPrice = sumPrice + item.getPrice()*item.getQuantity();
                 }
                 return sumPrice;
             } else {
