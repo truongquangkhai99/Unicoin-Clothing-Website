@@ -53,6 +53,10 @@ public class ExportOrderServiceImpl implements ExportOrderService {
     public ExportOrder addExportOrder() {
         log.info("start add exportOrders");
         ExportOrder exportOrder = new ExportOrder();
+        List<ExportOrder> exportOrders = exportOrderRepository.findAllByUsedId(1);
+        if (exportOrders.size() > 0){
+            exportOrder = exportOrders.get(0);
+        }
         exportOrder.setStatus(1);
         exportOrder.setUsedId(1);
         exportOrderRepository.save(exportOrder);
