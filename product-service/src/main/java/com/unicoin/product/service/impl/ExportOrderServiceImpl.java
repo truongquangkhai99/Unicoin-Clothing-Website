@@ -135,7 +135,6 @@ public class ExportOrderServiceImpl implements ExportOrderService {
                         .build())
                 .collect(Collectors.toList()));
         producer.publish(queueExportOrder, RabbitKey.DIRECT_EXCHANGE, RabbitKey.EXPORT_ORDER_ROUTING_KEYS);
-        producer.publish(queueExportOrder, RabbitKey.DIRECT_EXCHANGE, RabbitKey.IMPORT_ORDER_ROUTING_KEYS);
         log.info("End checkout Order: {}", orders);
     }
 

@@ -24,7 +24,6 @@ public class    UserController {
     UserService userService;
 
     @GetMapping("")
-    @PreAuthorize("hasAnyRole('adad')")
     public ApiResponse viewCustomer(@RequestParam(value = "size", defaultValue = "10") Integer size,
                                     @RequestParam(value = "page", defaultValue = "1") Integer page,
                                     @RequestParam(value = "phoneNumber", required = false) String phoneNumber,
