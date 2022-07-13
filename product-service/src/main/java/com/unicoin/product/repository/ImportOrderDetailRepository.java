@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface ImportOrderDetailRepository extends JpaRepository<ImportOrderDetail , Long> {
     List<ImportOrderDetail> findAllByVariantIdAndAndImportOrdersId(Variant variantId , ImportOrders importOrdersId);
+    List<ImportOrderDetail>findAllByImportOrdersId(ImportOrders importOrdersId);
 }

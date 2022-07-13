@@ -71,7 +71,7 @@ public class ImportOrdersServiceImpl implements ImportOrdersService {
                     ImportOrderDetail importOrderDetail = ImportOrderDetail.builder()
                             .variantId(variant)
                             .quantity(item.getQuantity())
-                            .price(item.getCost())
+                            .cost(item.getCost())
                             .importOrdersId(importOrders).build();
                     importOrderDetailRepository.save(importOrderDetail);
                 }
@@ -79,6 +79,25 @@ public class ImportOrdersServiceImpl implements ImportOrdersService {
             log.info("end add");
         }else {
             throw  new AppException(ExceptionCode.IMPORTORDERSDETAILID_NOT_EXIST);
+        }
+    }
+    @Override
+    public Long sumPriceImportOrder(Long id){
+        Long sumPrice =0L;
+        Optional<ImportOrders> data= importOrdersRepository.findById(id);
+        ImportOrders importOrders = data.get();
+        if(data.isEmpty()){
+            throw new AppException(ExceptionCode.IMPORTORDER_IS_NOT_EXIT);
+        }else {
+            List<ImportOrderDetail> list = importOrderDetailRepository.findAllByImportOrdersId(importOrders);
+            if(importOrders.getStatus() == 1){
+                for(ImportOrderDetail item : list){
+                    sumPrice = sumPrice +item.getCost()*item.getQuantity();
+                }
+                return sumPrice;
+            }else {
+                throw new AppException(ExceptionCode.IMPORTORDER_STATUS_IS_NOT_1);
+            }
         }
     }
 }
