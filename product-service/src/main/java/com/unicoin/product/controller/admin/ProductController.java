@@ -4,6 +4,7 @@ package com.unicoin.product.controller.admin;
 import com.unicoin.product.form.*;
 import com.unicoin.product.resstresponse.ApiResponse;
 import com.unicoin.product.resstresponse.SuccessResponse;
+import com.unicoin.product.service.ExportOrderService;
 import com.unicoin.product.service.OptionService;
 import com.unicoin.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ public class ProductController {
     @Autowired
     OptionService optionService;
 
+    @Autowired
+    ExportOrderService exportOrderService;
     @PostMapping("/add-product")
     public ApiResponse addProduct(@RequestBody AddProductForm form){
         return new SuccessResponse(productService.addProduct(form));
@@ -55,13 +58,13 @@ public class ProductController {
     @DeleteMapping("/option-value/{optionValueId}")
     public ApiResponse deleteOptionValue(@PathVariable Long optionValueId){
         optionService.deleteOptionValue(optionValueId);
-        return new SuccessResponse();
+        return new SuccessResponse(exportOrderService.addExportOrder());
     }
 
     @DeleteMapping("/{productId}")
     public ApiResponse deleteProduct(@PathVariable Long productId){
         productService.deleteProduct(productId);
-        return new SuccessResponse();
+        return new SuccessResponse(exportOrderService.addExportOrder());
     }
 
     @GetMapping("/view-variants/{productId}")
@@ -73,7 +76,7 @@ public class ProductController {
     public ApiResponse addImagesForProduct(@PathVariable Long productId,
                                            @RequestBody List<AddImageForm> imageUrls){
         productService.addImagesForProduct(productId, imageUrls);
-        return new SuccessResponse();
+        return new SuccessResponse(exportOrderService.addExportOrder());
     }
 
 }

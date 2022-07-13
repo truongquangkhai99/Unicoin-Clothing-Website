@@ -3,7 +3,6 @@ package com.unicoin.customer.controllerTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unicoin.customer.controller.admin.UserController;
-import com.unicoin.customer.entity.Role;
 import com.unicoin.customer.repository.RoleRepository;
 import com.unicoin.customer.service.UserService;
 import emulator.BuildObjectUtils;

@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 public class ImportOrdersDTO {
     private Long id ;
 
-    private Long userId;
+    private String userPhoneNumber;
 
     private Timestamp registStamp;
 

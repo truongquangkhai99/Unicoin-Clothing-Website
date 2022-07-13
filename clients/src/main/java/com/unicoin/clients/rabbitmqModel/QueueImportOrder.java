@@ -15,7 +15,7 @@ import java.util.List;
 public class QueueImportOrder {
     private Long id;
 
-    private Long userId;
+    private String userPhoneNumber;
 
     private Timestamp registStamp;
 

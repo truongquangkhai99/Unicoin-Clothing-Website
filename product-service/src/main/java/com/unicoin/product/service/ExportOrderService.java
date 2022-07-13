@@ -9,7 +9,7 @@ import com.unicoin.product.form.CheckoutExportOrders;
 import java.util.List;
 
 public interface ExportOrderService {
-    List<ExportOrder> viewsAllExportOrder(Integer userId);
+    List<ExportOrder> viewsAllExportOrder(String userUserPhoneNumber);
 
     ExportOrder addExportOrder();
 

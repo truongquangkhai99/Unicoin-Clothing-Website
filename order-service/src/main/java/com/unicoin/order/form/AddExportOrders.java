@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
 
@@ -16,13 +17,13 @@ import java.util.List;
 
 public class AddExportOrders {
     private Long id;
-    private Integer usedId;
+    private String userPhoneNumber;
     private String nameRecipient;
     private String phoneRecipient;
     private String address;
-    private Instant registStamp;
+    private Timestamp registStamp;
     private Integer status;
-    List<FormExportOrderDetail> data;
+    private List<FormExportOrderDetail> data;
 
 
 }

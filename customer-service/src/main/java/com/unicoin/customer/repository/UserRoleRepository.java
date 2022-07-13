@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserRoleRepository extends JpaRepository<UserRole, Integer> {
+public interface UserRoleRepository extends JpaRepository<UserRole, Long> {
 
     Optional<UserRole> findByUserAndRole(User user, Role role);
 
@@ -23,6 +23,4 @@ public interface UserRoleRepository extends JpaRepository<UserRole, Integer> {
 
     ArrayList<UserRole> findByUserAndStatus(User user, Boolean status);
 
-    @Override
-    Optional<UserRole> findById(Integer id);
 }

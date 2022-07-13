@@ -9,7 +9,5 @@ import java.util.List;
 @Repository
 public interface ExportOrderRepository extends JpaRepository<ExportOrder,Long> {
 
-    List<ExportOrder> findAllByUsedId(Integer userId);
-
-
+    List<ExportOrder> findAllByUserPhoneNumber(String userPhoneNumber);
 }

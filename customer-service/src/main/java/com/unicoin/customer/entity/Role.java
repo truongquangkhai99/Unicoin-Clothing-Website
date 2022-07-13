@@ -1,24 +1,23 @@
 package com.unicoin.customer.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.Instant;
 
 @Entity
-@Builder
-@Data
-@AllArgsConstructor
+@Table(name = "roles", indexes = {
+        @Index(name = "IDX1", columnList = "role_name")
+})
 @NoArgsConstructor
-@Table(name = "roles")
-public class Role implements Serializable {
-
+@AllArgsConstructor
+@Data
+@Builder
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "role_id", nullable = false)
@@ -27,14 +26,13 @@ public class Role implements Serializable {
     @Column(name = "role_name", nullable = false)
     private String roleName;
 
-    @Column(name = "memo", nullable = false)
+    @Column(name = "memo")
     private String memo;
 
-    @Column(name = "regist_stamp")
+    @Column(name = "regist_stamp", nullable = false)
     private Timestamp registStamp;
 
     @Column(name = "status", nullable = false)
-    private Boolean status = true;
-
+    private Boolean status = false;
 
 }

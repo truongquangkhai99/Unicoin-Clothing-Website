@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.Instant;
 
 @Entity
@@ -20,8 +21,8 @@ public class ExportOrder {
     @Column(name = "export_order_id", nullable = false)
     private Long id;
 
-    @Column(name = "used_id")
-    private Integer usedId;
+    @Column(name = "USER_PHONE_NUMBER")
+    private String userPhoneNumber;
 
     @Column(name = "name_recipient", length = 45)
     private String nameRecipient;
@@ -33,7 +34,7 @@ public class ExportOrder {
     private String address;
 
     @Column(name = "regist_stamp")
-    private Instant registStamp;
+    private Timestamp registStamp;
 
     @Column(name = "status")
     private Integer status;

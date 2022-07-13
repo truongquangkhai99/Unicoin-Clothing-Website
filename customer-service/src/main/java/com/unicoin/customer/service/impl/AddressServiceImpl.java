@@ -1,7 +1,7 @@
 package com.unicoin.customer.service.impl;
 
 import com.unicoin.customer.common.RestResponsePage;
-import com.unicoin.customer.dto.AddressDTO;
+import com.unicoin.customer.entity.Address;
 import com.unicoin.customer.entity.User;
 import com.unicoin.customer.ex.AppException;
 import com.unicoin.customer.ex.ExceptionCode;
@@ -11,17 +11,12 @@ import com.unicoin.customer.repository.UserRepository;
 import com.unicoin.customer.service.AddressService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import com.unicoin.customer.entity.Address;
 
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -51,7 +46,7 @@ public class AddressServiceImpl implements AddressService {
         }
         User user = userRepository.findById(addAddressForm.getUserId()).get();
         data.setLine(addAddressForm.getLine());
-        data.setUserId(user);
+        data.setUser(user);
         data.setStatus(true);
         data.setRegistStamp(new Timestamp(new Date().getTime()));
         addressRepository.save(data);
@@ -66,7 +61,7 @@ public class AddressServiceImpl implements AddressService {
         Address data = new Address();
         User user = userRepository.findById(addAddressForm.getUserId()).get();
         data.setLine(addAddressForm.getLine());
-        data.setUserId(user);
+        data.setUser(user);
         data.setRegistStamp(checkId.get().getRegistStamp());
         data.setStatus(true);
         addressRepository.save(data);

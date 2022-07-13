@@ -9,27 +9,30 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "address")
+@Table(name = "address", indexes = {
+        @Index(name = "user_address_idx", columnList = "user_id")
+})
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "address_id", nullable = false)
-    private  Long addressId;
+    private Long id;
 
-    @Column(name = "line" , nullable = false)
-    private  String line;
+    @Column(name = "line", nullable = false)
+    private String line;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    private User userId;
+    private User user;
 
-    @Column(name = "status" , nullable = false)
-    private Boolean status;
+    @Column(name = "status", nullable = false)
+    private Boolean status = false;
 
-    @Column(name = "regist_stamp", nullable = true)
+    @Column(name = "regist_stamp", nullable = false)
     private Timestamp registStamp;
+
 }

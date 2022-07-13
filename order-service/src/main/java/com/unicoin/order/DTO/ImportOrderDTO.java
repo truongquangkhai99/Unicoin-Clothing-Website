@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 @Builder
 public class ImportOrderDTO {
     private Long id;
-    private Long userId;
+    private String userPhoneNumber;
     private Timestamp registStamp;
     private Integer status;
 }

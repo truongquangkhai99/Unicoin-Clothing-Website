@@ -45,7 +45,7 @@ public class ExportOrderServiceImpl implements ExportOrderService {
         log.info("start add exportOrders");
         ExportOrder exportOrder = ExportOrder.builder()
                 .id(addExportOrders.getId())
-                .usedId(addExportOrders.getUsedId())
+                .userPhoneNumber(addExportOrders.getUserPhoneNumber())
                 .nameRecipient(addExportOrders.getNameRecipient())
                 .phoneRecipient(addExportOrders.getPhoneRecipient())
                 .address(addExportOrders.getAddress())
@@ -55,12 +55,15 @@ public class ExportOrderServiceImpl implements ExportOrderService {
         exportOrderRepository.save(exportOrder);
         List<FormExportOrderDetail> listData= addExportOrders.getData();
         for (FormExportOrderDetail i : listData){
+            Optional<ExportOrder> optionalExportOrder = exportOrderRepository.findById(i.getExportOrderId());
+            if (optionalExportOrder.isEmpty())
+                throw new AppException(ExceptionCode.EXPORTORDERS_NOT_EXIST);
             ExportOrderDetail exportOrderDetail=ExportOrderDetail.builder()
                     .id(i.getId())
                     .variantId(i.getVariantId())
                     .quantity(i.getQuantity())
                     .price(i.getPrice())
-                    .exportOrderId(i.getExportOrderId())
+                    .exportOrderId(optionalExportOrder.get())
                     .build();
             exportOrderDetaiRepository.save(exportOrderDetail);
         }
@@ -88,7 +91,7 @@ public class ExportOrderServiceImpl implements ExportOrderService {
         List<ExportOrder> list=exportOrderRepository.searchExportOrderByStatus(status);
         List<ExportOrderDTO> listDTO=list.stream().map(item->ExportOrderDTO.builder()
                 .id(item.getId())
-                .usedId(item.getUsedId())
+                .userPhoneNumber(item.getUserPhoneNumber())
                 .nameRecipient(item.getNameRecipient())
                 .phoneRecipient(item.getPhoneRecipient())
                 .address(item.getAddress())

@@ -1,4 +1,4 @@
-package com.unicoin.order.config;
+package com.unicoin.order.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 public class ImportOrdersDTO {
     private Long id ;
 
-    private Long userId;
+    private String userPhoneNumber;
 
     private Timestamp registStamp;
 

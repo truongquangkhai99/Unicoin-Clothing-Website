@@ -10,32 +10,33 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class User {
     @Id
-    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id", nullable = false)
     private Long id;
 
-    @Column(name = "phone_number", nullable = false, length = 15)
-    private String phoneNumber;
-
-    @Column(name = "fullname", nullable = false, length = 45)
+    @Column(name = "fullname", nullable = false, length = 125)
     private String fullName;
 
-    @Column(name = "email", nullable = false)
-    private String email;
+    @Column(name = "phone_number", nullable = false, length = 10)
+    private String phoneNumber;
 
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "regist_stamp", nullable = true)
+    @Column(name = "email", nullable = false)
+    private String email;
+
+    @Column(name = "regist_stamp", nullable = false)
     private Timestamp registStamp;
 
     @Column(name = "status", nullable = false)
-    private Boolean status;
+    private Boolean status = false;
+
 
 }

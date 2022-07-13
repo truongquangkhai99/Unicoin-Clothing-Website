@@ -6,7 +6,6 @@ import com.unicoin.customer.repository.UserRoleRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -33,14 +32,13 @@ public class UserDetailServiceImpl implements UserDetailsService {
         //Kiem tra user co ton  tai khong
         Optional<com.unicoin.customer.entity.User> account = userRepository.findByPhoneNumber(phoneNumber);
         if (account.isEmpty()) throw new UsernameNotFoundException(phoneNumber);
-
         List<UserRole> userRoles = userRoleRepository.findAllByUser(account.get());
         List<GrantedAuthority> authorityList = new ArrayList<>();
         if (userRoles.size() > 0){
-            for (UserRole role :
-                    userRoles) {
-                authorityList.add(new SimpleGrantedAuthority(role.getRole().getRoleName().toUpperCase()));
-            }
+//            for (UserRole userRole :
+//                    userRoles) {
+//                authorityList.add(new SimpleGrantedAuthority(userRole.getRole().getRoleName().toUpperCase()));
+//            }
         }
         User user = new User(account.get().getPhoneNumber(), account.get().getPassword(), authorityList);
         log.info("User detail: {}", user);

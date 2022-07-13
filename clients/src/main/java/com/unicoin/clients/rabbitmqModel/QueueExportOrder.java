@@ -16,7 +16,7 @@ public class QueueExportOrder {
 
     private Long id;
 
-    private Integer usedId;
+    private String userPhoneNumber;
 
     private String nameRecipient;
 
