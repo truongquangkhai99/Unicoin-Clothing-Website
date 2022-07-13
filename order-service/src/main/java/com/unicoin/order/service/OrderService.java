@@ -3,7 +3,7 @@ package com.unicoin.order.service;
 import com.unicoin.clients.form.orderform.OrderRequest;
 import com.unicoin.order.DTO.ImportOrderDTO;
 import com.unicoin.order.DTO.ImportOrderDetailDTO;
-import com.unicoin.order.config.ImportOrdersDTO;
+import com.unicoin.order.DTO.ImportOrdersDTO;
 import com.unicoin.order.form.AddImportOrderDetail;
 import org.springframework.stereotype.Service;
 

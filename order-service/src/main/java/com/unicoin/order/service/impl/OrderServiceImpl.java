@@ -3,7 +3,7 @@ package com.unicoin.order.service.impl;
 import com.unicoin.clients.form.orderform.OrderRequest;
 import com.unicoin.order.DTO.ImportOrderDTO;
 import com.unicoin.order.DTO.ImportOrderDetailDTO;
-import com.unicoin.order.config.ImportOrdersDTO;
+import com.unicoin.order.DTO.ImportOrdersDTO;
 import com.unicoin.order.entity.ImportOrderDetail;
 import com.unicoin.order.entity.ImportOrders;
 import com.unicoin.order.entity.Order;
@@ -16,6 +16,7 @@ import com.unicoin.order.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -37,15 +38,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ImportOrdersDTO viewsImportOrders() {
         log.info("start add Orders");
+
         ImportOrders importOrders = new ImportOrders();
         importOrders.setStatus(1);
         importOrders.setRegistStamp(new Timestamp(new Date().getTime()));
-        importOrders.setUserId(1l);
+        importOrders.setUserPhoneNumber("");
         importOrdersRepository.save(importOrders);
         ImportOrdersDTO dto = ImportOrdersDTO.builder().id(importOrders.getId())
                 .status(importOrders.getStatus())
                 .registStamp(importOrders.getRegistStamp())
-                .userId(importOrders.getUserId()).build();
+                .userPhoneNumber(importOrders.getUserPhoneNumber()).build();
         log.info("end adđ orders and return object");
         return dto;
     }
@@ -100,7 +102,7 @@ public class OrderServiceImpl implements OrderService {
         List<ImportOrders> list=importOrdersRepository.searchImportOrdersByStatus(status);
         List<ImportOrderDTO> listDTO=list.stream().map(item -> ImportOrderDTO.builder()
                 .id(item.getId())
-                .userId(item.getUserId())
+                .userPhoneNumber(item.getUserPhoneNumber())
                 .registStamp(item.getRegistStamp())
                 .status(item.getStatus())
                 .build()).collect(Collectors.toList());

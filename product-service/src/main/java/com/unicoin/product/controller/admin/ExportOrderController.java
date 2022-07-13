@@ -26,13 +26,13 @@ public class ExportOrderController {
     @PostMapping("/checkout")
     public ApiResponse checkoutExportOrder(@RequestBody CheckoutExportOrders checkoutExportOrders){
         exportOrderService.checkoutOrder(checkoutExportOrders);
-        return new SuccessResponse();
+        return new SuccessResponse(exportOrderService.addExportOrder());
     }
 
     @PostMapping("/add/export-order-detail")
     public ApiResponse createExportOrderDetail(@RequestBody AddExportOrderDetail addExportOrderDetail){
         exportOrderService.addExportOrderDetail(addExportOrderDetail);
-        return new SuccessResponse();
+        return new SuccessResponse(exportOrderService.addExportOrder());
     }
 
     @GetMapping("/view-export-order/{orderId}")

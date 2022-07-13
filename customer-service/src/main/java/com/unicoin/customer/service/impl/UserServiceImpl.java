@@ -6,6 +6,7 @@ import com.unicoin.customer.common.RestResponsePage;
 import com.unicoin.customer.dto.UserDTO;
 import com.unicoin.customer.entity.Role;
 import com.unicoin.customer.entity.User;
+import com.unicoin.customer.entity.UserRole;
 import com.unicoin.customer.ex.AppException;
 import com.unicoin.customer.ex.ExceptionCode;
 import com.unicoin.customer.form.AddCustomerForm;
@@ -21,9 +22,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.core.SecurityContext;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -49,9 +53,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public RestResponsePage<UserDTO> viewCustomer(Integer page, Integer size, String phoneNumber, String fullName, String email) {
         log.info("Start viewCustomer");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Pageable pageable = PageRequest.of(page - 1, size, Sort.by(Sort.Direction.ASC, "fullName").and(Sort.by(Sort.Direction.ASC, "registStamp")));
         Page<User> userPage = userRepository.searchAllCustomer(phoneNumber, fullName, email, pageable);
         if (userPage.isEmpty()) throw new AppException(ExceptionCode.NOTFOUND_CUSTOMERS);
+        List<UserRole> userRoles = userRoleRepository.findAllByUser(userPage.toList().get(0));
+        log.info("authentication: {}", userRoles);
         List<UserDTO> dtoList = userPage.toList().stream().map(item ->
                         UserDTO.builder()
                                 .id(item.getId())

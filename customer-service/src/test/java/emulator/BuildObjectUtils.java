@@ -124,8 +124,8 @@ public class BuildObjectUtils {
 
     public Address addressDataEntity(){
         Address address = new Address();
-        address.setAddressId(1l);
-        address.setUserId(UserData());
+        address.setId(1l);
+        address.setUser(UserData());
         address.setLine("35 le duc tho");
         address.setStatus(true);
         Timestamp timestamp = Timestamp.valueOf("2022-06-26 01:05:09");

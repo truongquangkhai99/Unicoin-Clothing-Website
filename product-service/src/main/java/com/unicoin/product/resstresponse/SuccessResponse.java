@@ -1,5 +1,6 @@
 package com.unicoin.product.resstresponse;
 
+import com.unicoin.product.entity.ExportOrder;
 import org.springframework.http.HttpStatus;
 
 public class SuccessResponse extends ApiResponse{

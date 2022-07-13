@@ -2,6 +2,7 @@ package com.unicoin.order.DTO;
 
 import lombok.*;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 @Getter
 @Setter
@@ -11,10 +12,10 @@ import java.time.Instant;
 @Data
 public class ExportOrderDTO {
     private Long id;
-    private Integer usedId;
+    private String userPhoneNumber;
     private String nameRecipient;
     private String phoneRecipient;
     private String address;
-    private Instant registStamp;
+    private Timestamp registStamp;
     private Integer status;
 }

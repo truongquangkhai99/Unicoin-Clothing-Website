@@ -20,8 +20,8 @@ public class ImportOrders {
     @Column(name = "IMPORT_ORDER_ID", nullable = false)
     private Long id;
 
-    @Column(name = "USER_ID" , nullable = false )
-    private Long userId;
+    @Column(name = "USER_PHONE_NUMBER" , nullable = false )
+    private String userPhoneNumber;
 
     @Column(name = "REGIST_STAMP" , nullable = false)
     private Timestamp registStamp;

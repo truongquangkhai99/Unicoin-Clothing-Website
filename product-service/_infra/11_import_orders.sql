@@ -1,6 +1,6 @@
 CREATE  TABLE `IMPORT_ORDERS`(
     `IMPORT_ORDER_ID` int NOT NULL AUTO_INCREMENT,
-    `USER_ID` int not null ,
+    `USER_PHONE_NUMBER` VARCHAR(20) not null ,
     `REGIST_STAMP` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ,
     `STATUS` int ,
     primary key (`IMPORT_ORDER_ID`)

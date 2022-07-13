@@ -13,6 +13,7 @@ import com.unicoin.product.repository.VariantRepository;
 import com.unicoin.product.service.ImportOrdersService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -36,15 +37,16 @@ public class ImportOrdersServiceImpl implements ImportOrdersService {
     @Override
     public ImportOrdersDTO viewsImportOrders() {
         log.info("start add Orders");
+        String userPhoneNumber = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         ImportOrders importOrders = new ImportOrders();
         importOrders.setStatus(1);
         importOrders.setRegistStamp(new Timestamp(new Date().getTime()));
-        importOrders.setUserId(1l);
+        importOrders.setUserPhoneNumber(userPhoneNumber);
         importOrdersRepository.save(importOrders);
         ImportOrdersDTO dto = ImportOrdersDTO.builder().id(importOrders.getId())
                 .status(importOrders.getStatus())
                 .registStamp(importOrders.getRegistStamp())
-                .userId(importOrders.getUserId()).build();
+                .userPhoneNumber(importOrders.getUserPhoneNumber()).build();
         log.info("end adđ orders and return object");
         return dto;
     }

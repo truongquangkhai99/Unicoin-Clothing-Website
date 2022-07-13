@@ -1,6 +1,5 @@
 package com.unicoin.customer.service;
 import com.unicoin.customer.common.RestResponsePage;
-import com.unicoin.customer.dto.AddressDTO;
 import com.unicoin.customer.entity.Address;
 import com.unicoin.customer.form.AddAddressForm;
 

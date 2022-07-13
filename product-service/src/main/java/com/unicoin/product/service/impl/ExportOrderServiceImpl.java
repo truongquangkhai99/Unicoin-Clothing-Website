@@ -18,6 +18,7 @@ import com.unicoin.product.service.ExportOrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,11 +39,10 @@ public class ExportOrderServiceImpl implements ExportOrderService {
     RabbitMQMessageProducer producer;
 
 
-
     @Override
-    public List<ExportOrder> viewsAllExportOrder(Integer userId) {
+    public List<ExportOrder> viewsAllExportOrder(String userPhoneNumber) {
         log.info("start views exportOrder");
-        List<ExportOrder> listData = exportOrderRepository.findAllByUsedId(userId);
+        List<ExportOrder> listData = exportOrderRepository.findAllByUserPhoneNumber(userPhoneNumber);
         if (listData.size() < 0) {
             throw new AppException(ExceptionCode.EXPORTORDERS_NOT_EXIST);
         }
@@ -52,13 +52,16 @@ public class ExportOrderServiceImpl implements ExportOrderService {
     @Override
     public ExportOrder addExportOrder() {
         log.info("start add exportOrders");
+        String userPhoneNumber = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         ExportOrder exportOrder = new ExportOrder();
-        List<ExportOrder> exportOrders = exportOrderRepository.findAllByUsedId(1);
-        if (exportOrders.size() > 0){
-            exportOrder = exportOrders.get(0);
+        if (userPhoneNumber != null) {
+            List<ExportOrder> exportOrders = exportOrderRepository.findAllByUserPhoneNumber(userPhoneNumber);
+            if (exportOrders.size() > 0) {
+                exportOrder = exportOrders.get(0);
+            }
+            exportOrder.setUserPhoneNumber(userPhoneNumber);
         }
         exportOrder.setStatus(1);
-        exportOrder.setUsedId(1);
         exportOrderRepository.save(exportOrder);
         log.info("end add exportOrders");
         return exportOrder;
@@ -127,12 +130,12 @@ public class ExportOrderServiceImpl implements ExportOrderService {
         QueueExportOrder queueExportOrder = new QueueExportOrder();
         BeanUtils.copyProperties(entity, queueExportOrder);
         queueExportOrder.setQueueExportOrderDetails(orderDetails.stream().map(item ->
-                QueueExportOrderDetail.builder()
-                        .id(item.getId())
-                        .price(item.getPrice())
-                        .quantity(item.getQuantity())
-                        .variantId(item.getVariantId())
-                        .build())
+                        QueueExportOrderDetail.builder()
+                                .id(item.getId())
+                                .price(item.getPrice())
+                                .quantity(item.getQuantity())
+                                .variantId(item.getVariantId())
+                                .build())
                 .collect(Collectors.toList()));
         producer.publish(queueExportOrder, RabbitKey.DIRECT_EXCHANGE, RabbitKey.EXPORT_ORDER_ROUTING_KEYS);
         log.info("End checkout Order: {}", orders);

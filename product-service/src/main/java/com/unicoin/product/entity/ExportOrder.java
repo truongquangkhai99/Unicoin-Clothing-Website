@@ -20,8 +20,8 @@ public class ExportOrder {
     @Column(name = "export_order_id", nullable = false)
     private Long id;
 
-    @Column(name = "used_id")
-    private Integer usedId;
+    @Column(name = "USER_PHONE_NUMBER")
+    private String userPhoneNumber;
 
     @Column(name = "name_recipient", length = 45)
     private String nameRecipient;
