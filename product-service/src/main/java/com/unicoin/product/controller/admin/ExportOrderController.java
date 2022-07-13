@@ -39,5 +39,9 @@ public class ExportOrderController {
     public ApiResponse viewExportOrder(@PathVariable("orderId") Long orderId){
         return new SuccessResponse(exportOrderService.viewExportOrderByOrderId(orderId));
     }
+    @GetMapping("/sum-price-orde/{id}")
+    public  ApiResponse sumPriceOrder(@PathVariable("id") Long id){
+        return  new SuccessResponse((exportOrderService.sumOderPrice(id)));
+    }
 
 }
