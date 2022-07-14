@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/shop")
-@CrossOrigin("*")
 public class ShopController {
 
     @Autowired

@@ -1,5 +1,6 @@
 package com.unicoin.customer.config.oauth2;
 
+import com.unicoin.customer.config.filter.CorsFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +14,12 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
@@ -68,4 +75,5 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
                 .tokenStore(tokenStore())
                 .accessTokenConverter(tokenConverter());
     }
+
 }

@@ -17,7 +17,6 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(value = "/admin/customer")
 @Slf4j
-@CrossOrigin("*")
 public class    UserController {
 
     @Autowired

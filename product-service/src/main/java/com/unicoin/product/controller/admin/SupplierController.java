@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin/supplier")
-@CrossOrigin("*")
 public class SupplierController {
 
     @Autowired
