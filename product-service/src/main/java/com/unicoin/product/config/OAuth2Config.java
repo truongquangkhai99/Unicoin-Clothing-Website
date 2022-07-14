@@ -29,7 +29,6 @@ public class OAuth2Config extends ResourceServerConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(
                         "/shop/**"
-
                 )
                 .permitAll()
                 .anyRequest()
