@@ -4,6 +4,7 @@ import com.unicoin.product.resstresponse.ApiResponse;
 import com.unicoin.product.resstresponse.SuccessResponse;
 import com.unicoin.product.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ public class ShopController {
     ShopService shopService;
 
     @GetMapping("")
+    @PreAuthorize("hasAuthority('admin')")
     public ApiResponse getAllProduct(){
         return new SuccessResponse(shopService.getAllProduct());
     }
