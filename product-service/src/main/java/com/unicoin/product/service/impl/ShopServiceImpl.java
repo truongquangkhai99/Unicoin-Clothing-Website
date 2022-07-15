@@ -14,6 +14,7 @@ import com.unicoin.product.service.ShopService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public RestResponsePage<ProductDTO> getAllProduct() {
+        log.info("authentication: {}", SecurityContextHolder.getContext().getAuthentication());
         List<Product> productList = productRepository.getAllByStatus(1);
         List<ProductDTO> productDTOS = new ArrayList<>();
         for (Product product :
