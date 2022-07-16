@@ -12,7 +12,7 @@ import java.util.List;
 public interface ExportOrderService {
     List<ExportOrder> viewsAllExportOrder(String userUserPhoneNumber);
 
-    ExportOrderDTO addExportOrder();
+    ExportOrderDTO addExportOrder(Long orderId);
 
     void addExportOrderDetail(AddExportOrderDetail addExportOrderDetail);
 
