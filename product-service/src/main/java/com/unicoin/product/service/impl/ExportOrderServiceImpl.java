@@ -4,6 +4,7 @@ import com.unicoin.amqp.RabbitMQMessageProducer;
 import com.unicoin.clients.commons.RabbitKey;
 import com.unicoin.clients.rabbitmqModel.QueueExportOrder;
 import com.unicoin.clients.rabbitmqModel.QueueExportOrderDetail;
+import com.unicoin.product.common.CommonsUtils;
 import com.unicoin.product.dto.ExportOrderDTO;
 import com.unicoin.product.dto.ExportOrderDetailDTO;
 import com.unicoin.product.entity.ExportOrder;
@@ -56,7 +57,7 @@ public class ExportOrderServiceImpl implements ExportOrderService {
         log.info("start add exportOrders");
         String userPhoneNumber = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         ExportOrder exportOrder = new ExportOrder();
-        if (userPhoneNumber != null) {
+        if (!CommonsUtils.ANONYMOUS_USER.equals(userPhoneNumber)) {
             List<ExportOrder> exportOrders = exportOrderRepository.findAllByUserPhoneNumber(userPhoneNumber);
             if (exportOrders.size() > 0) {
                 exportOrder = exportOrders.get(0);
@@ -130,8 +131,11 @@ public class ExportOrderServiceImpl implements ExportOrderService {
         Optional<ExportOrder> optionalExportOrder = exportOrderRepository.findById(orders.getId());
         if (optionalExportOrder.isEmpty())
             throw new AppException(ExceptionCode.EXPORTORDERS_NOT_EXIST);
-
+        String userPhoneNumber = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         ExportOrder exportOrder = optionalExportOrder.get();
+        if (CommonsUtils.ANONYMOUS_USER.equals(userPhoneNumber)){
+         exportOrder.setUserPhoneNumber(orders.getPhoneRecipient());
+        }
         exportOrder.setAddress(orders.getAddress());
         exportOrder.setNameRecipient(orders.getNameRecipient());
         exportOrder.setPhoneRecipient(orders.getPhoneRecipient());

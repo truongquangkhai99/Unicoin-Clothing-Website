@@ -57,13 +57,13 @@ public class ProductController {
     @DeleteMapping("/option-value/{optionValueId}")
     public ApiResponse deleteOptionValue(@PathVariable Long optionValueId){
         optionService.deleteOptionValue(optionValueId);
-        return new SuccessResponse(exportOrderService.addExportOrder());
+        return new SuccessResponse();
     }
 
     @DeleteMapping("/{productId}")
     public ApiResponse deleteProduct(@PathVariable Long productId){
         productService.deleteProduct(productId);
-        return new SuccessResponse(exportOrderService.addExportOrder());
+        return new SuccessResponse();
     }
 
     @GetMapping("/view-variants/{productId}")
@@ -75,7 +75,7 @@ public class ProductController {
     public ApiResponse addImagesForProduct(@PathVariable Long productId,
                                            @RequestBody List<AddImageForm> imageUrls){
         productService.addImagesForProduct(productId, imageUrls);
-        return new SuccessResponse(exportOrderService.addExportOrder());
+        return new SuccessResponse();
     }
 
 }
