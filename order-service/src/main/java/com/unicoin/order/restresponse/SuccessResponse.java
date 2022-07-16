@@ -1,4 +1,4 @@
-package com.unicoin.order.resstresponse;
+package com.unicoin.order.restresponse;
 
 import org.springframework.http.HttpStatus;
 

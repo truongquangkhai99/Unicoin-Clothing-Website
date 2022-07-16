@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 @Repository
-
 public interface ImportOrdersRepository extends JpaRepository<ImportOrders, Long> {
     @Query("select i from ImportOrders i where (:status is null or i.status = :status)")
     List<ImportOrders> searchImportOrdersByStatus(@Param("status") Integer status);

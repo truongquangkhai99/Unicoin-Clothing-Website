@@ -1,7 +1,7 @@
 package com.unicoin.order.ex;
 
 
-import com.unicoin.order.resstresponse.Translator;
+import com.unicoin.order.restresponse.Translator;
 
 public class AppException extends ResourceException{
 
