@@ -222,6 +222,10 @@ public class ProductServiceImpl implements ProductService {
             }
             optionRepository.delete(option);
         }
+        List<Image> images = imageRepository.findAllByProduct(optionalProduct.get());
+        for (Image image: images){
+            imageRepository.delete(image);
+        }
         productRepository.delete(optionalProduct.get());
     }
 
