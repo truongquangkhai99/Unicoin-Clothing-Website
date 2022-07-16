@@ -12,7 +12,7 @@ import lombok.*;
 
 public class ExportOrderDetailDTO {
     private Long id;
-    private Integer variantId;
+    private Long variantId;
     private Integer quantity;
     private Long price;
     private Long exportOrderId;

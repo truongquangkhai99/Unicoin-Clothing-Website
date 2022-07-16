@@ -19,7 +19,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 )
 @EnableEurekaClient
 @EnableAuthorizationServer
-@EnableResourceServer
+//@EnableResourceServer
 public class CustomerApplication {
     public static void main(String[] args) {
         SpringApplication.run(CustomerApplication.class, args);
