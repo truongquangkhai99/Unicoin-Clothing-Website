@@ -75,6 +75,7 @@ public class ShopServiceImpl implements ShopService {
                                 .variantId(item.getId())
                                 .productName(item.getProduct().getProductName())
                                 .price(item.getPrice())
+                                .priceDiscount(item.getPriceDiscount())
                                 .qty(item.getQty())
                                 .skuID(item.getSkuId())
                                 .option(variantValueRepository.findAllByVariant(item).stream().map(
@@ -86,6 +87,7 @@ public class ShopServiceImpl implements ShopService {
                                                 .optionValue(value.getOptionValue().getOptionValue())
                                                 .build()
                                 ).collect(Collectors.toList()))
+                                .status(item.getStatus())
                                 .build()).collect(Collectors.toList());
             }
             productDTOS.add(ProductDTO.builder()

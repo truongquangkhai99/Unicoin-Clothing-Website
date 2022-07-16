@@ -15,5 +15,6 @@ public class AddExportOrderDetail {
     private String variantName;
     private Integer quantity;
     private Long price;
+    private Long priceDiscount;
     private Long exportOrderId;
 }

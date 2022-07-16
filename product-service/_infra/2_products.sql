@@ -5,7 +5,7 @@ CREATE TABLE `products` (
                               `SUPPLIER_ID` int NOT NULL ,
                               `DESCRIPTION` VARCHAR(3000),
                               `REGIST_STAMP` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                              `UPDATE_USER` INT,
+                              `UPDATE_USER` VARCHAR(20),
                               `status` INT,
                               constraint `fk_supplier_products` FOREIGN KEY (`SUPPLIER_ID`) REFERENCES `SUPPLIERS` (`SUPPLIER_ID`),
                               PRIMARY KEY (`PRODUCT_ID`)

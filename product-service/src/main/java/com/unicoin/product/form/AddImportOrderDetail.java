@@ -14,5 +14,5 @@ public class AddImportOrderDetail {
 
     private Integer quantity;
 
-    private Long cost;
+    private Long price;
 }

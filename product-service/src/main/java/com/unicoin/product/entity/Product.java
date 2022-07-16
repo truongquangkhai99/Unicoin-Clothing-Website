@@ -38,7 +38,7 @@ public class Product {
     private Timestamp registStamp;
 
     @Column(name = "UPDATE_USER", nullable = false)
-    private Long updateUser;
+    private String updateUser;
 
     @Column(name = "status")
     private Integer status;

@@ -35,7 +35,10 @@ public class Variant {
     @Column(name = "PRICE")
     private Long price;
 
+    @Column(name = "PRICE_DISCOUNT")
+    private Long priceDiscount;
+
     @Column(name = "STATUS")
-    private Integer status;
+    private String status;
 
 }

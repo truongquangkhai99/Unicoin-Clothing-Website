@@ -12,6 +12,7 @@ import com.unicoin.product.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -58,19 +59,28 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public RestResponsePage<ProductDTO> addProduct(AddProductForm form) {
         log.info("Start addProduct:  {}", form);
+
+        //Kiểm tra supplier có tồn tại không
         Optional<Supplier> supplierOptional = supplierRepository.findById(form.getSupplier());
         if (supplierOptional.isEmpty())
             throw new AppException(ExceptionCode.SUPPLIER_NOT_EXIST);
+
+        //khởi tạo product code
         form.setProductCode(form.getProductCode() + supplierOptional.get().getSupplierCode());
+
+        //kiểm tra product code đã được sử dụng chưa
         if (productRepository.existsProductByProductCode(form.getProductCode()))
             throw new AppException(ExceptionCode.PRODUCT_IS_EXIST);
+
+
         Product product = new Product();
         BeanUtils.copyProperties(form, product);
         product.setSupplier(supplierOptional.get());
         product.setStatus(1);
         product.setRegistStamp(new Timestamp(new Date().getTime()));
         //config security must be fix updateUser = user loging
-        product.setUpdateUser(1L);
+        String userPhoneNumber = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        product.setUpdateUser(userPhoneNumber);
         log.info("Product entity: {}", product);
         Product entity = productRepository.save(product);
         ProductDTO dto = new ProductDTO();
@@ -230,7 +240,6 @@ public class ProductServiceImpl implements ProductService {
         if (optionalProduct.isEmpty())
             throw new AppException(ExceptionCode.PRODUCT_IS_NOT_EXIST);
 
-
         for (AddImageForm image : imageUrls) {
             if (CommonsUtils.TYPE_MAIN.equals(image.getImageType())) {
                 List<Image> imagesMains = imageRepository.findAllByProductAndImageType(optionalProduct.get(), CommonsUtils.TYPE_MAIN);
@@ -295,6 +304,7 @@ public class ProductServiceImpl implements ProductService {
                     .option(optionVariantDTOS)
                     .skuID(variant.getSkuId())
                     .variantName(variant.getVariantName())
+                    .status(variant.getStatus())
                     .build());
         }
         return new RestResponsePage<>(variantDTOS, 1, variantDTOS.size(), variantDTOS.size(), 1);
@@ -324,10 +334,12 @@ public class ProductServiceImpl implements ProductService {
                     .productId(variant.getProduct().getId())
                     .qty(variant.getQty())
                     .price(variant.getPrice())
+                    .priceDiscount(variant.getPriceDiscount())
                     .productName(variant.getProduct().getProductName())
                     .option(optionVariantDTOS)
                     .skuID(variant.getSkuId())
                     .variantName(variant.getVariantName())
+                    .status(variant.getStatus())
                     .build());
         }
         RestResponsePage<VariantDTO> restResponsePage = new RestResponsePage<>(variantDTOS, 1, variantDTOS.size(), variantDTOS.size(), 1);
@@ -345,10 +357,11 @@ public class ProductServiceImpl implements ProductService {
                 Variant variant = variantRepository.save(Variant.builder()
                         .product(product)
                         .price(0L)
+                        .priceDiscount(0L)
                         .qty(0)
                         .skuId(product.getProductCode() + "-" + option.getOptionCode() + item.getId())
                         .variantName(product.getProductName() + "-" + item.getOptionValue())
-                        .status(2)
+                        .status(CommonsUtils.STATUS_NEW_PRODUCT)
                         .build());
                 VariantValue variantValue = variantValueRepository.save(VariantValue.builder()
                         .id(VariantValueId.builder()
@@ -399,9 +412,10 @@ public class ProductServiceImpl implements ProductService {
                                 .product(product)
                                 .qty(0)
                                 .price(0L)
+                                .priceDiscount(0L)
                                 .skuId(skuId)
                                 .variantName(variantName)
-                                .status(2)
+                                .status(CommonsUtils.STATUS_NEW_PRODUCT)
                                 .build());
                         String[] variantSkuIdArr = variant.getSkuId().split("-");
                         //add them cac option cua variant da duoc them tu truoc
@@ -447,10 +461,11 @@ public class ProductServiceImpl implements ProductService {
                                         .id(variant.getId())
                                         .product(product)
                                         .price(0L)
+                                        .priceDiscount(0L)
                                         .qty(0)
                                         .skuId(skuId + "-" + option.getOptionCode() + item.getId())
                                         .variantName(variantName + "-" + item.getOptionValue())
-                                        .status(2)
+                                        .status(CommonsUtils.STATUS_NEW_PRODUCT)
                                         .build());
                                 VariantValue variantValue = variantValueRepository.save(VariantValue.builder()
                                         .id(VariantValueId.builder()
@@ -466,10 +481,11 @@ public class ProductServiceImpl implements ProductService {
                                 Variant variantEntity = variantRepository.save(Variant.builder()
                                         .product(product)
                                         .price(0L)
+                                        .priceDiscount(0L)
                                         .qty(0)
                                         .skuId(skuId + "-" + option.getOptionCode() + item.getId())
                                         .variantName(variantName + "-" + item.getOptionValue())
-                                        .status(2)
+                                        .status(CommonsUtils.STATUS_NEW_PRODUCT)
                                         .build());
 
                                 VariantValue variantValue = variantValueRepository.save(VariantValue.builder()

@@ -23,5 +23,7 @@ public class ExportOrderDetailDTO {
 
     private Long price;
 
+    private Long priceDiscount;
+
     private Long orderId;
 }

@@ -1,5 +1,6 @@
 package com.unicoin.product.service;
 
+import com.unicoin.product.dto.ExportOrderDTO;
 import com.unicoin.product.dto.ExportOrderDetailDTO;
 import com.unicoin.product.entity.ExportOrder;
 import com.unicoin.product.entity.ExportOrderDetail;
@@ -11,7 +12,7 @@ import java.util.List;
 public interface ExportOrderService {
     List<ExportOrder> viewsAllExportOrder(String userUserPhoneNumber);
 
-    ExportOrder addExportOrder();
+    ExportOrderDTO addExportOrder();
 
     void addExportOrderDetail(AddExportOrderDetail addExportOrderDetail);
 
