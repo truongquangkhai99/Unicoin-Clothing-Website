@@ -52,7 +52,7 @@ public class ExportOrderServiceImpl implements ExportOrderService {
     }
 
     @Override
-    public ExportOrderDTO addExportOrder() {
+    public ExportOrderDTO addExportOrder(Long orderId) {
         log.info("start add exportOrders");
         String userPhoneNumber = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         ExportOrder exportOrder = new ExportOrder();
@@ -62,6 +62,13 @@ public class ExportOrderServiceImpl implements ExportOrderService {
                 exportOrder = exportOrders.get(0);
             }
             exportOrder.setUserPhoneNumber(userPhoneNumber);
+        } else {
+            if (orderId != null) {
+                Optional<ExportOrder> optionalExportOrder = exportOrderRepository.findById(orderId);
+                if (optionalExportOrder.isPresent()){
+                    exportOrder = optionalExportOrder.get();
+                }
+            }
         }
         exportOrder.setStatus(1);
         ExportOrder entity = exportOrderRepository.save(exportOrder);
@@ -179,7 +186,7 @@ public class ExportOrderServiceImpl implements ExportOrderService {
             List<ExportOrderDetail> list = exportOrderDetaiRepository.findAllByExportOrderId(exportOrder);
             if (exportOrder.getStatus() == 1) {
                 for (ExportOrderDetail item : list) {
-                    sumPrice = sumPrice + item.getPrice()*item.getQuantity();
+                    sumPrice = sumPrice + item.getPrice() * item.getQuantity();
                 }
                 return sumPrice;
             } else {
