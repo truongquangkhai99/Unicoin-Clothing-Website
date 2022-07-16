@@ -18,7 +18,6 @@ public class ShopController {
     ShopService shopService;
 
     @GetMapping("")
-    @PreAuthorize("hasAuthority('admin')")
     public ApiResponse getAllProduct(){
         return new SuccessResponse(shopService.getAllProduct());
     }

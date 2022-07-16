@@ -25,7 +25,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.addFilterBefore(corsFilter(), SessionManagementFilter.class)
-                .csrf().disable();
+                .csrf().disable()
+                .authorizeRequests()
+                .anyRequest()
+                .permitAll();
     }
 
     @Bean
