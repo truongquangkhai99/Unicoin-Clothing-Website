@@ -1,8 +1,8 @@
 package com.unicoin.order.controller;
 
 import com.unicoin.order.form.AddImportOrderDetail;
-import com.unicoin.order.resstresponse.ApiResponse;
-import com.unicoin.order.resstresponse.SuccessResponse;
+import com.unicoin.order.restresponse.ApiResponse;
+import com.unicoin.order.restresponse.SuccessResponse;
 import com.unicoin.order.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

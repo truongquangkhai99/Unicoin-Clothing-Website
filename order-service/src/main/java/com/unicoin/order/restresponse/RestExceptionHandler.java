@@ -1,4 +1,4 @@
-package com.unicoin.order.resstresponse;
+package com.unicoin.order.restresponse;
 
 import com.unicoin.order.ex.ResourceException;
 import lombok.extern.slf4j.Slf4j;

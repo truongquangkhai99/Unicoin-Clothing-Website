@@ -1,4 +1,4 @@
-package com.unicoin.order.resstresponse;
+package com.unicoin.order.restresponse;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

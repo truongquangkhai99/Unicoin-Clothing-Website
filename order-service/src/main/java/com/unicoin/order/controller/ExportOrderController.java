@@ -1,8 +1,8 @@
 package com.unicoin.order.controller;
 
 import com.unicoin.order.form.AddExportOrders;
-import com.unicoin.order.resstresponse.ApiResponse;
-import com.unicoin.order.resstresponse.SuccessResponse;
+import com.unicoin.order.restresponse.ApiResponse;
+import com.unicoin.order.restresponse.SuccessResponse;
 import com.unicoin.order.service.ExportOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +15,9 @@ public class ExportOrderController {
     ExportOrderService exportOrderService;
 
     @GetMapping("")
-    public ApiResponse viewsExportOrder(@RequestParam(value = "userId") Integer userId){
+    public ApiResponse viewsExportOrder(){
 
-        return new SuccessResponse(exportOrderService.viewsAllExportOrder(userId));
+        return new SuccessResponse(exportOrderService.viewsAllExportOrder());
     }
 
     @PostMapping("/add/{export_order_id}")

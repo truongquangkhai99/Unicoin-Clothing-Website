@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 @Service
 public interface ExportOrderService {
-    List<ExportOrder> viewsAllExportOrder(Integer userId);
+    List<ExportOrder> viewsAllExportOrder();
     public void addExportOrderDetail(AddExportOrders addExportOrders);
     public void updateExportOrder(Long exportOrderId, Integer status);
 

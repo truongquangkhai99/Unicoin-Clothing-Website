@@ -13,6 +13,7 @@ import com.unicoin.order.repository.ExportOrderRepository;
 import com.unicoin.order.service.ExportOrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,9 +32,10 @@ public class ExportOrderServiceImpl implements ExportOrderService {
 
 
     @Override
-    public List<ExportOrder> viewsAllExportOrder(Integer userId) {
+    public List<ExportOrder> viewsAllExportOrder() {
         log.info("start views exportOrder");
-        List<ExportOrder> listData = exportOrderRepository.findAllByUsedId(userId);
+        String userPhoneNumber = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        List<ExportOrder> listData = exportOrderRepository.findAllByUserPhoneNumber(userPhoneNumber);
         if(listData.size() < 0){
             throw  new AppException(ExceptionCode.EXPORTORDERS_NOT_EXIST);
         }
@@ -119,7 +121,7 @@ public class ExportOrderServiceImpl implements ExportOrderService {
     @Override
     public List<ExportOrder> viewExportOrderByOption(Long id){
         log.info("Start víews");
-        List<ExportOrder> data=exportOrderRepository.viewExportOrderByUserId(id);
+        List<ExportOrder> data=exportOrderRepository.findExportOrderById(id);
         log.info("data"+data);
         return data;
     }

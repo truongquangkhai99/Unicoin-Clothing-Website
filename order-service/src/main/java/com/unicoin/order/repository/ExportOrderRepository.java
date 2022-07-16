@@ -14,9 +14,8 @@ public interface ExportOrderRepository extends JpaRepository<ExportOrder,Long> {
     @Query("select e from ExportOrder e where (:status is null or e.status = :status)")
     List<ExportOrder> searchExportOrderByStatus(@Param("status") Integer status);
 
-    List<ExportOrder> findAllByUsedId(Integer userId);
+    List<ExportOrder> findAllByUserPhoneNumber(String userPhoneNumber);
 
-    @Query("select e from ExportOrder e where (:id is null or e.id=:id)")
-    List<ExportOrder> viewExportOrderByUserId(@Param("id") Long id);
+    List<ExportOrder> findExportOrderById(Long id);
 
 }
