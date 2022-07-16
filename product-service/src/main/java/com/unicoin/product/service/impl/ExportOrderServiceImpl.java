@@ -4,6 +4,7 @@ import com.unicoin.amqp.RabbitMQMessageProducer;
 import com.unicoin.clients.commons.RabbitKey;
 import com.unicoin.clients.rabbitmqModel.QueueExportOrder;
 import com.unicoin.clients.rabbitmqModel.QueueExportOrderDetail;
+import com.unicoin.product.dto.ExportOrderDTO;
 import com.unicoin.product.dto.ExportOrderDetailDTO;
 import com.unicoin.product.entity.ExportOrder;
 import com.unicoin.product.entity.ExportOrderDetail;
@@ -20,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -49,7 +52,7 @@ public class ExportOrderServiceImpl implements ExportOrderService {
     }
 
     @Override
-    public ExportOrder addExportOrder() {
+    public ExportOrderDTO addExportOrder() {
         log.info("start add exportOrders");
         String userPhoneNumber = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         ExportOrder exportOrder = new ExportOrder();
@@ -61,9 +64,11 @@ public class ExportOrderServiceImpl implements ExportOrderService {
             exportOrder.setUserPhoneNumber(userPhoneNumber);
         }
         exportOrder.setStatus(1);
-        exportOrderRepository.save(exportOrder);
+        ExportOrder entity = exportOrderRepository.save(exportOrder);
+        ExportOrderDTO dto = new ExportOrderDTO();
+        BeanUtils.copyProperties(entity, dto);
         log.info("end add exportOrders");
-        return exportOrder;
+        return dto;
     }
 
     @Override
@@ -79,6 +84,7 @@ public class ExportOrderServiceImpl implements ExportOrderService {
         data.setVariantName(addExportOrderDetail.getVariantName());
         data.setQuantity(addExportOrderDetail.getQuantity());
         data.setPrice(addExportOrderDetail.getPrice());
+        data.setPriceDiscount(addExportOrderDetail.getPriceDiscount());
         data.setExportOrderId(exportOrder);
         exportOrderDetaiRepository.save(data);
         log.info("end add exportOrderDetail");
@@ -122,6 +128,7 @@ public class ExportOrderServiceImpl implements ExportOrderService {
         exportOrder.setAddress(orders.getAddress());
         exportOrder.setNameRecipient(orders.getNameRecipient());
         exportOrder.setPhoneRecipient(orders.getPhoneRecipient());
+        exportOrder.setRegistStamp(new Timestamp(new Date().getTime()));
         ExportOrder entity = exportOrderRepository.save(exportOrder);
         List<ExportOrderDetail> orderDetails = exportOrderDetaiRepository.findAllByExportOrderId(entity);
         if (orderDetails.size() == 0)
@@ -132,6 +139,7 @@ public class ExportOrderServiceImpl implements ExportOrderService {
                         QueueExportOrderDetail.builder()
                                 .id(item.getId())
                                 .price(item.getPrice())
+                                .priceDiscount(item.getPriceDiscount())
                                 .quantity(item.getQuantity())
                                 .variantId(item.getVariantId())
                                 .build())
@@ -152,6 +160,7 @@ public class ExportOrderServiceImpl implements ExportOrderService {
                         .id(item.getId())
                         .quantity(item.getQuantity())
                         .price(item.getPrice())
+                        .priceDiscount(item.getPriceDiscount())
                         .variantId(item.getVariantId())
                         .variantName(item.getVariantName())
                         .build()).collect(Collectors.toList());

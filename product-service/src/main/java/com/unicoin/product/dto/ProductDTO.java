@@ -31,7 +31,7 @@ public class ProductDTO {
 
     private Timestamp registStamp;
 
-    private Long updateUser;
+    private String updateUser;
 
     private Long priceMax;
 
