@@ -9,6 +9,8 @@ public class CommonsUtils {
     public static final String TYPE_MAIN ="MAIN";
     public static final String TYPE_SUB = "SUB";
 
+    public static final String ANONYMOUS_USER = "anonymousUser";
+
     //STATUS PRODUCT
     public static final String STATUS_STOP = "STOP BUSINESS";
     public static final String STATUS_DISCOUNT = "DISCOUNT";
