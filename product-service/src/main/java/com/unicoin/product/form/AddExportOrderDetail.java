@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class AddExportOrderDetail {
-    private Integer variantId;
+    private Long variantId;
     private String variantName;
     private Integer quantity;
     private Long price;

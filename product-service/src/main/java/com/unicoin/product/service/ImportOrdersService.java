@@ -12,4 +12,6 @@ public interface ImportOrdersService {
     void AddImportOrderDetail(List<AddImportOrderDetail> addImportOrderDetail , Long importOrderId);
 
     Long sumPriceImportOrder(Long id);
+
+    void checkoutImportOrder(Long importOrderId);
 }

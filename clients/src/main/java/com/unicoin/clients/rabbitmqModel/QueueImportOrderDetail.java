@@ -15,10 +15,10 @@ public class QueueImportOrderDetail {
 
     private Long id;
 
-    private Integer variantId;
+    private Long variantId;
 
     private Integer quantity;
 
-    private Integer cost;
+    private Long price;
 
 }

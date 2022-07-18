@@ -15,7 +15,7 @@ public class ExportOrderDetailDTO {
 
     private Long id;
 
-    private Integer variantId;
+    private Long variantId;
 
     private String variantName;
 

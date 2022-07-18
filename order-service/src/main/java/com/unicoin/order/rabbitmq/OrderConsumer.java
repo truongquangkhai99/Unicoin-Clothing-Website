@@ -41,7 +41,8 @@ public class OrderConsumer {
     }
 
     @RabbitListener(queues = RabbitKey.QUEUE_ADD_IMPORT_ORDER)
-    public void comsumerAddImportOrder(QueueExportOrder order){
+    public void comsumerAddImportOrder(QueueImportOrder order){
+        orderService.addImportOrderFromQueues(order);
         log.info("Consumed add import order {} from queue", order);
     }
 

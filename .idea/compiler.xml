@@ -18,6 +18,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="login-service" target="11" />
       <module name="notification" target="11" />
       <module name="orderamqp" target="11" />
     </bytecodeTargetLevel>

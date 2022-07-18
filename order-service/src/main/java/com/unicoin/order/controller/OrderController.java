@@ -18,21 +18,9 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
-    @GetMapping("")
-    public ApiResponse viewsImportOrders(){
-        return  new SuccessResponse(orderService.viewsImportOrders());
-    }
-
-    @PostMapping("/add/{importOrderId}")
-    public ApiResponse createOrder(@RequestBody List<AddImportOrderDetail> addImportOrderDetail
-                                    ,@PathVariable Long importOrdersId ){
-        orderService.AddImportOrderDetail(addImportOrderDetail , importOrdersId);
-      return new SuccessResponse();
-    }
-
     @PutMapping("/update")
             public ApiResponse updateOrders( @RequestParam(value = "importId") Long importId, @RequestParam(value = "status") Integer status){
-        orderService.updateOrderDetail(importId , status);
+
         return new SuccessResponse();
     }
 
