@@ -90,7 +90,7 @@ public class ExportOrderServiceImpl implements ExportOrderService {
         List<ExportOrderDetail> orderDetails = exportOrderDetaiRepository.findAllByVariantId(addExportOrderDetail.getVariantId());
         if (orderDetails.size() > 0){
             exportOrderDetail = orderDetails.get(0);
-            exportOrderDetail.setQuantity(exportOrderDetail.getQuantity() + addExportOrderDetail.getQuantity());
+            exportOrderDetail.setQuantity(addExportOrderDetail.getQuantity());
         }else {
             exportOrderDetail.setVariantId(addExportOrderDetail.getVariantId());
             exportOrderDetail.setVariantName(addExportOrderDetail.getVariantName());
