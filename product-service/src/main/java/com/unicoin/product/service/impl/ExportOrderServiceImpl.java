@@ -4,6 +4,8 @@ import com.unicoin.amqp.RabbitMQMessageProducer;
 import com.unicoin.clients.commons.RabbitKey;
 import com.unicoin.clients.rabbitmqModel.QueueExportOrder;
 import com.unicoin.clients.rabbitmqModel.QueueExportOrderDetail;
+import com.unicoin.product.common.CommonsUtils;
+import com.unicoin.product.dto.ExportOrderDTO;
 import com.unicoin.product.dto.ExportOrderDetailDTO;
 import com.unicoin.product.entity.ExportOrder;
 import com.unicoin.product.entity.ExportOrderDetail;
@@ -20,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -49,21 +53,30 @@ public class ExportOrderServiceImpl implements ExportOrderService {
     }
 
     @Override
-    public ExportOrder addExportOrder() {
+    public ExportOrderDTO addExportOrder(Long orderId) {
         log.info("start add exportOrders");
         String userPhoneNumber = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         ExportOrder exportOrder = new ExportOrder();
-        if (userPhoneNumber != null) {
+        if (!CommonsUtils.ANONYMOUS_USER.equals(userPhoneNumber)) {
             List<ExportOrder> exportOrders = exportOrderRepository.findAllByUserPhoneNumber(userPhoneNumber);
             if (exportOrders.size() > 0) {
                 exportOrder = exportOrders.get(0);
             }
             exportOrder.setUserPhoneNumber(userPhoneNumber);
+        } else {
+            if (orderId != null) {
+                Optional<ExportOrder> optionalExportOrder = exportOrderRepository.findById(orderId);
+                if (optionalExportOrder.isPresent()){
+                    exportOrder = optionalExportOrder.get();
+                }
+            }
         }
         exportOrder.setStatus(1);
-        exportOrderRepository.save(exportOrder);
+        ExportOrder entity = exportOrderRepository.save(exportOrder);
+        ExportOrderDTO dto = new ExportOrderDTO();
+        BeanUtils.copyProperties(entity, dto);
         log.info("end add exportOrders");
-        return exportOrder;
+        return dto;
     }
 
     @Override
@@ -122,11 +135,15 @@ public class ExportOrderServiceImpl implements ExportOrderService {
         Optional<ExportOrder> optionalExportOrder = exportOrderRepository.findById(orders.getId());
         if (optionalExportOrder.isEmpty())
             throw new AppException(ExceptionCode.EXPORTORDERS_NOT_EXIST);
-
+        String userPhoneNumber = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         ExportOrder exportOrder = optionalExportOrder.get();
+        if (CommonsUtils.ANONYMOUS_USER.equals(userPhoneNumber)){
+         exportOrder.setUserPhoneNumber(orders.getPhoneRecipient());
+        }
         exportOrder.setAddress(orders.getAddress());
         exportOrder.setNameRecipient(orders.getNameRecipient());
         exportOrder.setPhoneRecipient(orders.getPhoneRecipient());
+        exportOrder.setRegistStamp(new Timestamp(new Date().getTime()));
         ExportOrder entity = exportOrderRepository.save(exportOrder);
         List<ExportOrderDetail> orderDetails = exportOrderDetaiRepository.findAllByExportOrderId(entity);
         if (orderDetails.size() == 0)
@@ -137,6 +154,7 @@ public class ExportOrderServiceImpl implements ExportOrderService {
                         QueueExportOrderDetail.builder()
                                 .id(item.getId())
                                 .price(item.getPrice())
+                                .priceDiscount(item.getPriceDiscount())
                                 .quantity(item.getQuantity())
                                 .variantId(item.getVariantId())
                                 .build())
@@ -157,6 +175,7 @@ public class ExportOrderServiceImpl implements ExportOrderService {
                         .id(item.getId())
                         .quantity(item.getQuantity())
                         .price(item.getPrice())
+                        .priceDiscount(item.getPriceDiscount())
                         .variantId(item.getVariantId())
                         .variantName(item.getVariantName())
                         .build()).collect(Collectors.toList());
@@ -175,7 +194,7 @@ public class ExportOrderServiceImpl implements ExportOrderService {
             List<ExportOrderDetail> list = exportOrderDetaiRepository.findAllByExportOrderId(exportOrder);
             if (exportOrder.getStatus() == 1) {
                 for (ExportOrderDetail item : list) {
-                    sumPrice = sumPrice + item.getPrice()*item.getQuantity();
+                    sumPrice = sumPrice + item.getPrice() * item.getQuantity();
                 }
                 return sumPrice;
             } else {

@@ -31,6 +31,9 @@ public class ExportOrderDetail {
     @Column(name = "price")
     private Long price;
 
+    @Column(name = "PRICE_DISCOUNT")
+    private Long priceDiscount;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "export_order_id", nullable = false)
     private ExportOrder exportOrderId;

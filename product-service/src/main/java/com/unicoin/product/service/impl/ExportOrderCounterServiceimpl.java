@@ -58,10 +58,10 @@ public class ExportOrderCounterServiceimpl implements ExportOrderCounterService 
         if(exportOrder.isEmpty()){
             throw new AppException(ExceptionCode.EXPORTORDERS_NOT_EXIST);
         }
-
         data.setVariantId(addExportOrderDetail.getVariantId());
         data.setQuantity(addExportOrderDetail.getQuantity());
         data.setPrice(addExportOrderDetail.getPrice());
+        data.setPriceDiscount(addExportOrderDetail.getPriceDiscount());
         data.setExportOrderId(exportOrder.get());
         exportOrderDetaiRepository.save(data);
         log.info("end add product to export order detail");

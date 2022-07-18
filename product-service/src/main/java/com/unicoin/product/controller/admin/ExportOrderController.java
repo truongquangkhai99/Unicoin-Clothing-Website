@@ -18,21 +18,21 @@ public class ExportOrderController {
     ExportOrderService exportOrderService;
 
 
-    @PostMapping("/add/export-order")
-    public ApiResponse createExportOrder() {
-        return new SuccessResponse(exportOrderService.addExportOrder());
+    @GetMapping("/add/export-order")
+    public ApiResponse createExportOrder(@RequestParam(required = false) Long orderId) {
+        return new SuccessResponse(exportOrderService.addExportOrder(orderId));
     }
 
     @PostMapping("/checkout")
     public ApiResponse checkoutExportOrder(@RequestBody CheckoutExportOrders checkoutExportOrders){
         exportOrderService.checkoutOrder(checkoutExportOrders);
-        return new SuccessResponse(exportOrderService.addExportOrder());
+        return new SuccessResponse();
     }
 
     @PostMapping("/add/export-order-detail")
     public ApiResponse createExportOrderDetail(@RequestBody AddExportOrderDetail addExportOrderDetail){
         exportOrderService.addExportOrderDetail(addExportOrderDetail);
-        return new SuccessResponse(exportOrderService.addExportOrder());
+        return new SuccessResponse();
     }
 
     @GetMapping("/view-export-order/{orderId}")

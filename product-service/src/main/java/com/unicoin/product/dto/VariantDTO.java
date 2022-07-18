@@ -19,5 +19,7 @@ public class VariantDTO {
     private String productName;
     private Integer qty;
     private Long price;
+    private Long priceDiscount;
+    private String status;
     private List<OptionVariantDTO> option;
 }

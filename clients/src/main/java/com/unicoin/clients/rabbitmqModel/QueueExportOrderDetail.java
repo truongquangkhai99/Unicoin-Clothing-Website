@@ -20,4 +20,6 @@ public class QueueExportOrderDetail {
     private Integer quantity;
 
     private Long price;
+
+    private Long priceDiscount;
 }
