@@ -69,18 +69,23 @@ public class ExportOrderServiceImpl implements ExportOrderService {
     @Override
     public void addExportOrderDetail(AddExportOrderDetail addExportOrderDetail) {
         log.info("start add exportOrderDetail");
-        ExportOrderDetail data = new ExportOrderDetail();
-        Optional<ExportOrder> check = exportOrderRepository.findById(addExportOrderDetail.getExportOrderId());
-        if (check.isEmpty()) {
+        ExportOrderDetail exportOrderDetail = new ExportOrderDetail();
+        Optional<ExportOrder> optionalExportOrder = exportOrderRepository.findById(addExportOrderDetail.getExportOrderId());
+        if (optionalExportOrder.isEmpty()) {
             throw new AppException(ExceptionCode.EXPORTORDERS_NOT_EXIST);
         }
-        ExportOrder exportOrder = exportOrderRepository.findById(addExportOrderDetail.getExportOrderId()).get();
-        data.setVariantId(addExportOrderDetail.getVariantId());
-        data.setVariantName(addExportOrderDetail.getVariantName());
-        data.setQuantity(addExportOrderDetail.getQuantity());
-        data.setPrice(addExportOrderDetail.getPrice());
-        data.setExportOrderId(exportOrder);
-        exportOrderDetaiRepository.save(data);
+        List<ExportOrderDetail> orderDetails = exportOrderDetaiRepository.findAllByVariantId(addExportOrderDetail.getVariantId());
+        if (orderDetails.size() > 0){
+            exportOrderDetail = orderDetails.get(0);
+            exportOrderDetail.setQuantity(exportOrderDetail.getQuantity() + addExportOrderDetail.getQuantity());
+        }else {
+            exportOrderDetail.setVariantId(addExportOrderDetail.getVariantId());
+            exportOrderDetail.setVariantName(addExportOrderDetail.getVariantName());
+            exportOrderDetail.setQuantity(addExportOrderDetail.getQuantity());
+            exportOrderDetail.setPrice(addExportOrderDetail.getPrice());
+            exportOrderDetail.setExportOrderId(optionalExportOrder.get());
+        }
+            exportOrderDetaiRepository.save(exportOrderDetail);
         log.info("end add exportOrderDetail");
     }
 

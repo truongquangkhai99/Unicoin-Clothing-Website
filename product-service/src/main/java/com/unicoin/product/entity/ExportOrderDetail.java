@@ -20,7 +20,7 @@ public class ExportOrderDetail {
     private Long id;
 
     @Column(name = "variant_id")
-    private Integer variantId;
+    private Long variantId;
 
     @Column(name = "variant_name")
     private String variantName;

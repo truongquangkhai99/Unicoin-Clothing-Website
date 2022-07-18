@@ -21,7 +21,7 @@ public class ImportOrdersController {
         return new SuccessResponse(importOrdersService.viewsImportOrders());
     }
 
-    @PostMapping("/add/{importOrderId}")
+    @PostMapping("/add/{importOrdersId}")
     public ApiResponse createOrder(@RequestBody List<AddImportOrderDetail> addImportOrderDetail
             ,@PathVariable Long importOrdersId ){
         importOrdersService.AddImportOrderDetail(addImportOrderDetail , importOrdersId);
@@ -30,5 +30,11 @@ public class ImportOrdersController {
     @GetMapping("/sum-price-orde/{id}")
     public  ApiResponse sumPriceOrder(@PathVariable("id") Long id){
         return  new SuccessResponse((importOrdersService.sumPriceImportOrder(id)));
+    }
+
+    @PostMapping("/checkout/{importOrderId}")
+    public ApiResponse checkoutImportOrder(@PathVariable Long importOrderId){
+        importOrdersService.checkoutImportOrder(importOrderId);
+        return new SuccessResponse();
     }
 }

@@ -25,9 +25,9 @@ public enum ExceptionCode {
     EXPORTORDER_IS_NOT_EXIT(2003,"error2003"),
     EXPORTORDER_STATUS_IS_NOT_1(2004,"error2004"),
     IMPORTORDER_IS_NOT_EXIT(2004,"error2003"),
-    IMPORTORDER_STATUS_IS_NOT_1(2005,"error2004");
-
-
+    IMPORTORDER_STATUS_IS_NOT_1(2005,"error2004"),
+    IMPORTORDERDETAIL_STATUS_APPROVED(3001, "error3001"),
+    IMPORTORDERDETAIL_STATUS_CANCELLED(3002,"error3002");
     private int status;
     private String error;
     ExceptionCode(int status, String error){

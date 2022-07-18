@@ -1,5 +1,9 @@
 package com.unicoin.product.service.impl;
 
+import com.unicoin.amqp.RabbitMQMessageProducer;
+import com.unicoin.clients.commons.RabbitKey;
+import com.unicoin.clients.rabbitmqModel.QueueImportOrder;
+import com.unicoin.clients.rabbitmqModel.QueueImportOrderDetail;
 import com.unicoin.product.dto.ImportOrdersDTO;
 import com.unicoin.product.entity.ImportOrderDetail;
 import com.unicoin.product.entity.ImportOrders;
@@ -17,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +37,9 @@ public class ImportOrdersServiceImpl implements ImportOrdersService {
 
     @Autowired
     VariantRepository variantRepository;
+
+    @Autowired
+    RabbitMQMessageProducer producer;
 
 
     @Override
@@ -56,31 +64,31 @@ public class ImportOrdersServiceImpl implements ImportOrdersService {
         log.info("start add importOrderDetail");
         Optional<ImportOrders> dataOrders = importOrdersRepository.findById(importOrdersId);
         ImportOrders importOrders = dataOrders.get();
-        if(dataOrders.isPresent()){
-            for (AddImportOrderDetail item : addImportOrderDetail){
-                Optional<Variant> dataVariant =variantRepository.findById(addImportOrderDetail.get(0).getVarianId());
+        if (dataOrders.isPresent()) {
+            for (AddImportOrderDetail item : addImportOrderDetail) {
+                Optional<Variant> dataVariant = variantRepository.findById(addImportOrderDetail.get(0).getVarianId());
                 Variant variant = dataVariant.get();
-                List<ImportOrderDetail> checkVariantId = importOrderDetailRepository.findAllByVariantIdAndAndImportOrdersId(variant,importOrders);
-                if(item.getQuantity() == 0){
+                List<ImportOrderDetail> checkVariantId = importOrderDetailRepository.findAllByVariantIdAndAndImportOrdersId(variant, importOrders);
+                if (item.getQuantity() == 0) {
                     importOrderDetailRepository.deleteById(checkVariantId.get(0).getId());
-                }else if(checkVariantId.size() > 0) {
+                } else if (checkVariantId.size() > 0) {
                     Optional<ImportOrderDetail> dataUpdate = importOrderDetailRepository.findById(checkVariantId.get(0).getId());
                     ImportOrderDetail importOrderDetail1 = new ImportOrderDetail();
                     importOrderDetail1 = dataUpdate.get();
                     importOrderDetail1.setQuantity(item.getQuantity());
                     importOrderDetailRepository.save(importOrderDetail1);
-                }else {
+                } else {
                     ImportOrderDetail importOrderDetail = ImportOrderDetail.builder()
                             .variantId(variant)
                             .quantity(item.getQuantity())
-                            .cost(item.getCost())
+                            .price(item.getPrice())
                             .importOrdersId(importOrders).build();
                     importOrderDetailRepository.save(importOrderDetail);
                 }
             }
             log.info("end add");
-        }else {
-            throw  new AppException(ExceptionCode.IMPORTORDERSDETAILID_NOT_EXIST);
+        } else {
+            throw new AppException(ExceptionCode.IMPORTORDERSDETAILID_NOT_EXIST);
         }
     }
     @Override
@@ -94,12 +102,44 @@ public class ImportOrdersServiceImpl implements ImportOrdersService {
             List<ImportOrderDetail> list = importOrderDetailRepository.findAllByImportOrdersId(importOrders);
             if(importOrders.getStatus() == 1){
                 for(ImportOrderDetail item : list){
-                    sumPrice = sumPrice +item.getCost()*item.getQuantity();
+                    sumPrice = sumPrice +item.getPrice()*item.getQuantity();
                 }
                 return sumPrice;
             }else {
                 throw new AppException(ExceptionCode.IMPORTORDER_STATUS_IS_NOT_1);
             }
+        }
+    }
+
+    @Override
+    public void checkoutImportOrder(Long importOrderId) {
+        log.info("start checkoutImportOrder");
+        Optional<ImportOrders> dataOrder = importOrdersRepository.findById(importOrderId);
+        ImportOrders importOrders = dataOrder.get();
+        List<ImportOrderDetail> dataOrderDetail = importOrderDetailRepository.findAllByImportOrdersId(importOrders);
+        if (importOrders.getStatus() == 0l) {
+            for (ImportOrderDetail item : dataOrderDetail) {
+                List<QueueImportOrderDetail> dataQueueOrder = new ArrayList<>();
+                Variant variant = item.getVariantId();
+                QueueImportOrderDetail queueImportOrderDetail = QueueImportOrderDetail.builder()
+                        .id(item.getId())
+                        .quantity(item.getQuantity())
+                        .price(item.getPrice())
+                        .variantId(variant.getId()).build();
+                dataQueueOrder.add(queueImportOrderDetail);
+                QueueImportOrder queueImportOrder = new QueueImportOrder();
+                queueImportOrder.setId(importOrders.getId());
+                queueImportOrder.setStatus(importOrders.getStatus());
+                queueImportOrder.setRegistStamp(importOrders.getRegistStamp());
+                queueImportOrder.setUserPhoneNumber(importOrders.getUserPhoneNumber());
+                queueImportOrder.setQueueImportOrderDetails(dataQueueOrder);
+                producer.publish(queueImportOrder, RabbitKey.DIRECT_EXCHANGE, RabbitKey.IMPORT_ORDER_ROUTING_KEYS);
+                log.info("end checkout");
+            }
+        }else if(importOrders.getStatus() == 1) {
+            throw  new AppException(ExceptionCode.IMPORTORDERDETAIL_STATUS_APPROVED);
+        }else {
+            throw  new AppException(ExceptionCode.IMPORTORDERDETAIL_STATUS_CANCELLED);
         }
     }
 }

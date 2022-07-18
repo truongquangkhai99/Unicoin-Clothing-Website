@@ -1,23 +1,21 @@
 package com.unicoin.order.service;
 
-import com.unicoin.clients.form.orderform.OrderRequest;
-import com.unicoin.order.DTO.ImportOrderDTO;
-import com.unicoin.order.DTO.ImportOrderDetailDTO;
+import com.unicoin.clients.rabbitmqModel.QueueImportOrder;
 import com.unicoin.order.DTO.ImportOrdersDTO;
-import com.unicoin.order.form.AddImportOrderDetail;
+import com.unicoin.order.DTO.ImportOrderDetailDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 
 public interface OrderService {
-    ImportOrdersDTO viewsImportOrders();
-    void AddImportOrderDetail(List<AddImportOrderDetail> addImportOrderDetail , Long importOrdersId);
-    void saveOrder(OrderRequest request);
 
-    void updateOrderDetail(Long orderId , Integer status);
+    void addImportOrderFromQueues(QueueImportOrder queueImportOrder);
 
-    List<ImportOrderDTO> getImportOrderByStatus(Integer status);
+    void updateOrderByStatus(Long orderId, Integer status);
+
+    List<ImportOrdersDTO> getImportOrderByStatus(Integer status);
 
     List<ImportOrderDetailDTO> getImportOrderDetailByImportOrdersId(Long id);
 }

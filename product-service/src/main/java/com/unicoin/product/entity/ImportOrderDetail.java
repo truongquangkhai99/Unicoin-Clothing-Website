@@ -26,8 +26,8 @@ public class ImportOrderDetail {
     @Column(name = "QUANTITY" , nullable = false)
     private Integer quantity;
 
-    @Column(name = "COST" , nullable = false)
-    private Long cost;
+    @Column(name = "PRICE" , nullable = false)
+    private Long price;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "IMPORT_ORDER_ID", nullable = false)
