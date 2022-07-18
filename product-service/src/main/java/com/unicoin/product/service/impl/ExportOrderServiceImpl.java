@@ -94,6 +94,7 @@ public class ExportOrderServiceImpl implements ExportOrderService {
                 exportOrderDetaiRepository.delete(exportOrderDetail);
             }else {
                 exportOrderDetail.setQuantity(addExportOrderDetail.getQuantity());
+                exportOrderDetaiRepository.save(exportOrderDetail);
             }
         }else {
             exportOrderDetail.setVariantId(addExportOrderDetail.getVariantId());
@@ -101,8 +102,9 @@ public class ExportOrderServiceImpl implements ExportOrderService {
             exportOrderDetail.setQuantity(addExportOrderDetail.getQuantity());
             exportOrderDetail.setPrice(addExportOrderDetail.getPrice());
             exportOrderDetail.setExportOrderId(optionalExportOrder.get());
-        }
             exportOrderDetaiRepository.save(exportOrderDetail);
+        }
+
         log.info("end add exportOrderDetail");
     }
 
