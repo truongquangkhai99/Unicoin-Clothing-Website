@@ -158,7 +158,6 @@ public class ExportOrderServiceImpl implements ExportOrderService {
         BeanUtils.copyProperties(entity, queueExportOrder);
         queueExportOrder.setQueueExportOrderDetails(orderDetails.stream().map(item ->
                         QueueExportOrderDetail.builder()
-                                .id(item.getId())
                                 .price(item.getPrice())
                                 .priceDiscount(item.getPriceDiscount())
                                 .quantity(item.getQuantity())

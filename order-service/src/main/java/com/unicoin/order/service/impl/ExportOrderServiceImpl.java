@@ -77,9 +77,8 @@ public class ExportOrderServiceImpl implements ExportOrderService {
 
     @Override
     public void addExportOrder(QueueExportOrder queueExportOrder) {
-        log.info("start add exportOrders");
+        log.info("start add exportOrders: {}", queueExportOrder);
         ExportOrder exportOrder = ExportOrder.builder()
-                .id(queueExportOrder.getId())
                 .userPhoneNumber(queueExportOrder.getUserPhoneNumber())
                 .nameRecipient(queueExportOrder.getNameRecipient())
                 .phoneRecipient(queueExportOrder.getPhoneRecipient())
@@ -88,10 +87,10 @@ public class ExportOrderServiceImpl implements ExportOrderService {
                 .status(queueExportOrder.getStatus())
                 .build();
         ExportOrder entity = exportOrderRepository.save(exportOrder);
+        log.info("save exportOder: {}", entity);
         List<QueueExportOrderDetail> listData= queueExportOrder.getQueueExportOrderDetails();
         for (QueueExportOrderDetail i : listData){
             ExportOrderDetail exportOrderDetail=ExportOrderDetail.builder()
-                    .id(i.getId())
                     .variantId(i.getVariantId())
                     .quantity(i.getQuantity())
                     .variantName(i.getVariantName())

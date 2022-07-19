@@ -13,8 +13,6 @@ import java.util.List;
 @Builder
 public class QueueImportOrderDetail {
 
-    private Long id;
-
     private Long variantId;
 
     private Integer quantity;

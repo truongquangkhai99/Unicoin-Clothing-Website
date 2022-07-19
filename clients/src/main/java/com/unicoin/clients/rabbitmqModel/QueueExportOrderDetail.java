@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class QueueExportOrderDetail {
 
-    private Long id;
-
     private Long variantId;
 
     private String variantName;
