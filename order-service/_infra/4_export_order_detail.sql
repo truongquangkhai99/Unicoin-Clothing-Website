@@ -1,5 +1,5 @@
 CREATE TABLE `export_order_detail` (
-                                       `export_order_detail_id` int NOT NULL,
+                                       `export_order_detail_id` int NOT NULL AUTO_INCREMENT,
                                        `export_order_id` int DEFAULT NULL,
                                        `variant_id` int DEFAULT NULL,
                                        `variant_name` varchar(200) DEFAULT NULL,
