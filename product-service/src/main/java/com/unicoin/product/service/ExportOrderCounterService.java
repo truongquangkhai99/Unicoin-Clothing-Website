@@ -4,6 +4,8 @@ import com.unicoin.product.entity.ExportOrder;
 import com.unicoin.product.form.AddExportOrderDetail;
 import com.unicoin.product.form.CheckoutExportOrders;
 
+import java.util.List;
+
 public interface ExportOrderCounterService {
     ExportOrder createExportOrder(CheckoutExportOrders addExportOrders);
 
@@ -14,4 +16,8 @@ public interface ExportOrderCounterService {
     void deleteOrderDetailCounter(Long id);
 
     void updateOrderDetailCounter(Long id, Integer quantity);
+
+    List<Long> listIdExportOrderCounter(Integer status, Integer type);
+
+    void checkoutOrder(CheckoutExportOrders orders);
 }

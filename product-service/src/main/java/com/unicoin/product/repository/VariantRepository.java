@@ -19,4 +19,7 @@ public interface VariantRepository extends JpaRepository<Variant, Long> {
 
    boolean existsByProductAndStatus(Product product, Integer status);
 
+   @Query("select v from Variant v where v.variantName like variantName")
+   List<Variant> findAllByVariantNameLike(String variantName);
+
 }

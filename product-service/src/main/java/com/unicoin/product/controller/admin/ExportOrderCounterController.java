@@ -47,6 +47,15 @@ public class ExportOrderCounterController {
         return new SuccessResponse();
     }
 
+    @GetMapping("/list-order-export-id")
+    public ApiResponse getListExportOrderId(@RequestParam("orderStatus") Integer status,
+                                            @RequestParam("orderType") Integer type){
+        return new SuccessResponse(exportOrderService.listIdExportOrderCounter(status, type));
+    }
 
-
+    @PostMapping("/checkout")
+    public ApiResponse checkoutExportOrder(@RequestBody CheckoutExportOrders checkoutExportOrders){
+        exportOrderService.checkoutOrder(checkoutExportOrders);
+        return new SuccessResponse();
+    }
 }

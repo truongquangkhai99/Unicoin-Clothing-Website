@@ -51,6 +51,7 @@ public class ExportOrderServiceImpl implements ExportOrderService {
                         .registStamp(item.getRegistStamp())
                         .phoneRecipient(item.getPhoneRecipient())
                         .registStamp(item.getRegistStamp())
+                        .orderType(item.getOrderType())
                         .status(item.getStatus())
                         .build()
                 ).collect(Collectors.toList());
@@ -87,6 +88,7 @@ public class ExportOrderServiceImpl implements ExportOrderService {
                 .phoneRecipient(queueExportOrder.getPhoneRecipient())
                 .address(queueExportOrder.getAddress())
                 .registStamp(queueExportOrder.getRegistStamp())
+                .orderType(queueExportOrder.getOrderType())
                 .status(queueExportOrder.getStatus())
                 .build();
         ExportOrder entity = exportOrderRepository.save(exportOrder);
@@ -133,6 +135,7 @@ public class ExportOrderServiceImpl implements ExportOrderService {
                         .phoneRecipient(item.getPhoneRecipient())
                         .registStamp(item.getRegistStamp())
                         .status(item.getStatus())
+                        .orderType(item.getOrderType())
                         .build()
         ).collect(Collectors.toList());
 

@@ -4,6 +4,7 @@ CREATE TABLE `export_orders` (
                                  `name_recipient` varchar(45) DEFAULT NULL,
                                  `phone_recipient` varchar(45) DEFAULT NULL,
                                  `address` varchar(255) DEFAULT NULL,
+                                 `order_type` int DEFAULT 1,
                                  `regist_stamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
                                  `status` int DEFAULT NULL,
                                  PRIMARY KEY (`export_order_id`)

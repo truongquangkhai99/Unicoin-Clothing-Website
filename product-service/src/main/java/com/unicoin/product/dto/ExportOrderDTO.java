@@ -19,5 +19,7 @@ public class ExportOrderDTO {
 
     private String address;
 
+    private Integer orderType;
+
     private Integer status;
 }

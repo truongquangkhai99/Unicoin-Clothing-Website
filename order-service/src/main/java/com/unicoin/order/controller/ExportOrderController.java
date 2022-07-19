@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/admin/exportOrder")
+@RequestMapping("/admin/export-order")
 public class ExportOrderController {
     @Autowired
     ExportOrderService exportOrderService;
@@ -19,7 +19,7 @@ public class ExportOrderController {
         return new SuccessResponse(exportOrderService.viewsAllExportOrder(status));
     }
 
-    @GetMapping("/{exportOrderId}")
+    @GetMapping("/{export-orderId}")
     public ApiResponse viewsExportOrderDetail(@PathVariable Long exportOrderId){
         return new SuccessResponse(exportOrderService.guestViewsAllExportOrderDetail(exportOrderId));
     }
