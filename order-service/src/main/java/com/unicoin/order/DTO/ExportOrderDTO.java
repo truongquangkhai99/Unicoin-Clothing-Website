@@ -16,6 +16,7 @@ public class ExportOrderDTO {
     private String nameRecipient;
     private String phoneRecipient;
     private String address;
+    private Integer orderType;
     private Timestamp registStamp;
     private Integer status;
 }

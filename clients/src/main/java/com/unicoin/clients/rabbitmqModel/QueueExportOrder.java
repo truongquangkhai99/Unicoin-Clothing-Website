@@ -24,6 +24,8 @@ public class QueueExportOrder {
 
     private Timestamp registStamp;
 
+    private Integer orderType;
+
     private Integer status;
 
     private List<QueueExportOrderDetail> queueExportOrderDetails;

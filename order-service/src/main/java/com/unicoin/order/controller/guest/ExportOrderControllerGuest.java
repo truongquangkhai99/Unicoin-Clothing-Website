@@ -20,7 +20,7 @@ public class ExportOrderControllerGuest {
         return new SuccessResponse(exportOrderService.guestViewsAllExportOrderByUserPhoneNumber());
     }
 
-    @GetMapping("/{exportOrderId}")
+    @GetMapping("/{export-order-id}")
     public ApiResponse viewsExportOrderDetail(@PathVariable Long exportOrderId){
         return new SuccessResponse(exportOrderService.guestViewsAllExportOrderDetail(exportOrderId));
     }

@@ -34,7 +34,6 @@ public class OrderServiceImpl implements OrderService {
         log.info("start add data  from queues");
         try {
             ImportOrders importOrders = ImportOrders.builder()
-                    .id(queueImportOrder.getId())
                     .userPhoneNumber(queueImportOrder.getUserPhoneNumber())
                     .registStamp(queueImportOrder.getRegistStamp())
                     .status(queueImportOrder.getStatus()).build();
@@ -42,7 +41,6 @@ public class OrderServiceImpl implements OrderService {
             List<QueueImportOrderDetail> listData = queueImportOrder.getQueueImportOrderDetails();
             for (QueueImportOrderDetail item : listData) {
                 ImportOrderDetail importOrderDetail = ImportOrderDetail.builder()
-                        .id(item.getId())
                         .variantId(item.getVariantId())
                         .quantity(item.getQuantity())
                         .price(item.getPrice())
