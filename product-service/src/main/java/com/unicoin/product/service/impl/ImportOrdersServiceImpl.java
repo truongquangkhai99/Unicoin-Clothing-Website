@@ -122,13 +122,11 @@ public class ImportOrdersServiceImpl implements ImportOrdersService {
                 List<QueueImportOrderDetail> dataQueueOrder = new ArrayList<>();
                 Variant variant = item.getVariantId();
                 QueueImportOrderDetail queueImportOrderDetail = QueueImportOrderDetail.builder()
-                        .id(item.getId())
                         .quantity(item.getQuantity())
                         .price(item.getPrice())
                         .variantId(variant.getId()).build();
                 dataQueueOrder.add(queueImportOrderDetail);
                 QueueImportOrder queueImportOrder = new QueueImportOrder();
-                queueImportOrder.setId(importOrders.getId());
                 queueImportOrder.setStatus(importOrders.getStatus());
                 queueImportOrder.setRegistStamp(importOrders.getRegistStamp());
                 queueImportOrder.setUserPhoneNumber(importOrders.getUserPhoneNumber());

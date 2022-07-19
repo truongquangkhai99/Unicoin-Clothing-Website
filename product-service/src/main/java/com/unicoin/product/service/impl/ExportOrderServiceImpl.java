@@ -72,6 +72,7 @@ public class ExportOrderServiceImpl implements ExportOrderService {
             }
         }
         exportOrder.setStatus(1);
+        exportOrder.setOrderType(1);
         ExportOrder entity = exportOrderRepository.save(exportOrder);
         ExportOrderDTO dto = new ExportOrderDTO();
         BeanUtils.copyProperties(entity, dto);
@@ -150,6 +151,7 @@ public class ExportOrderServiceImpl implements ExportOrderService {
         exportOrder.setNameRecipient(orders.getNameRecipient());
         exportOrder.setPhoneRecipient(orders.getPhoneRecipient());
         exportOrder.setRegistStamp(new Timestamp(new Date().getTime()));
+        exportOrder.setOrderType(1);
         ExportOrder entity = exportOrderRepository.save(exportOrder);
         List<ExportOrderDetail> orderDetails = exportOrderDetaiRepository.findAllByExportOrderId(entity);
         if (orderDetails.size() == 0)

@@ -23,13 +23,13 @@ public class ProductDemoManageController {
         return new SuccessResponse(productDemoService.addProduct(productDemoForm));
     }
 
-    @PostMapping("addOrder")
+    @PostMapping("add-order")
     public ApiResponse sendAddOrder(){
         productDemoService.sendAddOrder();
         return new SuccessResponse();
     }
 
-    @PostMapping("updateOrder")
+    @PostMapping("update-order")
     public ApiResponse sendUpdateOrder(){
         productDemoService.sendUpdateOrder();
         return new SuccessResponse();

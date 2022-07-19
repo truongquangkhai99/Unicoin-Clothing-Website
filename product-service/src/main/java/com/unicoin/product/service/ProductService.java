@@ -24,4 +24,6 @@ public interface ProductService{
     void addImagesForProduct(Long productId, List<AddImageForm> imageUrls);
 
     RestResponsePage<VariantDTO> updatePrice(List<UpdatePriceForm> updatePriceForms);
+
+    List<VariantDTO> viewVariantByVariantName(String variantName);
 }

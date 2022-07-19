@@ -32,6 +32,9 @@ public class ExportOrder {
     @Column(name = "address")
     private String address;
 
+    @Column(name = "order_type")
+    private Integer orderType;
+
     @Column(name = "regist_stamp")
     private Timestamp registStamp;
 

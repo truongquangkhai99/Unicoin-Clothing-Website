@@ -71,6 +71,12 @@ public class ProductController {
         return new SuccessResponse(productService.viewVariantsByProduct(productId));
     }
 
+
+    @GetMapping("/view-variants")
+    public ApiResponse viewVariantsByName(@RequestParam("variantName") String variantName){
+        return new SuccessResponse(productService.viewVariantByVariantName(variantName));
+    }
+
     @PostMapping("/add-image/{productId}")
     public ApiResponse addImagesForProduct(@PathVariable Long productId,
                                            @RequestBody List<AddImageForm> imageUrls){

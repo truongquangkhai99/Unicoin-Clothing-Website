@@ -239,6 +239,26 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<VariantDTO> viewVariantByVariantName(String variantName) {
+        //check product
+        List<Variant> variants = variantRepository.findAllByVariantNameLike(variantName);
+        if (variants == null || variants.isEmpty())
+            throw new AppException(ExceptionCode.VARIANT_IS_NOT_EXIST);
+        List<VariantDTO> variantDTOs = variants.stream().map(record ->
+            VariantDTO.builder()
+                    .variantId(record.getId())
+                    .skuID(record.getSkuId())
+                    .variantName(record.getVariantName())
+                    .productId(record.getProduct().getId())
+                    .productName(record.getProduct().getProductName())
+                    .qty(record.getQty())
+                    .price(record.getPrice())
+                    .priceDiscount(record.getPriceDiscount())
+                    .status(record.getStatus()).build()).collect(Collectors.toList());
+        return variantDTOs;
+    }
+
+    @Override
     public void addImagesForProduct(Long productId, List<AddImageForm> imageUrls) {
         Optional<Product> optionalProduct = productRepository.findById(productId);
         if (optionalProduct.isEmpty())
