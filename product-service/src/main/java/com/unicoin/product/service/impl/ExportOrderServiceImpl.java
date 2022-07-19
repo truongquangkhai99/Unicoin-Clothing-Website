@@ -166,6 +166,9 @@ public class ExportOrderServiceImpl implements ExportOrderService {
                                 .build())
                 .collect(Collectors.toList()));
         producer.publish(queueExportOrder, RabbitKey.DIRECT_EXCHANGE, RabbitKey.EXPORT_ORDER_ROUTING_KEYS);
+        List<ExportOrderDetail> orderDetailList = exportOrderDetaiRepository.findAllByExportOrderId(entity);
+        exportOrderDetaiRepository.deleteAll(orderDetailList);
+        exportOrderRepository.delete(entity);
         log.info("End checkout Order: {}", orders);
     }
 
@@ -188,24 +191,4 @@ public class ExportOrderServiceImpl implements ExportOrderService {
         return detailDTOS;
     }
 
-    @Override
-    public Long sumOderPrice(Long id) {
-        log.info("-ExportOrderServiceImpl:sumOderPrice ,Start show sum price order ,exportOrderId=", id);
-        Long sumPrice = 0L;
-        Optional<ExportOrder> data = exportOrderRepository.findById(id);
-        ExportOrder exportOrder = data.get();
-        if (data.isEmpty()) {
-            throw new AppException(ExceptionCode.EXPORTORDER_IS_NOT_EXIT);
-        } else {
-            List<ExportOrderDetail> list = exportOrderDetaiRepository.findAllByExportOrderId(exportOrder);
-            if (exportOrder.getStatus() == 1) {
-                for (ExportOrderDetail item : list) {
-                    sumPrice = sumPrice + item.getPrice() * item.getQuantity();
-                }
-                return sumPrice;
-            } else {
-                throw new AppException(ExceptionCode.EXPORTORDER_STATUS_IS_NOT_1);
-            }
-        }
-    }
 }
