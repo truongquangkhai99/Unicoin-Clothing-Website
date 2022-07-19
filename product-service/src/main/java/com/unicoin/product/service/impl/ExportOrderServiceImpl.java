@@ -161,6 +161,7 @@ public class ExportOrderServiceImpl implements ExportOrderService {
                                 .priceDiscount(item.getPriceDiscount())
                                 .quantity(item.getQuantity())
                                 .variantId(item.getVariantId())
+                                .variantName(item.getVariantName())
                                 .build())
                 .collect(Collectors.toList()));
         producer.publish(queueExportOrder, RabbitKey.DIRECT_EXCHANGE, RabbitKey.EXPORT_ORDER_ROUTING_KEYS);

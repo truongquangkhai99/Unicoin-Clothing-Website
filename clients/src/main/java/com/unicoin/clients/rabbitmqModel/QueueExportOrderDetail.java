@@ -15,7 +15,7 @@ public class QueueExportOrderDetail {
 
     private Long variantId;
 
-    private String variantCode;
+    private String variantName;
 
     private Integer quantity;
 
