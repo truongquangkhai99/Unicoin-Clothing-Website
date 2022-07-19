@@ -1,5 +1,5 @@
 CREATE TABLE `export_orders` (
-                                 `export_order_id` int NOT NULL AUTO_INCREMENT,
+                                 `export_order_id` int NOT NULL,
                                  `USER_PHONE_NUMBER` VARCHAR(20) not null,
                                  `name_recipient` varchar(45) DEFAULT NULL,
                                  `phone_recipient` varchar(45) DEFAULT NULL,
