@@ -14,8 +14,6 @@ import java.util.List;
 @Builder
 public class QueueExportOrder {
 
-    private Long id;
-
     private String userPhoneNumber;
 
     private String nameRecipient;

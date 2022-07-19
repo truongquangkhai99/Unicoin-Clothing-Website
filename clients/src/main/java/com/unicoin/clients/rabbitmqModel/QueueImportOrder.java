@@ -13,7 +13,6 @@ import java.util.List;
 @Data
 @Builder
 public class QueueImportOrder {
-    private Long id;
 
     private String userPhoneNumber;
 
