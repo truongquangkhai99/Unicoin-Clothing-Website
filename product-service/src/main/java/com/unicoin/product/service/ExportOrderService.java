@@ -23,6 +23,4 @@ public interface ExportOrderService {
     void checkoutOrder(CheckoutExportOrders checkoutExportOrders);
 
     List<ExportOrderDetailDTO> viewExportOrderByOrderId(Long orderId);
-
-    Long sumOderPrice(Long id);
 }
