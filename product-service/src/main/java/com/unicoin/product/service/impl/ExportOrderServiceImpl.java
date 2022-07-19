@@ -87,7 +87,7 @@ public class ExportOrderServiceImpl implements ExportOrderService {
         if (optionalExportOrder.isEmpty()) {
             throw new AppException(ExceptionCode.EXPORTORDERS_NOT_EXIST);
         }
-        List<ExportOrderDetail> orderDetails = exportOrderDetaiRepository.findAllByVariantId(addExportOrderDetail.getVariantId());
+        List<ExportOrderDetail> orderDetails = exportOrderDetaiRepository.findAllByVariantIdAndAndExportOrderId(addExportOrderDetail.getVariantId(), optionalExportOrder.get());
         if (orderDetails.size() > 0){
                 exportOrderDetail = orderDetails.get(0);
             if (addExportOrderDetail.getQuantity() == 0){

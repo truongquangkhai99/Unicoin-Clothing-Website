@@ -12,5 +12,5 @@ import java.util.List;
 public interface ExportOrderDetaiRepository extends JpaRepository<ExportOrderDetail,Long> {
     List<ExportOrderDetail> findAllByExportOrderId(ExportOrder ExportOrderId);
 
-    List<ExportOrderDetail> findAllByVariantId(Long variantId);
+    List<ExportOrderDetail> findAllByVariantIdAndAndExportOrderId(Long variantId, ExportOrder exportOrder);
 }
