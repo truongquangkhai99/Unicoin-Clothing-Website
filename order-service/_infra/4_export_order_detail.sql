@@ -2,6 +2,7 @@ CREATE TABLE `export_order_detail` (
                                        `export_order_detail_id` int NOT NULL AUTO_INCREMENT,
                                        `export_order_id` int DEFAULT NULL,
                                        `variant_id` int DEFAULT NULL,
+                                       `variant_name` varchar(200) DEFAULT NULL,
                                        `quantity` int DEFAULT NULL,
                                        `price` int DEFAULT NULL,
                                        PRIMARY KEY (`export_order_detail_id`),

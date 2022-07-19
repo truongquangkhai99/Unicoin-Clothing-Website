@@ -1,7 +1,10 @@
 package com.unicoin.order.service.impl;
 
+import com.unicoin.clients.rabbitmqModel.QueueExportOrder;
+import com.unicoin.clients.rabbitmqModel.QueueExportOrderDetail;
 import com.unicoin.order.DTO.ExportOrderDTO;
 import com.unicoin.order.DTO.ExportOrderDetailDTO;
+import com.unicoin.order.common.RestResponsePage;
 import com.unicoin.order.entity.ExportOrder;
 import com.unicoin.order.entity.ExportOrderDetail;
 import com.unicoin.order.ex.AppException;
@@ -32,40 +35,68 @@ public class ExportOrderServiceImpl implements ExportOrderService {
 
 
     @Override
-    public List<ExportOrder> viewsAllExportOrder() {
+    public RestResponsePage<ExportOrderDTO> guestViewsAllExportOrderByUserPhoneNumber() {
         log.info("start views exportOrder");
         String userPhoneNumber = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         List<ExportOrder> listData = exportOrderRepository.findAllByUserPhoneNumber(userPhoneNumber);
         if(listData.size() < 0){
             throw  new AppException(ExceptionCode.EXPORTORDERS_NOT_EXIST);
         }
-        return listData;
+        List<ExportOrderDTO> exportOrderDTOList = listData.stream().map(item ->
+                ExportOrderDTO.builder()
+                        .id(item.getId())
+                        .address(item.getAddress())
+                        .phoneRecipient(item.getPhoneRecipient())
+                        .registStamp(item.getRegistStamp())
+                        .status(item.getStatus())
+                        .build()
+                ).collect(Collectors.toList());
+
+        return new RestResponsePage<>(exportOrderDTOList);
     }
 
     @Override
-    public void addExportOrderDetail(AddExportOrders addExportOrders) {
+    public RestResponsePage<ExportOrderDetailDTO> guestViewsAllExportOrderDetail(Long orderId) {
+        Optional<ExportOrder> optionalExportOrder = exportOrderRepository.findById(orderId);
+        if (optionalExportOrder.isEmpty())
+            throw new AppException(ExceptionCode.EXPORTORDERS_NOT_EXIST);
+        List<ExportOrderDetail> orderDetailList = exportOrderDetaiRepository.findAllByExportOrderId(optionalExportOrder.get());
+
+        List<ExportOrderDetailDTO> orderDetailDTOList = orderDetailList.stream().map(item ->
+                ExportOrderDetailDTO.builder()
+                        .id(item.getId())
+                        .exportOrderId(item.getExportOrderId().getId())
+                        .price(item.getPrice())
+                        .quantity(item.getQuantity())
+                        .variantName(item.getVariantName())
+                        .variantId(item.getVariantId())
+                        .build()
+                ).collect(Collectors.toList());
+        return new RestResponsePage<>(orderDetailDTOList);
+    }
+
+    @Override
+    public void addExportOrder(QueueExportOrder queueExportOrder) {
         log.info("start add exportOrders");
         ExportOrder exportOrder = ExportOrder.builder()
-                .id(addExportOrders.getId())
-                .userPhoneNumber(addExportOrders.getUserPhoneNumber())
-                .nameRecipient(addExportOrders.getNameRecipient())
-                .phoneRecipient(addExportOrders.getPhoneRecipient())
-                .address(addExportOrders.getAddress())
-                .registStamp(addExportOrders.getRegistStamp())
-                .status(addExportOrders.getStatus())
+                .id(queueExportOrder.getId())
+                .userPhoneNumber(queueExportOrder.getUserPhoneNumber())
+                .nameRecipient(queueExportOrder.getNameRecipient())
+                .phoneRecipient(queueExportOrder.getPhoneRecipient())
+                .address(queueExportOrder.getAddress())
+                .registStamp(queueExportOrder.getRegistStamp())
+                .status(queueExportOrder.getStatus())
                 .build();
-        exportOrderRepository.save(exportOrder);
-        List<FormExportOrderDetail> listData= addExportOrders.getData();
-        for (FormExportOrderDetail i : listData){
-            Optional<ExportOrder> optionalExportOrder = exportOrderRepository.findById(i.getExportOrderId());
-            if (optionalExportOrder.isEmpty())
-                throw new AppException(ExceptionCode.EXPORTORDERS_NOT_EXIST);
+        ExportOrder entity = exportOrderRepository.save(exportOrder);
+        List<QueueExportOrderDetail> listData= queueExportOrder.getQueueExportOrderDetails();
+        for (QueueExportOrderDetail i : listData){
             ExportOrderDetail exportOrderDetail=ExportOrderDetail.builder()
                     .id(i.getId())
                     .variantId(i.getVariantId())
                     .quantity(i.getQuantity())
+                    .variantName(i.getVariantName())
                     .price(i.getPrice())
-                    .exportOrderId(optionalExportOrder.get())
+                    .exportOrderId(entity)
                     .build();
             exportOrderDetaiRepository.save(exportOrderDetail);
         }
@@ -75,9 +106,9 @@ public class ExportOrderServiceImpl implements ExportOrderService {
     @Override
     public void updateExportOrder(Long exportOrderId, Integer status) {
         log.info("start update export order");
-        Optional<ExportOrder> check= exportOrderRepository.findById(exportOrderId);
-        if(check.isPresent()){
-            ExportOrder exportOrder=check.get();
+        Optional<ExportOrder> optionalExportOrder= exportOrderRepository.findById(exportOrderId);
+        if(optionalExportOrder.isPresent()){
+            ExportOrder exportOrder=optionalExportOrder.get();
             exportOrder.setStatus(status);
             exportOrderRepository.save(exportOrder);
         }else{
@@ -86,43 +117,23 @@ public class ExportOrderServiceImpl implements ExportOrderService {
         log.info("end update exportOders");
     }
 
-
-
     @Override
-    public List<ExportOrderDTO> getExportOrderByStatus(Integer status){
-        List<ExportOrder> list=exportOrderRepository.searchExportOrderByStatus(status);
-        List<ExportOrderDTO> listDTO=list.stream().map(item->ExportOrderDTO.builder()
-                .id(item.getId())
-                .userPhoneNumber(item.getUserPhoneNumber())
-                .nameRecipient(item.getNameRecipient())
-                .phoneRecipient(item.getPhoneRecipient())
-                .address(item.getAddress())
-                .registStamp(item.getRegistStamp())
-                .status(item.getStatus())
-                .build()).collect(Collectors.toList());
-        return listDTO;
-    }
+    public RestResponsePage<ExportOrderDTO> viewsAllExportOrder(Integer status) {
+        List<ExportOrder> exportOrderList = exportOrderRepository.searchExportOrderByStatus(status);
 
-    @Override
-    public List<ExportOrderDetailDTO> getExportOrderDetailByExportOrderId(Long id) {
-        Optional<ExportOrder> optional = exportOrderRepository.findById(id);
-        if (optional.isEmpty()) throw  new AppException(ExceptionCode.EXPORTORDERS_NOT_EXIST);
-        List<ExportOrderDetail> exportOrderDetails = exportOrderDetaiRepository.findAllByExportOrderId(optional.get());
-        List<ExportOrderDetailDTO> listDTO=exportOrderDetails.stream().map(item -> ExportOrderDetailDTO.builder()
-                .id(item.getId())
-                .variantId(item.getVariantId())
-                .quantity(item.getQuantity())
-                .price(item.getPrice())
-                .exportOrderId(item.getExportOrderId().getId())
-                .build()).collect(Collectors.toList());
-        return listDTO;
-    }
+        if(exportOrderList.size() < 0){
+            throw  new AppException(ExceptionCode.EXPORTORDERS_NOT_EXIST);
+        }
+        List<ExportOrderDTO> exportOrderDTOList = exportOrderList.stream().map(item ->
+                ExportOrderDTO.builder()
+                        .id(item.getId())
+                        .address(item.getAddress())
+                        .phoneRecipient(item.getPhoneRecipient())
+                        .registStamp(item.getRegistStamp())
+                        .status(item.getStatus())
+                        .build()
+        ).collect(Collectors.toList());
 
-    @Override
-    public List<ExportOrder> viewExportOrderByOption(Long id){
-        log.info("Start víews");
-        List<ExportOrder> data=exportOrderRepository.findExportOrderById(id);
-        log.info("data"+data);
-        return data;
+        return new RestResponsePage<>(exportOrderDTOList);
     }
 }

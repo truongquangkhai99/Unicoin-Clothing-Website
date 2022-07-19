@@ -4,6 +4,7 @@ import com.unicoin.clients.commons.RabbitKey;
 import com.unicoin.clients.rabbitmqModel.QueueExportOrder;
 import com.unicoin.clients.rabbitmqModel.QueueImportOrder;
 import com.unicoin.clients.rabbitmqModel.QueueReturnOrder;
+import com.unicoin.order.service.ExportOrderService;
 import com.unicoin.order.service.OrderService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Component;
 public class OrderConsumer {
 
     @Autowired
-    OrderService orderService;
+    ExportOrderService orderService;
 
 
 //    @RabbitListener(queues = "${rabbitmq.queue.order-service}")
@@ -37,12 +38,12 @@ public class OrderConsumer {
     @RabbitListener(queues = RabbitKey.QUEUE_ADD_EXPORT_ORDER)
     public void comsumerAddExportOrder(QueueExportOrder order){
     log.info("Consumed add export order {} from queue", order);
-
+    orderService.addExportOrder(order);
     }
 
     @RabbitListener(queues = RabbitKey.QUEUE_ADD_IMPORT_ORDER)
     public void comsumerAddImportOrder(QueueImportOrder order){
-        orderService.addImportOrderFromQueues(order);
+//        orderService.addImportOrderFromQueues(order);
         log.info("Consumed add import order {} from queue", order);
     }
 

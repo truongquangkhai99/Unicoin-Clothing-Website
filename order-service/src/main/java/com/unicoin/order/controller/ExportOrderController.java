@@ -15,37 +15,19 @@ public class ExportOrderController {
     ExportOrderService exportOrderService;
 
     @GetMapping("")
-    public ApiResponse viewsExportOrder(){
-
-        return new SuccessResponse(exportOrderService.viewsAllExportOrder());
+    public ApiResponse viewsExportOrder(@RequestParam(required = false) Integer status){
+        return new SuccessResponse(exportOrderService.viewsAllExportOrder(status));
     }
 
-    @PostMapping("/add/{export_order_id}")
-    public ApiResponse createExportOrder(@RequestBody AddExportOrders addExportOrders ){
-        exportOrderService.addExportOrderDetail(addExportOrders);
-        return new SuccessResponse();
+    @GetMapping("/{exportOrderId}")
+    public ApiResponse viewsExportOrderDetail(@PathVariable Long exportOrderId){
+        return new SuccessResponse(exportOrderService.guestViewsAllExportOrderDetail(exportOrderId));
     }
 
     @PutMapping("/update")
-    public ApiResponse updateExportOrder(@RequestParam(value = "exportOrderId") Long exportOrderId, @RequestParam
-            (value="status") Integer status){
+    public ApiResponse updateExportOrder(@RequestParam(value = "exportOrderId") Long exportOrderId,
+                                         @RequestParam(value="status") Integer status){
         exportOrderService.updateExportOrder(exportOrderId,status);
         return new SuccessResponse();
     }
-
-    @GetMapping("/status")
-    public ApiResponse getExportOrderByStatus(@RequestParam(value="status") Integer status){
-        return new SuccessResponse(exportOrderService.getExportOrderByStatus(status));
-    }
-
-    @GetMapping("/{id}")
-    public ApiResponse getExportOrderDetailByExportOrderId(@PathVariable Long id){
-        return new SuccessResponse(exportOrderService.getExportOrderDetailByExportOrderId(id));
-    }
-
-    @GetMapping("/find")
-    public  ApiResponse viewExportOrderByOption(@RequestParam(value="id", required = false) Long id){
-        return new SuccessResponse(exportOrderService.viewExportOrderByOption(id));
-    }
-
 }

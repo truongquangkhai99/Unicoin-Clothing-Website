@@ -22,6 +22,9 @@ public class ExportOrderDetail {
     @Column(name = "variant_id")
     private Long variantId;
 
+    @Column(name = "variant_name")
+    private String variantName;
+
     @Column(name = "quantity")
     private Integer quantity;
 
