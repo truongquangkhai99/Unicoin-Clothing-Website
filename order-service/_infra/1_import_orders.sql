@@ -1,5 +1,5 @@
 CREATE  TABLE `IMPORT_ORDERS`(
-                                 `IMPORT_ORDER_ID` int NOT NULL,
+                                 `IMPORT_ORDER_ID` int NOT NULL AUTO_INCREMENT,
                                  `USER_PHONE_NUMBER` VARCHAR(20) not null ,
                                  `REGIST_STAMP` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ,
                                  `STATUS` int ,
