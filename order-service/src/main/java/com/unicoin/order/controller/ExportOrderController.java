@@ -24,7 +24,7 @@ public class ExportOrderController {
         return new SuccessResponse(exportOrderService.guestViewsAllExportOrderDetail(exportOrderId));
     }
 
-    @PutMapping("/update")
+    @GetMapping("/update")
     public ApiResponse updateExportOrder(@RequestParam(value = "exportOrderId") Long exportOrderId,
                                          @RequestParam(value="status") Integer status){
         exportOrderService.updateExportOrder(exportOrderId,status);
